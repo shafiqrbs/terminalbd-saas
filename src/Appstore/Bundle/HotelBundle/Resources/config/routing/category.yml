@@ -1,0 +1,30 @@
+hotel_category:
+    path:     /
+    defaults: { _controller: "HotelBundle:Category:index" }
+
+hotel_category_create:
+    path:     /create
+    defaults: { _controller: "HotelBundle:Category:create" }
+    methods:  POST
+
+hotel_category_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:Category:edit" }
+
+hotel_category_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:Category:update" }
+    methods:  [POST, PUT]
+
+hotel_category_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:Category:delete" }
+
+hotel_category_status:
+    path:     /{id}/status
+    defaults: { _controller: "HotelBundle:Category:status" }
+
+hotel_category_sorted:
+    path:     /category-sorted
+    defaults: { _controller: "HotelBundle:Category:sorted" }
+

@@ -1,0 +1,30 @@
+assets_particular:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Particular:index" }
+
+assets_particular_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Particular:show" }
+
+assets_particular_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Particular:new" }
+
+assets_particular_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:Particular:create" }
+    methods:  POST
+
+assets_particular_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Particular:edit" }
+
+assets_particular_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Particular:update" }
+    methods:  [POST, PUT]
+
+assets_particular_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Particular:delete" }
+    methods:  [POST, DELETE]

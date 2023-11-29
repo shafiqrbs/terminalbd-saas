@@ -1,0 +1,493 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Order
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('customer_order') }}">Manage Order</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Order Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Order Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn yellow" href="{{ path('customer_order') }}"><i class="icon-th-list"></i>&nbsp;Orders</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <form name="orderUpdate" method="post" action="{{ path('customer_order_ajax_payment',{'id':entity.id}) }}" id="orderUpdate" novalidate="novalidate">
+                        <div class="row-fluid">
+                            <div class="span8">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <label><strong>{{ entity.delivery|capitalize }} Address</strong></label>
+                                        <ul class="unstyled" >
+                                            <li><strong class="span2">Mobile</strong><input type="text" name="ecommerce_payment[customerMobile]" id="customerMobile" class="select2EcommerceUser m-wrap-custom span6" value="{{ entity.customerMobile }}">
+                                            <input type="hidden" name="customerId" id="customerId" value="">
+                                            </li>
+                                            <li><strong class="span2">Name</strong><input type="text" name="ecommerce_payment[customerName]" id="customerName" class="m-wrap-custom span6 input-update" value="{{ entity.customerName }}"></li>
+                                            <li><strong class="span2">Address</strong><input type="text" name="ecommerce_payment[customerAddress]" id="customerAddress" value="{{ entity.address }}" class="m-wrap-custom span10 input-update" ></li>
+                                            <li><strong class="span2">Courier Service</strong>
+                                                <select  class="m-wrap-custom input-update span6" id="courier" name="ecommerce_payment[courier]" >
+                                                    <option value="">Select Courier Name</option>
+                                                    {% for cou in couriers %}
+                                                        <option value="{{ cou.id }}">{{ cou.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span4">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <label><strong>Process Details</strong></label>
+                                        <ul class="unstyled" >
+                                            <li><strong class="span4" >Delivery Date</strong>
+                                                <span class="span8">
+                                                <input type="date" name="ecommerce_payment[deliveryDate]" id="deliveryDate" value="{{ entity.deliveryDate|date('Y-m-d') }}" class="m-wrap-custom span12 input-update">
+                                                </span>
+                                            </li>
+                                            {% if timePeriods is defined and timePeriods is not empty %}
+                                             <li><strong class="span4">Delivery Slot</strong>
+                                                 <span class="span8">
+                                                     <select  class="m-wrap-custom input-update span12" id="timePeriod" name="ecommerce_payment[timePeriod]" >
+                                                         {% for slot in timePeriods %}
+                                                             <option {% if entity.timePeriod is defined and entity.timePeriod is not empty and entity.timePeriod.id == slot.id %} selected="selected" {% endif %} value="{{ slot.id }}">{{ slot.name }}</option>
+                                                         {% endfor %}
+                                                     </select>
+                                                 </span>
+                                             </li>
+                                            {% endif %}
+                                            <li><strong class="span4">Process Status</strong>
+                                                <span class="span8">
+                                                    {% set processes = {sms:'Send SMS',created:'Created','wfc': 'Wait for Confirm','confirm':'Confirm','shipped':'Shipped','returned':'Returned','cancel':'Cancel'} %}
+                                                    <select  class="m-wrap-custom input-update span12" id="process" name="ecommerce_payment[process]" >
+                                                        {% for key,process in processes %}
+                                                            <option {% if key == entity.process %} selected="selected" {% endif %} value="{{ key }}">{{ process }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </span>
+                                            </li>
+                                            <li><strong class="span4">Tracking No</strong>
+                                                <span class="span8">
+                                                    <input type="text" name="ecommerce_payment[trackingNo]" id="trackingNo" value="{{ entity.trackingNo }}" class="m-wrap-custom span10 input-update" >
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                        <div class="clearfix"> </div>
+                        <div class="form-actions portlet box red">
+                            <div class="portlet-title"><div class="caption"><i class="icon-reorder"></i>Add Order Item</div></div>
+                        </div>
+                        <div class="clearfix"><br/> </div>
+                        {{ form_start(salesItem) }}
+                        {{ form_row(salesItem._token) }}
+                        <div class="row-fluid particular-info" style="padding-left:15px!important; margin-left: -10px!important;" >
+                            <div class="span8">
+                                {{ form_widget(salesItem.itemName) }}
+                                {{ form_errors(salesItem.itemName) }}
+                            </div>
+                            <div class="span4">
+                                <div class="input-append">
+                                    <div class="input-group">
+                                        {{ form_widget(salesItem.quantity) }}
+                          \              {{ form_widget(salesItem.price) }}
+                                        <button type="button" class="btn yellow" id="unit">Unit</button>
+                                        <button type="button" class="btn blue" id="addOrderItem"> <span class="fa fa-shopping-cart"></span> Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{ form_end(salesItem) }}
+                        <form name="transactionUpdate" method="post" action="{{ path('customer_order_ajax_update',{'id':entity.id}) }}" id="transactionUpdate" novalidate="novalidate">
+                        <div class="portlet-body flip-scroll">
+                            <div class="clearfix">&nbsp;</div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <th class="numeric" ><i class="icon-reorder"></i></th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >Brand</th>
+                                    <th class="numeric" >Category</th>
+                                    <th class="numeric span3" >Quantity</th>
+                                    <th class="numeric" >Unit Price</th>
+                                    <th class="numeric span2" >Total Price</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="orderItems">
+                                {% for orderItem in entity.orderItems %}
+                                    <tr id="remove-{{ orderItem.id }}">
+                                        <input type="hidden" name="itemId[]" value="{{ orderItem.id }}">
+                                        <td>{{ loop.index }}.</td>
+                                        <td class="numeric dropdown" >
+                                            {% if orderItem.item is not empty %}
+                                            <a target="_blank" href="{{ path('ecommerce_item_show',{'id':orderItem.item.id}) }}" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                                {{ orderItem.itemName }}
+                                            </a>
+                                            {% else %}
+                                                {{ orderItem.itemName }}
+                                            {% endif %}
+                                            {% if orderItem.item is defined and orderItem.item is not empty and orderItem.item.webPath is not empty  %}
+                                                <ul class="dropdown-menu extended inbox">
+                                                    <li>
+                                                        <p>{{ orderItem.item.webName }}</p>
+                                                    </li>
+                                                    <li>
+                                                        <img src="{% if orderItem.item.webPath is not empty  %}{{ image(orderItem.item.webPath).scaleResize(300,300) }}{% elseif orderItem.item.webPath is not empty  %}{{ image(orderItem.item.webPath).scaleResize(300,300) }}{% endif %}" alt="" />
+                                                    </li>
+                                                    <li><p class="pull-center"><strong>BDT: {{ orderItem.item.salesPrice|number_format }}</strong></p></li>
+                                                </ul>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" >{{ orderItem.brandName }}</td>
+                                        <td class="numeric" >{{ orderItem.categoryName }}</td>
+                                        <td class="numeric" >
+                                            {% if entity.process == 'created' and orderItem.status == 0  %}
+                                                <div class="input-append">
+                                                    <span class="input-group-btn">
+                                                    <input type="text"  name="quantity" id="quantity-{{ orderItem.id }}" class="form-control m-wrap-custom  span4 input-number" value="{{ orderItem.quantity }}" min="1" max="1000" >
+                                                        {% if orderItem.UnitName is not empty %}
+                                                        <button type="button" class="btn mini yellow">
+                                                                 {{ orderItem.UnitName }}
+                                                              </button>
+                                                        </span>
+                                                    {% endif %}
+                                                </div>
+                                            {% else %}
+                                                {{ orderItem.quantity }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" >{{ orderItem.price }}</td>
+                                        <td class="numeric" ><strong>{{ orderItem.subTotal }}</strong></td>
+                                        <td class="numeric" >
+                                            {% if orderItem.status == 1 %}
+                                                <a class="btn  mini green" ><i class=" icon-thumbs-up"></i> Accept</a>
+                                            {% elseif orderItem.status == 2 %}
+                                                <a class="btn  mini yellow " ><i class="icon-thumbs-down"></i> Rejected</a>
+                                            {% endif %}
+                                            {% if entity.process == 'created'  %}
+                                            <div class="btn-group">
+                                                <a data-id="{{ orderItem.id }}" data-url="{{ path('customer_medicine_item_update',{'order':entity.id,'id':orderItem.id}) }}" data-value="{{ globalOption.slug }}" class="btn blue mini orderItemProcess" ><i class="icon-save"></i></a>
+                                                <a  data-id="{{ orderItem.id }}" data-url="{{ path('customer_medicine_item_delete',{'order':entity.id,'id':orderItem.id}) }}" data-value="{{ globalOption.slug }}" class="btn mini red item-remove" ><i class="icon-trash"></i></a>
+                                            {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Total</strong></span></td>
+                                    <td class="numeric" colspan="1" ><strong>{{ entity.subTotal|number_format }}</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Delivery Charge</strong></span></td>
+                                    <td class="numeric"><input type="text" name="shippingCharge" id="shippingCharge" class="m-wrap-custom span11 transactionProcess" value="{{ entity.shippingCharge }}"></td>
+                                    <td></td>
+                                </tr>
+                                {% if entity.ecommerceConfig.vatEnable == 1 %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right">Vat & Tax</span></td>
+                                        <td class="numeric">{{ entity.vat }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Discount</strong></span></td>
+                                    <td class="numeric"><input type="text" name="discount" id="discount" class="m-wrap-custom span11 transactionProcess" value="{{ entity.discount }}"></td>
+                                    <td></td>
+                                </tr>
+                                {% if entity.coupon is not empty %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right">Coupon Code({{ entity.coupon.couponCode }})</span></td>
+                                        <td class="numeric">{{ entity.couponAmount }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Grand Total</strong></span></td>
+                                    <td class="numeric"><strong id="total">{{ ( entity.total)|number_format }}</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="numeric" colspan="6" ><span class="pull-right"><strong>Paid Amount</strong></span></td>
+                                    <td class="numeric"><strong id="receive">{{ ( entity.paidAmount)|number_format }}</strong></td>
+                                    <td></td>
+                                </tr>
+                                {% if entity.dueAmount  > 0 %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right"><strong>Due Amount</strong></span></td>
+                                        <td class="numeric" >{{ ( entity.dueAmount)|number_format }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                {% if entity.returnAmount  > 0 %}
+                                    <tr>
+                                        <td class="numeric" colspan="6" ><span class="pull-right"><strong>Return Amount</strong></span></td>
+                                        <td class="numeric">{{ ( entity.returnAmount)|number_format }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        </form>
+                        <div class="clearfix"> </div>
+                        <div class="form-actions portlet box blue">
+                            <div class="portlet-title"><div class="caption"><i class="icon-reorder"></i>Payment Process</div></div>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                            <thead class="flip-content ">
+                            <tr class="head-yellow">
+                                <th class="numeric" >Date</th>
+                                <th class="numeric" >Transaction Type</th>
+                                <th class="numeric" >Payment Mobile</th>
+                                <th class="numeric" >Transaction ID</th>
+                                <th class="numeric" >Receive Mobile</th>
+                                <th class="numeric" >Receive Amount</th>
+                                <th class="numeric" >Return Amount</th>
+                                <th class="numeric" >Process</th>
+                                <th class="numeric" >Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for payment in entity.orderPayments %}
+                                <tr id="remove-{{ payment.id }}">
+                                    <td>{{ payment.updated|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ payment.transactionType }}</td>
+                                    <td class="numeric" >{{ payment.mobileAccount }}</td>
+                                    <td class="numeric" >{{ payment.transaction }}</td>
+                                    <td class="numeric" >{{ payment.accountMobileBank.name }}</td>
+                                    <td class="numeric" >{% if payment.transactionType =='Receive' %}{{ payment.amount|number_format }}{% endif %}</td>
+                                    <td class="numeric" >{% if payment.transactionType =='Return' %}{{ payment.amount|abs|number_format }}{% endif %}</td>
+                                    <td class="numeric" >
+                                        {% if payment.status == 1 %}
+                                            <span class="btn  mini green"><i class=" icon-thumbs-up"></i> Accept</span>
+                                        {% elseif  payment.status ==2 %}
+                                            <span class="btn  mini yellow"><i class=" icon-thumbs-down"></i> Reject</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="numeric" >
+                                        {% if payment.status == 0 %}
+                                            <a class="btn  mini green confirm" data-url="{{ path('customer_order_payment_confirm',{'id':payment.id,'process':1}) }}" ><i class=" icon-thumbs-up"></i> Accept</a>
+                                            <a class="btn  mini yellow confirm" data-url="{{ path('customer_order_payment_confirm',{'id':payment.id,'process':2}) }}" ><i class=" icon-thumbs-down"></i> Reject</a>
+                                        {% endif %}
+                                        {% set postCondition = {'wfc': 'wfc' ,'created':'created'} %}
+                                        {% if entity.process in  postCondition|keys %}
+                                            <a class="btn  mini red remove" data-url="{{ path('customer_order_payment_delete',{'id':payment.id}) }}"  data-id="{{ payment.id }}" ><i class=" icon-trash"></i> Delete</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                        <div class="clearfix"><br/> </div>
+                        {{ form_start(paymentForm) }}
+                        {{ form_row(paymentForm._token) }}
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="row-fluid">
+                                            <div class="span2">
+                                                <div class="row-fluid">
+                                                    <div class="span12">
+                                                        <div class="control-group">
+                                                           <input type="checkbox" id="cashOnDelivery" name="cashOnDelivery" {% if entity.cashOnDelivery == 1 %} checked="checked" {% endif %} value="1"> Cash on Delivery
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="cashOn"  {% if entity.cashOnDelivery == 1 %} style="display: none"  {% endif %}>
+                                            <div class="span2">
+                                                <div class="row-fluid">
+                                                    <div class="span12">
+                                                        <div class="control-group">
+                                                            {{ form_widget(paymentForm.amount) }}
+                                                            {{ form_errors(paymentForm.amount) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="span8">
+                                                <div class="row-fluid">
+                                                    <div class="span4">
+                                                        <div class="control-group">
+                                                            {{ form_widget(paymentForm.transactionType) }}
+                                                            {{ form_errors(paymentForm.transactionType) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="span8">
+                                                        <div class="control-group">
+                                                            {{ form_widget(paymentForm.accountMobileBank) }}
+                                                            {{ form_errors(paymentForm.accountMobileBank) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row-fluid">
+                                                    <div class="span4">
+                                                        <div class="control-group">
+                                                            <div class="controls">
+                                                                {{ form_widget(paymentForm.mobileAccount) }}
+                                                                {{ form_errors(paymentForm.mobileAccount) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="span8">
+                                                        <div class="control-group">
+                                                            <div class="controls">
+                                                                {{ form_widget(paymentForm.transaction) }}
+                                                                {{ form_errors(paymentForm.transaction) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="button" id="adminSubmitPayment" name="adminSubmitPayment" value="payment"  class="btn green {% if entity.cashOnDelivery == 1 %}submitOrder {% else %}submitPayment{% endif %}"><i class="icon-save"></i>&nbsp;Save Order</button>
+                                </div>
+                            </div>
+                        </div>
+                        {{ form_end(paymentForm) }}
+                        <div class="clearfix"><br/> </div>
+                        <div class="form-actions portlet box yellow">
+                            <div class="portlet-title"><div class="caption"><i class="icon-reorder"></i>Comments Information</div></div>
+                        </div>
+                        <div class="clearfix"> </div>
+                        {% set paymentID = entity.globalOption.id~'-ecommerce-payment-'~entity.id %}
+                        {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': paymentID } %}
+                        <div class="clearfix"> </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="payment-confirm" style="display:none; text-align: left!important;">Thank you for your payment. Your payment has been sent successfully to our customer service department.</div>
+{% endblock %}
+{% block cssBlock %}
+    <style>
+        .ui-autocomplete{
+            width: 250px!important;
+        }
+        ul.ui-autocomplete li{
+            width: 250px!important;
+            display: flex;
+        }
+        input[class*="span"].m-wrap,select[class*="span"],select{
+            border: 1px solid #0b84fe!important;
+            height: 34px!important;
+        }
+        input[type="text"].m-wrap-custom,input[type="date"].m-wrap-custom, select.m-wrap-custom{
+            border: 1px solid #0b84fe!important;
+            height: 30px!important;
+            padding: 5px!important;
+            min-height: 25px!important;
+        }
+        input[type="text"].input-number{
+            height: 21px!important;
+            min-height: 20px!important;
+            font-size: 12px;
+            text-align: center;
+        }
+        .row-fluid textarea[class*="span"] {
+            border: 1px solid #0b84fe!important;
+        }
+        .select2-container .select2-choice {
+            border: 1px solid #0b84fe!important;
+            height: 30px!important;
+        }
+
+    </style>
+    {% stylesheets filter='cssrewrite'
+    '@EcommerceBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/ecommerce/js/editable.js'
+    'bundles/ecommerce/js/medicine.js'
+    'bundles/ecommerce/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    ApproveProcess();
+    $('#fos_comment_comment_body').addClass('span12');
+    $('.fos_comment_submit input[type="submit"]').addClass('btn blue');
+
+
+    $( ".select2EcommerceUser" ).autocomplete({
+
+        source: function( request, response ) {
+        $.ajax( {
+        url: Routing.generate('ecommerce_customer_search'),
+        data: {
+        term: request.term
+        },
+        success: function( data ) {
+        response( data );
+        }
+        } );
+
+        },
+        minLength: 2,
+        select: function( event, ui ) {
+        $.get( Routing.generate('ecommerce_order_existing_customer',{'order':{{ entity.id }},'customer':ui.item.id}), function( data ) {
+            location.reload();
+        })
+        }
+    });
+
+
+{% endblock %}

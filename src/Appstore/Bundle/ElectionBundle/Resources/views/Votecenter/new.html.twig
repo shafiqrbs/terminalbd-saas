@@ -1,0 +1,213 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Election Vote Center
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="{{ path('election_votecenter') }}">Manage Election Vote Center</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Election Vote Center Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('election_votecenter') }}"><i class="icon-th-list"></i>&nbsp; Vote Center</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Select Election</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.electionSetup) }}
+                                                    {{ form_errors(form.electionSetup) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Center Name</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.location) }}
+                                                    {{ form_errors(form.location) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Total Voter</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.maleVoter) }}
+                                                    {{ form_widget(form.femaleVoter) }}
+                                                    {{ form_widget(form.otherVoter) }}
+                                                    <input type="text" id="totalVote" name="totalVote" disabled="disabled" class="m-wrap span3" value="{{ entity.totalVoter }}"  placeholder="Total voter">
+                                                    {{ form_errors(form.maleVoter) }}
+                                                    {{ form_errors(form.femaleVoter) }}
+                                                    {{ form_errors(form.otherVoter) }}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Representative</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.representative) }}
+                                                    {{ form_errors(form.representative) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Representative Mobile</label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-phone"></i>
+                                                        {{ form_widget(form.representativeMobile) }}
+                                                        {{ form_errors(form.representativeMobile) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Center Address</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.address) }}
+                                                    {{ form_errors(form.address) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="span6">
+                                     <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Presiding Officer</label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-font"></i>
+                                                        {{ form_widget(form.presiding) }}
+                                                        {{ form_errors(form.presiding) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Presiding Designation</label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-font"></i>
+                                                        {{ form_widget(form.presidingDesignation) }}
+                                                        {{ form_errors(form.presidingDesignation) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Presiding Mobile</label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-phone"></i>
+                                                        {{ form_widget(form.presidingMobile) }}
+                                                        {{ form_errors(form.presidingMobile) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Presiding Address</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.presidingAddress) }}
+                                                    {{ form_errors(form.presidingAddress) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                        <div class="clearfix"><br/></div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+
+

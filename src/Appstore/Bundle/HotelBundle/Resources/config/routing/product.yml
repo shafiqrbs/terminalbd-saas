@@ -1,0 +1,29 @@
+hotel_product:
+    path:     /
+    defaults: { _controller: "HotelBundle:Product:index" }
+
+hotel_product_create:
+    path:     /create
+    defaults: { _controller: "HotelBundle:Product:create" }
+    methods:  POST
+
+hotel_product_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:Product:edit" }
+
+hotel_product_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:Product:update" }
+    methods:  [POST, PUT]
+
+hotel_product_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:Product:delete" }
+
+hotel_product_status:
+    path:     /{id}/status
+    defaults: { _controller: "HotelBundle:Product:status" }
+
+hotel_product_inline:
+    path:     /inline-update
+    defaults: { _controller: "HotelBundle:Product:inlineUpdate" }

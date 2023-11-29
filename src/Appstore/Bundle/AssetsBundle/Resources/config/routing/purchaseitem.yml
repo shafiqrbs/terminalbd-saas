@@ -1,0 +1,53 @@
+assets_purchaseitem:
+    path:     /opening
+    defaults: { _controller: "AssetsBundle:PurchaseItem:index" }
+
+assets_purchase_item:
+    path:     /purchase
+    defaults: { _controller: "AssetsBundle:PurchaseItem:purchaseIndex" }
+
+assets_purchaseitem_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:PurchaseItem:new" }
+
+assets_purchaseitem_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:PurchaseItem:create" }
+    methods:  POST
+
+assets_purchaseitem_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:PurchaseItem:edit" }
+
+
+assets_purchaseitem_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:PurchaseItem:delete" }
+
+
+assets_purchaseitem_approve:
+    path:     /{id}/approved
+    defaults: { _controller: "AssetsBundle:PurchaseItem:approve" }
+
+assets_purchaseitem_inline_update:
+    path:     /{id}/inline-update
+    defaults: { _controller: "AssetsBundle:PurchaseItem:inlineUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+assets_purchaseitem_attribute:
+    path:     /{id}/add-attrubute
+    defaults: { _controller: "AssetsBundle:PurchaseItem:attribute" }
+
+
+assets_purchaseitem_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:PurchaseItem:update" }
+    methods:  [POST, PUT]
+
+assets_purchaseitem_attribute_update:
+    path:     /{id}/attribute-update
+    defaults: { _controller: "AssetsBundle:PurchaseItem:updateAttribute" }
+    methods:  [POST, PUT]
+

@@ -1,0 +1,348 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                   Manage Room
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('hotel_room') }}">Manage Room</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green ">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Room</div>
+                        <div class="actions">
+                            <a href="{{ path('hotel_room') }}" class=" btn black"><i class="icon-th-list"></i> Room</a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        <div>
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid" >
+                                <div class="span8">
+                                    <div class="control-group">
+                                        <label class="control-label"  for="category" >Room Name<span class="required">*</span></label>
+                                        <div class="controls">
+                                            <div class="input-icon left">
+                                                <i class="fa fa-hotel"></i>
+                                                {{ form_widget(form.name) }}
+                                                {{ form_errors(form.name) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label"  for="category" >Room Mode<span class="required">*</span></label>
+                                        <div class="controls">
+                                            {{ form_widget(form.hotelParticularType) }}
+                                            {{ form_errors(form.hotelParticularType) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid" >
+                                <div class="span4">
+
+                                    <div class="row-fluid" >
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label"  for="category" >Room Type</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.roomType) }}
+                                                    {{ form_errors(form.roomType) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid" >
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label"  for="category" >Room Category</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.roomCategory) }}
+                                                    {{ form_errors(form.roomCategory) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid" >
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label"  for="" >Room Floor</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.roomFloor) }}
+                                                    {{ form_errors(form.roomFloor) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <div class="row-fluid" >
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="purchasePrice">Purchase Price</label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-money"></i>
+                                                        {{ form_widget(form.purchasePrice) }}
+                                                        {{ form_errors(form.purchasePrice) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid" >
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="price">Sales Price</label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-money"></i>
+                                                        {{ form_widget(form.salesPrice) }}
+                                                        {{ form_errors(form.salesPrice) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid" >
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label"  for="" >Room Position</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.viewPosition) }}
+                                                    {{ form_errors(form.viewPosition) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" >Product image</label>
+                                            <div class="controls">
+                                                <div data-provides="fileupload" class="fileupload fileupload-new">
+                                                    <div  class="fileupload-new thumbnail">
+                                                        {% if(entity.webPath) %}
+                                                            <img class="fileupload-preview fileupload-exists" alt="" src="{{ image(entity.webPath).resize(250,150) }}">
+                                                        {% else %}
+                                                            <img alt="" src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div  class="fileupload-preview fileupload-exists thumbnail"></div>
+                                                    <div>
+                                                    <span class="btn btn-file">
+                                                        <span class="fileupload-new">Select image</span>
+                                                        <span class="fileupload-exists">Change</span>
+                                                        {{ form_widget(form.file) }}
+                                                        {{ form_errors(form.file) }}
+                                                    </span>
+                                                        <a data-dismiss="fileupload" class="btn fileupload-exists" href="#">Remove</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="row-fluid" >
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="price">Complimentary</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.complimentary) }}
+                                            {{ form_errors(form.complimentary) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="price">Amenities</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.amenities) }}
+                                            {{ form_errors(form.amenities) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="row-fluid" >
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" for="price">Description</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.content) }}
+                                            {{ form_errors(form.content) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="form-actions portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Additional Field & Value</div>
+                                    <a href="javascript:" class="btn green pull-right mini addmore"><i
+                                                class="icon-plus"></i></a>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="row-fluid clone-block" id="clone-block">
+                                <div class="clone">
+                                    <div class="span3 ">
+                                        <div class="control-group">
+                                            <input type="hidden" name="metaId[]" value="">
+                                            <input type="text" name="metaKey[]" class="m-wrap span12"
+                                                   placeholder="Label name" value="">
+                                        </div>
+                                    </div>
+                                    <div class="span8">
+                                        <div class="control-group">
+                                            <input type="text" name="metaValue[]" class="m-wrap span12"
+                                                   placeholder="Label value" value="">
+                                        </div>
+                                    </div>
+                                    <div class="span1">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <a href="javascript:" class="btn red  remove hidden mini"><i
+                                                            class="icon-trash"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if  entity.particularMetas is defined and entity.particularMetas is not empty %}
+                                <ol class="dd-list singleSortable ui-sortable">
+                                    {% for meta in entity.particularMetas %}
+                                        <li style="display:list-item" class="dd-item dd3-item removeAttr-{{ meta.id }}" id="menuItem_{{ meta.id }}">
+                                            <div class="menuDiv">
+                                                <div>
+                                                    <div data-id="{{ meta.id }}" class="itemTitle dd-handle dd3-handle"></div>
+                                                    <div class="row-fluid trash" id="remove-{{ meta.id }}" style="margin-left: 30px!important">
+                                                        <div class="span3 ">
+                                                            <div class="control-group">
+                                                                <input type="hidden" name="metaId[]" value="{{ meta.id }}">
+                                                                <input type="text" name="metaKey[]" class="m-wrap span12"
+                                                                       placeholder="Label name" value="{{ meta.metaKey }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="span8">
+                                                            <div class="control-group">
+                                                                <input type="text" name="metaValue[]" class="m-wrap span12"
+                                                                       placeholder="Label value" value="{{ meta.metaValue }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="span1">
+                                                            <div class="control-group">
+                                                                <div class="controls">
+                                                                    <a href="javascript:" data-id="{{ meta.id }}"
+                                                                       data-url="{{ path('hotel_room_item_meta_delete',{'id':meta.id}) }}"
+                                                                       class="btn red delete  removeAttr mini"><i class="icon-trash"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            {% endif %}
+
+                            <div class="form-actions portlet box purple">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Item Gallery</div>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="row-fluid">
+                                {% if(entity.roomGalleries is not empty) %}
+                                    {% for photo in entity.roomGalleries %}
+                                        <div class="span2">
+                                            <input type="checkbox" data-placement="left" class="checker popovers"
+                                                   data-trigger="hover"
+                                                   data-content="Are you remove image, Please click here."
+                                                   data-original-title="Remove image" name="imageId[]"
+                                                   value="{{ photo.id }}">
+                                            <a href="/{{ photo.getWebPath(entity.hotelConfig.globalOption.id,entity.id) }}"
+                                               target="_blank"> <img
+                                                        src="{{ image(photo.getAbsolutePath(entity.hotelConfig.globalOption.id,entity.id)).resize(100,100) }}"/></a>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div id="pluploadUploader">
+                                        <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5
+                                            support.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                        <!-- END FORM-->
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+<style>
+    #room_complimentary label , #room_amenities label{
+        display: inline-block !important;
+        padding-right: 5px;
+    }
+</style>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@HotelBundle/Resources/public/js/room.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    NestSortable.init();
+    imageGallery({{ entity.id }})
+{% endblock %}

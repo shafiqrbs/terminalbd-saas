@@ -1,0 +1,41 @@
+assetsitembrand:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Brand:index" }
+
+assetsitembrand_search:
+    path:     /search
+    defaults: { _controller: "AssetsBundle:Brand:autoSearch" }
+    options:
+            expose: true
+
+assetsitembrand_name:
+    path:      /{brand}/brand-name
+    defaults: { _controller: "AssetsBundle:Brand:searchItemBrandName" }
+    options:
+            expose: true
+
+assetsitembrand_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Brand:show" }
+
+assetsitembrand_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Brand:new" }
+
+assetsitembrand_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:Brand:create" }
+    methods:  POST
+
+assetsitembrand_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Brand:edit" }
+
+assetsitembrand_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Brand:update" }
+    methods:  [POST, PUT]
+
+assetsitembrand_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Brand:delete" }

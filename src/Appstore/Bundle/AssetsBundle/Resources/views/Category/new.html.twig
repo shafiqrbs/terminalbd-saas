@@ -1,0 +1,214 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+    <!-- BEGIN category HEADER-->
+    <div class="row-fluid">
+        <div class="span12">
+            <h3 class="category-title">
+                Product Category
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home"></i>
+                    <a href="{{ path('homepage') }}">Home</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li>
+                    <a href="{{ path('assetscategory') }}">Product Category</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li><a href="#">Product Category Form</a></li>
+                <li class="pull-right btn blue disabled mini">
+                    <i class="fa fa-calendar"></i>
+                    {{ "now"|date("d-F-Y") }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END category HEADER-->
+    <!-- BEGIN category CONTENT-->
+    <div class="row-fluid">
+    <div class="span12">
+
+    <div class="portlet box green tabbable">
+
+
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-reorder"></i>Product Category</div>
+            <div class="actions">
+                <div class="btn-group">
+                    <a class="btn black" href="{{ path('assetscategory') }}"><i class="icon-th-list"></i>&nbsp;Category</a>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="portlet-body">
+        <div class="portlet-body form">
+            {% include('flash-message.html.twig')  %}
+            <!-- BEGIN FORM-->
+            {{ form_start(form) }}
+            {{ form_row(form._token) }}
+
+            <div class="row-fluid">
+                <!--/span-->
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label">Category Type<span class="required">*</span></label>
+                        <div class="controls">
+                            <div class="input-icon left">
+                                {{ form_widget(form.categoryType) }}
+                                {{ form_errors(form.categoryType) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <!--/span-->
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label"  for="parent" >Parent</label>
+                        <div class="controls">
+                            <div class="input-icon left">
+                                {{ form_widget(form.parent) }}
+                                {{ form_errors(form.parent) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label" for="name">Name<span class="required">*</span></label>
+                            <div class="controls">
+                                <div class="input-icon left">
+                                    <i class="icon-font"></i>
+                                    {{ form_widget(form.name) }}
+                                    {{ form_errors(form.name) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row-fluid">
+                <!--/span-->
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label"  for="parent" >Account Head<span class="required">*</span></label>
+                        <div class="controls">
+                            <div class="input-icon left">
+                                {{ form_widget(form.accountHead) }}
+                                {{ form_errors(form.accountHead) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" >Status &nbsp; </label>
+                        <div class="controls">
+                            <div class="input-icon left">
+                                {{ form_widget(form.status) }}
+                                {{ form_errors(form.status) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <div class="clearfix">&nbsp;</div>
+            <div class="form-actions portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>Additional Field & Value</div>
+                    <a href="javascript:" class="btn red pull-right mini addmore"><i class="icon-plus"></i> Add row</a>
+                </div>
+            </div>
+            <div class="clearfix">&nbsp;</div>
+            <div class="row-fluid clone-block" id="clone-block">
+                <div class="clone">
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <div class="control-group">
+                                <input type="hidden" name="metaId[]" value="" >
+                                <select name="metaLang[]" class="m-wrap span4">
+                                    <option value="en">English</option>
+                                    <option value="bn">Bangla</option>
+                                </select>
+                                <input type="text" name="metaKey[]" class="m-wrap span8" placeholder="Label name" value="">
+                            </div>
+                        </div>
+                        <div class="span7">
+                            <div class="control-group">
+                                <input type="text" name="metaValue[]" class="m-wrap span12" placeholder="Label value" value="">
+                            </div>
+                        </div>
+                        <div class="span1">
+                            <a href="javascript:"  class="btn red  remove hidden mini"><i class="icon-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if  entity.categoryMetas is defined and entity.categoryMetas is not empty %}
+                {% for meta in entity.categoryMetas %}
+                    <div class="row-fluid trash" id="remove-{{ meta.id }}"  >
+                        <div class="span4 ">
+                            <div class="control-group">
+                                <input type="hidden" name="metaId[]" value="{{ meta.id }}" >
+                                <input type="hidden" name="metaLang[]" value="{{ meta.id }}" >
+                                <select name="metaLang[]" class="m-wrap span4">
+                                    <option {% if meta.metaLang == 'en' %} selected="selected" {% endif %} value="en">English</option>
+                                    <option {% if meta.metaLang == 'bn' %} selected="selected" {% endif %} value="bn">Bangla</option>
+                                </select>
+                                <input type="text" name="metaKey[]" class="m-wrap span8" placeholder="Label name" value="{{ meta.metaKey }}">
+                            </div>
+                        </div>
+                        <div class="span7">
+                            <div class="control-group">
+                                <input type="text" name="metaValue[]" class="m-wrap span12" placeholder="Label value" value="{{ meta.metaValue }}">
+                            </div>
+                        </div>
+                        <div class="span1">
+                            <a href="javascript:" id="{{ meta.id }}"  data-url="{{ path('assetscategory_meta_delete',{'id':meta.id}) }}" class="btn red  remove mini"><i class="icon-trash"></i></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="clearfix">&nbsp;</div>
+            <div class="form-actions portlet box grey">
+                <div class="pull-center">
+                    <button type="submit" class="btn green"><i class="icon-ok"></i> Save</button>
+                    <button type="submit" class="btn purple"><i class="icon-refresh"></i> Reset</button>
+                    {% if(entity.id > 0 ) %}
+                        <a href="{{ path('category_delete',{'id': entity.id} ) }}"  class="btn red confirm" title="Are you sure went to delete?"><i class="icon-remove"></i> Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+            {{ form_end(form) }}
+            <!-- END FORM-->
+        </div>
+    </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@AssetsBundle/Resources/public/js/editable.js'
+
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+{% endblock %}

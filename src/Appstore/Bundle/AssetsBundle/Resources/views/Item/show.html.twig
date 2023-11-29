@@ -1,0 +1,111 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    View Details
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('item') }}">Ttem</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Details</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>item</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    Tools
+                                    <i class="icon-tasks"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+
+                                    <li><a href="{{ path('item_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a></li>
+                                    <li><a href="{{ path('item') }}"><i class="icon-th-list"></i>&nbsp;Lists</a></li>
+                                    <li><a href="{{ path('item_show',{'id':entity.id}) }}"><i class="icon-eye-open"></i>&nbsp;Show</a></li>
+                                    <li><a href="{{ path('item_edit',{'id':entity.id}) }}"><i class="icon-edit"></i>&nbsp;Edit</a></li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body form form-horizontal">
+
+                            <div class="row-fluid">
+                                <div class="span12">
+                                     {% include('flash-message.html.twig')  %}
+                                </div>
+
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" >Name</label>
+                                        <div class="controls control-custom">{{ entity.masterItem.name }}</div>
+                                    </div>
+                                </div>
+                                {% if entity.masterItem.category is defined and entity.masterItem.category is not empty %}
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" >Item type</label>
+                                        <div class="controls control-custom">{{ entity.masterItem.category.name }}</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" >Remaining Qnt</label>
+                                        <div class="controls control-custom">{{ entity.remainingQnt }}</div>
+                                    </div>
+                                </div>
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" >Max Qnt</label>
+                                        <div class="controls control-custom">{{ entity.maxQnt }}</div>
+                                    </div>
+                                </div>
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" >Min Qnt</label>
+                                        <div class="controls control-custom">{{ entity.minQnt }}</div>
+                                    </div>
+                                </div>
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" >Status</label>
+                                        <div class="controls control-custom">{% if entity.status == 1 %} Publish {% else %} Un-publish {% endif %}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

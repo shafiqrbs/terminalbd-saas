@@ -1,0 +1,9 @@
+education_config_manage:
+    path:     /manage
+    defaults: { _controller: "EducationBundle:Config:manage" }
+
+education_config_update:
+    path:     /update
+    defaults: { _controller: "EducationBundle:Config:update" }
+    methods:  [POST, PUT]
+

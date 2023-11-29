@@ -1,0 +1,310 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN category HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="category-title">
+                    Guest Invoice #  <strong>{{ entity.invoice }}</strong>
+                    <span class="pull-right">
+                        <a href="javascript:" data-title="{{ "now"|date("d-F-Y") }} Booking Overview" id="booking"  class="btn yellow"><i class="icon-building"></i> Booking Overview</a>
+                    </span>
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('hotel_invoice') }}">Guest Invoice</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Guest Invoice</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END category HEADER-->
+        <!-- BEGIN category CONTENT-->
+        <div class="row-fluid">
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i> <strong class="overview-title"><span id="date">{{ date }}</span></strong></div>
+                    <div class="actions">
+                        <div class="btn-group">
+                            <a class="btn red" href="{{ path('hotel_booking_invoice_generate') }}"><i class="icon-refresh"></i> Generate Process</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body" style="background-color:#514f4f; padding-bottom: 0!important;">
+                    <form id="search" name="search" method="get">
+                        <div class="row-fluid">
+                            <div class="span4">
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <span class="add-on"><i class="icon-calendar"></i></span><input type="text" class="m-wrap span12" name="searchReservation" id="searchReservation" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span2">
+                                <select name="category" id="category" class="m-wrap span12">
+                                    <option value="" >--All Category--</option>
+                                    {% for cat in options %}
+                                        {% if cat.hotelParticularType.slug == 'room-category' %}
+                                            <option value="{{ cat.id }}" {% if searchForm.category is defined and searchForm.category == cat.id %} selected="selected" {% endif %} >{{ cat.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="span2">
+                                <select name="type" id="type" class="m-wrap span12">
+                                    <option value="" >--All Room Type--</option>
+                                    {% for cat in options %}
+                                        {% if cat.hotelParticularType.slug == 'room-type' %}
+                                            <option value="{{ cat.id }}" {% if searchForm.category is defined and searchForm.category == cat.id %} selected="selected" {% endif %} >{{ cat.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="span2">
+                                <select name="floor" id="floor" class="m-wrap span12">
+                                    <option value="" >--All Floor--</option>
+                                    {% for cat in options %}
+                                        {% if cat.hotelParticularType.slug == 'floor' %}
+                                            <option value="{{ cat.id }}" {% if searchForm.category is defined and searchForm.category == cat.id %} selected="selected" {% endif %} >{{ cat.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="span2">
+                                <div class="btn-group input-append">
+                                    <select class="m-wrap span7" name="processStatus" id="processStatus" >
+                                        <option value="">All Status</option>
+                                        {% set process = ['available','check-in','booked'] %}
+                                        {% for process in process %}
+                                            <option value="{{ process }}">{{ process|capitalize }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="button" data-url="{{ path('hotel_booking_room_search') }}" class="btn yellow" id="bookingSearch" name="bookingSearch"><i class="icon-filter"></i> Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="portlet-body form" >
+                    <div class="form-actions portlet box yellow">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="icon-reorder"></i>Add Available Room Check-in/Booked </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <form class="" id="stockInvoice" name="stockInvoice" action="{{ path('hotel_booking_temporary_create') }}" method="post">
+                            <div class="span12">
+                                <div class="clearfix">&nbsp;</div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="row-fluid particular-info" >
+                                            <div class="span3">
+                                                <div class="controls">
+                                                    <div class="input-prepend">
+                                                        <span class="add-on"><i class="icon-calendar"></i></span><input type="text" class="m-wrap span12" name="tempReservation" id="tempReservation" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="span3" id="room-load">
+                                                <select name="room" id="room" class="m-wrap span12">
+                                                    <option value="" >--Select Room --</option>
+                                                    {% for entity in availableRooms %}
+                                                        <option value="{{ entity.id }}" >{{ entity.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="span3">
+                                                <div class="input-group">
+                                                    <input type="text" class="m-wrap span7 form-control" name="guestName" id="guestName" value=""  autocomplete="off" placeholder="Room member name" >
+                                                    <input type="text" class="m-wrap span5 form-control"  name="guestMobile" id="guestMobile" value=""  autocomplete="off" placeholder="Mobile no" >
+                                                </div>
+
+                                            </div>
+                                            <div class="span3">
+                                                <div class="input-append span12" style="margin-bottom:0!important">
+                                                    <div class="input-group">
+                                                        {% set counts =[1,2,3,4,5,6,7,8,9,10] %}
+                                                        <input type="text" class="m-wrap span3 form-control input-number" id="salesPrice" name="salesPrice" placeholder="Price" value="" min="">
+                                                        <select id="adult" name="adult" class="m-wrap span3">
+                                                            <option value="">Adult</option>
+                                                            {% for count in counts  %}
+                                                                <option value="{{ count }}">{{ count }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <select id="child" name="child" class="m-wrap span3">
+                                                            <option value="">Child</option>
+                                                            {% for count in counts  %}
+                                                                <option value="{{ count }}">{{ count }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <button type="button" disabled="disabled" class="btn blue" id="addRoom" ><i class="icon-save"></i> Add</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-actions portlet box green">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="icon-reorder"></i>List of Rooms</div>
+                        </div>
+                    </div>
+                    <div class="clearfix">&nbsp;</div>
+                    {% if entities is not empty  %}
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                            <thead class="flip-content ">
+                            <tr class="head-blue">
+                                <th class="numeric" ><i class="fa fa-th"></i> </th>
+                                <th class="numeric" >Category</th>
+                                <th class="numeric" >Name</th>
+                                <th class="numeric" >Room Mode</th>
+                                <th class="numeric" >Room Type</th>
+                                <th class="numeric" >View Position</th>
+                                <th class="numeric" >Floor</th>
+                                <th class="numeric" >Price</th>
+                                <th class="numeric" >Booking Date</th>
+                                <th class="numeric" >Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="bookingLoad">
+                            {% for entity in entities %}
+                                <tr>
+                                    <td><span data-trigger="hover" class="btn blue mini toggle badge-custom" data-id="{{ entity.id }}" data-url="{{ path('hotel_booking_room_details',{'id':entity.id}) }}" ><span>[+]</span></span></td>
+                                    <td class="numeric" >{% if entity.roomCategory is not empty %}{{ entity.roomCategory.name }}{% endif %}</td>
+                                    <td class="numeric" >{{ entity.name }}</td>
+                                    <td class="numeric" >{{ entity.hotelParticularType.name }}</td>
+                                    <td class="numeric" >{% if entity.roomType is not empty %}{{ entity.roomType.name }}{% endif %}</td>
+                                    <td class="numeric" >{% if entity.viewPosition is not empty %}{{ entity.viewPosition.name }}{% endif %}</td>
+                                    <td class="numeric" >{% if entity.roomFloor is not empty %}{{ entity.roomFloor.name }}{% endif %}</td>
+                                    <td class="numeric" >{{ entity.salesPrice }}</td>
+                                    <td class="numeric" ></td>
+                                    <td class="numeric">{% if bookings[entity.id]['id'] is defined and bookings[entity.id]['id'] == entity.id  %} <button class="btn red mini {{ bookings[entity.id]['roomStatus'] }}">{{ bookings[entity.id]['roomStatus'] }}</button> {% else %}<button class="btn blue mini">Available</button>{% endif %}</td>
+                                </tr>
+                                <tr id="show-{{ entity.id }}" class="showing-overview">
+                                    <td colspan="9">
+                                        <div id="room-{{ entity.id }}"></div>
+                                        <div id="form-{{ entity.id }}"></div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <style>
+                .room-box:nth-of-type(odd) {
+                    background-color: #eeeeee;
+                }
+
+                .room-box:nth-of-type(even) {
+                    background-color: #cecece;
+                }
+
+                .room-box{
+                    border: 1px solid #868181;
+                    padding: 3px;
+                    line-height: 32px;
+                    margin-bottom: 5px;
+                    padding-left: 15px;
+                }
+
+                #bookingStartDate , #bookingEndDate{
+                    background: #fff;
+                }
+                .check-in{
+                    background: red!important;
+                }
+                .booked{
+                    background: #c49f47!important;
+                }
+                .check-out{
+                    background: green !important;
+                }
+                .input-append .add-on, .input-prepend .add-on {
+                    display: inline-block;
+                    width: auto;
+                    height: 33px;
+                    min-width: 16px;
+                    padding: 4px 5px;
+                    font-size: 14px;
+                    font-weight: normal;
+                    line-height: 24px;
+                    text-align: center;
+                    text-shadow: 0 1px 0 #ffffff;
+                    background-color: #e5e5e5;
+                    border: 1px solid #999 !important;
+                }
+
+            </style>
+        </div>
+    </div>
+
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@HotelBundle/Resources/public/css/invoice.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@HotelBundle/Resources/public/js/invoice.js'
+    '@HotelBundle/Resources/public/js/temporary-invoice.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    var dateToday = new Date();
+
+    $('#bookingDate').daterangepicker({
+        initialText : 'Select Date Range for Booking/Check-in',
+        presetRanges: [{
+        text: 'Today',
+        dateStart: function() { return moment() },
+        dateEnd: function() { return moment() }
+        }, {
+        text: 'Tomorrow',
+        dateStart: function() { return moment().add('days', 1) },
+        dateEnd: function() { return moment().add('days', 1) }
+        }, {
+        text: 'Next 7 Days',
+        dateStart: function() { return moment() },
+        dateEnd: function() { return moment().add('days', 6) }
+        }, {
+        text: 'Next Week',
+        dateStart: function() { return moment().add('weeks', 1).startOf('week') },
+        dateEnd: function() { return moment().add('weeks', 1).endOf('week') }
+        }],
+        applyOnMenuSelect: false,
+        datepickerOptions: {
+            minDate: 0,
+            numberOfMonths : 2,
+            dateFormat: "dd-mm-yy",
+            minDate: dateToday,
+            changeMonth: true,
+            maxDate: null
+        }
+
+    })
+
+{% endblock %}

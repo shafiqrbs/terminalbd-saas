@@ -1,0 +1,155 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Committee
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Committee</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+                    <div class="portlet-title">
+                        {% set locationType = searchForm.locationType is defined ? searchForm.locationType :'' %}
+                        {% set location = searchForm.location is defined ? searchForm.location :'' %}
+                        {% set startDate = searchForm.startDate is defined ? searchForm.startDate :'' %}
+                        {% set endDate = searchForm.endDate is defined ? searchForm.endDate :'' %}
+                        {% set keyword = searchForm.keyword is defined ? searchForm.keyword :'' %}
+                        <div class="caption"><i class="icon-reorder"></i> Committee Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('political_committee_new') }}"><i class="icon-plus-sign"></i>&nbsp;Create</a>
+                                <a target="_blank" class="btn blue" href="{{ path('political_committee_list_print',{'locationType':locationType,'location':location,'startDate':startDate,'endDate':endDate,'keyword':keyword}) }}"><i class="icon-print"></i>&nbsp;Print</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <form class="search-form" action="" method="get" name="itemSearch">
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <select name="locationType" id="locationType" class="m-wrap span12">
+                                        <option value="">-Select Location Type-</option>
+                                        {% for type in locationTypes %}
+                                            <option {% if searchForm.locationType is defined and searchForm.locationType ==  type.id %} selected="selected" {% endif %} value="{{ type.id }}">{{ type.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="span3">
+                                    <input type="text" id="location" name="location"  class="m-wrap span12 select2Location" value="{% if searchForm.location is defined %}{{ searchForm.location }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.location is defined %}{{ searchForm.location }}{% else %}Enter location name{% endif %} ">
+                                </div>
+                                <div class="span3">
+                                    <input type="text" id="startDate" name="startDate"  class="span6 search-input  dateCalendar m-wrap" value="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% else %}Start date{% endif %} ">
+                                    <input type="text" id="endDate" name="endDate"  class="span6 search-input  dateCalendar m-wrap" value="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% else %}Start date{% endif %} ">
+                                </div>
+                                <div class="span3">
+                                    <div class="controls">
+                                        <div class="input-append span12 ">
+                                            <input type="text" id="keyword" name="keyword"  class="m-wrap span10 search-input" value="{% if searchForm.keyword is defined %}{{ searchForm.keyword }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.keyword is defined %}{{ searchForm.keyword }}{% else %}Enter any key words{% endif %} ">
+                                            <div class="btn-group">
+                                                <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+
+                        <div class="clearfix"><br/></div>
+                        <div class="portlet-body flip-scroll">
+
+                            <table class="table table-bordered table-striped table-condensed flip-content">
+                                <thead class="flip-content ">
+                                    <tr class="head-blue">
+                                        <th class="numeric" >Created</th>
+                                        <th class="numeric" >Political Wing</th>
+                                        <th class="numeric" >For Committee</th>
+                                        <th class="numeric" >Location</th>
+                                        <th class="numeric" >Date Duration</th>
+                                        <th class="numeric" >Year</th>
+                                        <th class="numeric" >Created By</th>
+                                        <th class="numeric" >Approved By</th>
+                                        <th class="numeric" >Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.created|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{% if entity.politicalWing is not empty %}{{ entity.politicalWing.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.committeeType is not empty %}{{ entity.committeeType.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.geoLocation is not empty %}{{ entity.geoLocation.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.startDate|date('d-m-Y') }} To {{ entity.endDate|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.timeDuration }} Year</td>
+                                        <td class="numeric" >{{ entity.createdBy }}</td>
+                                        <td class="numeric" >{{ entity.approvedBy }}</td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                            {% if( entity.status == 1) %}
+                                                <a href="{{ path('political_committee_status', { 'id': entity.id}) }}" class="btn yellow mini"><i class="icon-ok"></i></a>
+                                            {% else %}
+                                                <a  href="{{ path('political_committee_status', { 'id': entity.id}) }}" class="btn yellow mini" >x</a>
+                                            {% endif %}
+                                            <a href="{{ path('political_committee_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                            <a href="{{ path('political_committee_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                            <a class="btn mini yellow" href="{{ path('political_committee_member_new', { 'id': entity.id }) }}" ><i class="icon-plus"></i> Member</a>
+                                            <a data-title="{{ entity.name }}" class="btn mini view blue" href="javascript:" data-url="{{ path('political_committee_show', { 'id': entity.id }) }}" >&nbsp;<i class="icon-eye-open"></i> </a>
+                                            <a data-title="{{ entity.name }}" target="_blank" id="" class="btn mini purple print" href="{{ path('political_committee_print', { 'id': entity.id }) }}"  >Print</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/style.css'
+    '@ElectionBundle/Resources/public/css/messagebox.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/messagebox.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+
+
+

@@ -1,0 +1,169 @@
+<div class="portlet box green">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Member Information</div>
+    </div>
+    <div class="portlet-body form">
+        <div class="loader loader-double" ></div>
+        <div id="memberLoad">
+        <div class="clearfix">&nbsp;</div>
+            <div class="row-fluid">
+                <div class="span3">
+                    <h4>&nbsp;</h4>
+                    {% if entity.webPath is not empty %}
+                        <img src="{{ image(entity.webPath).resize(250,250, 'white') }}"/>
+                    {% endif %}
+                </div>
+                <div class="span9">
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <h4>About:</h4>
+                            <ul class="unstyled">
+                                {% if entity is not empty %}<li><strong>ID:</strong>&nbsp;{{ entity.memberId }}</li>{% endif %}
+                                {% if entity is not empty %}<li><strong>Name #:</strong>&nbsp;{{ entity.name }}</li>{% endif %}
+                                {% if entity is not empty %}<li><strong>Mobile #:</strong>&nbsp;<a href="tel:+88 {{ entity.mobile }}"> {{ entity.mobile }}</a></li>{% endif %}
+                                {% if entity is not empty %}<li><strong>Father Name</strong>&nbsp;{{ entity.fatherName }}</li>{% endif %}
+                                {% if entity is not empty %}<li><strong>Mother Name:</strong>&nbsp;{{ entity.motherName }}</li>{% endif %}
+                                {% if entity is not empty %}<li><strong>Gender:</strong>&nbsp;{{ entity.gender }}, &nbsp; <strong>Age</strong> {{ entity.age }} yrs.</li>{% endif %}
+                            </ul>
+                        </div>
+                        <div class="span4">
+                            <h4>Political:</h4>
+                            <ul class="unstyled">
+                                <li><strong>Reference Member:</strong>&nbsp;{% if entity.referenceMember is not empty %}{{ entity.referenceMember.name }}{% endif %}</li>
+                                <li><strong>Family Political Status:</strong>&nbsp;{% if entity.politicalStatus is not empty %}{{ entity.politicalStatus.name }}{% endif %}</li>
+                                <li><strong>Previous Political Party:</strong>&nbsp;{% if entity.oldPoliticalParty is not empty %}{{ entity.oldPoliticalParty.name }}{% endif %}</li>
+                                <li><strong>Political Designation:</strong>&nbsp;{% if entity.politicalDesignation is not empty %}{{ entity.politicalDesignation.name }}{% endif %}</li>
+                                <li><strong>Profession:</strong>&nbsp;{% if entity.profession is not empty %}{{ entity.profession.name }}{% endif %}</li>
+                            </ul>
+                        </div>
+                        <div class="span4">
+                            <h4>Location Information:</h4>
+                            <ul class="unstyled">
+                                <li><strong>Parliament Seat :</strong>&nbsp;{% if entity.electionConfig.parliament is not empty %}{{ entity.electionConfig.parliament.name }}{% endif %}</li>
+                                <li><strong>Village/Unit :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</li>
+                                <li><strong>Vote Center :</strong>&nbsp;{% if entity.voteCenter is not empty %}{{ entity.voteCenter.name }}{% endif %}</li>
+                                <li><strong>Ward & Union :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.ward }}{% endif %}, {% if entity.location is not empty %}{{ entity.memberUnion }}{% endif %}</li>
+                                <li><strong>Thana/Upazila :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.thana }}{% endif %}</li>
+                                <li><strong>District :</strong>&nbsp;{% if entity.electionConfig.district is not empty %}{{ entity.electionConfig.district.name }}{% endif %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <h4>Address:</h4>
+                            <ul class="unstyled">
+                                {% if entity is not empty %}<li><strong>Address:</strong>&nbsp;{{ entity.address|raw }} {% if entity.postalCode is not empty %} -{{ entity.postalCode }} {% endif %}</li>{% endif %}
+                                <li><strong>Additional:</strong>&nbsp;{{ entity.additionalMobileNo }}</li>
+                                <li><strong>Email:</strong>&nbsp;{{ entity.email }}</li>
+                                <li><strong>Facebook ID:</strong>&nbsp;{{ entity.facebookId }}</li>
+                            </ul>
+                        </div>
+                        <div class="span4">
+                            <h4>Other Information:</h4>
+                            <ul class="unstyled">
+                                <li><strong>Family:</strong>&nbsp;{{ entity.familyMember }}</li>
+                                <li><strong>Marital Status:</strong>&nbsp;{{ entity.maritalStatus }}</li>
+                                <li><strong>Blood Group:</strong>&nbsp;{{ entity.bloodGroup }}</li>
+                                <li><strong>Education:</strong>&nbsp;{% if entity.education is not empty %}{{ entity.education.name }}{% endif %}</li>
+                            </ul>
+                        </div>
+                        <div class="span4">
+                            <h4>&nbsp;</h4>
+                            <ul class="unstyled">
+                                <li><strong>Joining Date:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                                <li><strong>Status:</strong>&nbsp;{{ entity.process }}</li>
+                                <li><strong>Created By:</strong>&nbsp;{{ entity.createdBy }}</li>
+                                <li><strong>Approved By:</strong>&nbsp;{% if entity.approvedBy is not empty %}{{ entity.approvedBy }}{% endif %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <h4>Biography</h4>
+                    <hr>
+                    <p>{{ entity.biography|raw }}</p>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <h4>Remark/Comment</h4>
+                    <hr>
+                    <p>{{ entity.remark|raw }}</p>
+                </div>
+            </div>
+            <div class="clearfix"><br/></div>
+            <div class="form-actions portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>List of Assign Committees</div>
+                </div>
+            </div>
+            <div class="clearfix"><br/></div>
+            <div class="portlet-body flip-scroll">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-yellow">
+                        <th class="numeric" >Created</th>
+                        <th class="numeric" >Committees Name</th>
+                        <th class="numeric" >Designation</th>
+                        <th class="numeric" >Location </th>
+                        <th class="numeric" >Location Type</th>
+                        <th class="numeric" >Duration</th>
+                        <th class="numeric" >Expiration</th>
+                        <th class="numeric" >Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="familyMembers">
+                    {% for member in  entity.committees %}
+                        <tr id="remove-{{ member.id }}">
+                            <td class="numeric" >{{ member.committee.created|date('d-m-Y') }}</td>
+                            <td class="numeric" >{{ member.committee.name }}</td>
+                            <td class="numeric" >{{ member.designation.name }}</td>
+                            <td class="numeric" >{% if member.committee.location is not empty %}{{ member.committee.location.name }}{% endif %}</td>
+                            <td class="numeric" >{% if member.committee.location is not empty %}{{ member.committee.location.locationType.name }}{% endif %}</td>
+                            <td class="numeric" >{{ member.committee.startDate|date('d-m-Y') }} To {{ member.committee.endDate|date('d-m-Y') }}</td>
+                            <td class="numeric" >Yes</td>
+                            <td class="numeric" >{{ member.committee.process }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix"><br/></div>
+            <div class="form-actions portlet box green">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>List of Family Members</div>
+                </div>
+            </div>
+            <div class="clearfix"><br/></div>
+            <div class="portlet-body flip-scroll">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+                    <thead class="flip-content ">
+                    <tr class="head-blue">
+                        <th class="numeric" >Name</th>
+                        <th class="numeric" >Mobile</th>
+                        <th class="numeric" >NID</th>
+                        <th class="numeric" >Relation</th>
+                        <th class="numeric" >Age</th>
+                    </tr>
+                    </thead>
+                    <tbody id="familyMembers">
+                    {% for member in  entity.familyMembers %}
+                        <tr id="remove-{{ member.id }}">
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.mobile }}</td>
+                            <td>{{ member.nid }}</td>
+                            <td>{{ member.relation }}</td>
+                            <td>{{ member.age }}</td>
+                         </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix"><br/></div>
+        <div class="clearfix">&nbsp;</div>
+        </div>
+    </div>
+</div>
+

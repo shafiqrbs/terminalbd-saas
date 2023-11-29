@@ -1,0 +1,257 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN purchase_order HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="purchase_order-title">
+                    Purchase Order # {{ entity.grn }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('pro_purchaseorder') }}">Purchase Order</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Purchase Order Details</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN purchase_order CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Purchase Order Information</div>
+
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('purchase') }}"><i class="icon-th-list"></i>&nbsp;Purchase Order</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body form">
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <h4>Vendor Information:</h4>
+                                    <ul class="unstyled">
+                                        {% if  entity.vendor is not empty %}
+                                            <li>{{ entity.vendor.companyName }}</li>
+                                            <li>{{ entity.vendor.name }}</li>
+                                            <li>{{ entity.vendor.mobile }}</li>
+                                            <li>{{ entity.vendor.address }}</li>
+                                            {% if entity.vendor.country %}
+                                                <li>{{ entity.vendor.country.name }}</li>
+                                            {% endif %}
+                                        {% endif %}
+                                    </ul>
+
+                                </div>
+                                <div class="span3">
+                                    <h4>About:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Ref No #:</strong>{{ entity.refNo }}</li>
+                                        <li><strong>Item/Qnt:</strong> {{ entity.totalItem }}/{{ entity.totalQnt }}</li>
+                                        <li><strong>Created:</strong> {{ entity.created|date('d-m-Y') }}</li>
+                                        <li><strong>Approved Date:</strong> {{ entity.updated|date('d-m-Y') }}</li>
+                                    </ul>
+                                </div>
+                                <div class="span3 invoice-payment">
+                                    <h4>Payment Details:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Vat BDT:</strong> {{ entity.totalAmount|number_format() }}</li>
+                                        <li><strong>Grand Total BDT:</strong> {{ entity.grandTotal|number_format() }}</li>
+                                        <li><strong>Advance BDT:</strong> {{ entity.advanceAmount|number_format() }}</li>
+                                        <li><strong>Due BDT:</strong> {{ entity.dueAmount|number_format() }}</li>
+                                    </ul>
+                                </div>
+                                <div class="span3 image-preview">
+                                    <h4>Approve:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Process:</strong> {{ entity.process|capitalize }}</li>
+                                        <li><strong>Created By:</strong> {% if entity.createdBy is defined and entity.createdBy is not empty %}{{ entity.createdBy.userNameDesignation }}{% endif %}</li>
+                                        <li><strong>Checked By:</strong> {% if entity.checkedBy is defined and entity.checkedBy is not empty %}{{ entity.checkedBy.userNameDesignation }}{% endif %}</li>
+                                        <li><strong>Approved By:</strong> {% if entity.approvedBy is defined and entity.approvedBy is not empty %}{{ entity.approvedBy.userNameDesignation }}{% endif %}</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            {% include('flash-message.html.twig')  %}
+
+                            <div class="form-actions portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Purchase Order Item List</div>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="row-fluid box green">
+
+                                <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                    <thead class="flip-content ">
+                                    <tr class="head-green">
+                                        <th class="numeric" ><i class="icon-th-list"></i></th>
+                                        <th class="numeric" >Category</th>
+                                        <th class="numeric" >Item</th>
+                                        <th class="numeric" >Product Type</th>
+                                        <th class="numeric" >Qnt</th>
+                                        <th class="numeric" >Issue Qnt.</th>
+                                        <th class="numeric" >Unit Price</th>
+                                        <th class="numeric" >Sub total</th>
+                                   </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for purchaseItem in entity.purchaseItems %}
+                                        <tr>
+                                            <td class="numeric" >{{ loop.index }}.</td>
+                                            <td class="numeric" >{{ purchaseItem.item.masterItem.category.name }}</td>
+                                            <td class="numeric" >{{ purchaseItem.item.sku }}-{{ purchaseItem.item.name }}</td>
+                                            <td class="numeric" >{{ purchaseItem.item.masterItem.productType }}</td>
+                                            <td class="numeric" >{{ purchaseItem.quantity }}</td>
+                                            <td class="numeric" >{{ purchaseItem.issueQuantity }}</td>
+                                            <td class="numeric" >{{ purchaseItem.purchasePrice }}</td>
+                                            <td class="numeric" >{{ purchaseItem.purchasePrice * purchaseItem.quantity }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="form-actions portlet box yellow">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Receive Details</div>
+                                </div>
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="row-fluid box blue">
+                            {% if entity.purchases is not empty %}
+                                <table class="table table-bordered table-striped table-condensed flip-content">
+                                    <thead>
+                                    <tr class="head-purple">
+                                        <td><i class="icon-list"></i></td>
+                                        <th class="numeric" >Received Date</th>
+                                        <th class="numeric" >GRN</th>
+                                        <th class="numeric" >Memo</th>
+                                        <th class="numeric" >Item</th>
+                                        <th class="numeric" >Quantity</th>
+                                        <th class="numeric" >Total</th>
+                                        <th class="numeric" >Process</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="flip-content " id="purchase">
+                                    {%  set totalItem = 0 %}
+                                    {%  set totalQuantity = 0 %}
+                                    {%  set totalAmount = 0 %}
+                                        {% for purchase in entity.purchases %}
+                                            {% set totalItem = totalItem + purchase.totalItem %}
+                                            {% set totalQuantity = totalQuantity + purchase.totalQnt %}
+                                            {% set totalAmount = totalAmount + purchase.totalAmount %}
+                                            <tr id="delete-{{ purchase.id }}">
+                                                <td> {% if purchase.purchaseItems is defined and  entity.purchaseItems is not empty  %}<span class="badge badge-warning toggle badge-custom" id="{{ purchase.id  }}" ><span>[+]</span></span>{% endif %}</td>
+                                                <td class="numeric" >{{ purchase.receiveDate|date('d-m-Y') }}</td>
+                                                <td class="numeric" >GRN No-{{ purchase.grn }}</td>
+                                                <td class="numeric" >{{ purchase.memo }}</td>
+                                                <td class="numeric" >{{ purchase.totalItem }}</td>
+                                                <td class="numeric" >{{ purchase.totalQnt }}</td>
+                                                <td class="numeric" >{{ purchase.totalAmount|number_format() }}</td>
+                                                <td class="numeric" ><a title="Approve" href="javascript:" class="btn green disabled mini" >&nbsp;{{ purchase.process|capitalize }}</a></td>
+                                            </tr>
+                                            <tr id="show-{{ purchase.id }}" class="showing-overview">
+                                                <td colspan="8">
+                                                    {% if purchase.purchaseItems is defined and  purchase.purchaseItems is not empty  %}
+                                                        <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                                            <thead class="flip-content ">
+                                                            <tr class="head-green">
+                                                                <th class="numeric" ><i class="icon-list"></i></th>
+                                                                <th class="numeric" >Item</th>
+                                                                <th class="numeric" >Qnt</th>
+                                                                <th class="numeric" >Purchase price</th>
+                                                                <th class="numeric" >Sub total</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for purchaseItem in purchase.purchaseItems %}
+
+                                                                <tr>
+                                                                    <td class="numeric" >{{ loop.index }}</td>
+                                                                    <td class="numeric" >{{ purchaseItem.item.sku }}-{{ purchaseItem.item.name }}</td>
+                                                                    <td class="numeric" >{{ purchaseItem.quantity }}</td>
+                                                                    <td class="numeric" >{{ purchaseItem.purchasePrice }}</td>
+                                                                    <td class="numeric" >{{ purchaseItem.purchasePrice * purchaseItem.quantity }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+
+
+                                                        </table>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr><th colspan="4"><strong class="pull-right">Total Receive</strong></th><th>{{ totalItem }}</th><th>{{ totalQuantity }}</th><th>{{ totalAmount|number_format }}</th><td></td></tr>
+                                    </tfoot>
+                                </table>
+                            {% endif %}
+
+                            </div>
+
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right" id="action-{{ entity.id }}">
+                                    {% if entity.approve != 'approved' %}
+                                        <a href="{{ path('pro_purchaseorder_edit', { 'id': entity.id }) }}" class="btn green" ><i class="icon-edit"></i></a>
+                                    {% endif %}
+                                    {% if ((app.user.granted("ROLE_DOMAIN")  and entity.approve == 'in-progress'))  %}
+                                        <a class="btn purple approve"  data-id="{{ entity.id }}" data-title="{{ entity.id }}" data-url="{{ path('pro_purchaseorder_approve', { 'id': entity.id,'approve':'reject'  }) }}" ><i class="icon-refresh"></i>&nbsp;Reject</a>
+                                        <a class="btn yellow approve approved-{{ entity.id }}" data-id="{{ entity.id }}" data-title="{{ entity.id }}" data-url="{{ path('pro_purchaseorder_approve', { 'id': entity.id,'approve':'checked' }) }}"><i class="icon-refresh"></i>&nbsp;Checking</a>
+                                    {% elseif ((app.user.granted("ROLE_DOMAIN")  and entity.approve == 'checked'))  %}
+                                        <a class="btn purple approve"  data-id="{{ entity.id }}" data-title="{{ entity.id }}" data-url="{{ path('pro_purchaseorder_approve', { 'id': entity.id,'approve':'reject'  }) }}" ><i class="icon-refresh"></i>&nbsp;Reject</a>
+                                        <a class="btn blue approve approved-{{ entity.id }}" data-id="{{ entity.id }}" data-title="{{ entity.id }}" data-url="{{ path('pro_purchaseorder_approve', { 'id': entity.id,'approve':'approved' }) }}"><i class="icon-refresh"></i>&nbsp;Approve</a>
+                                    {% elseif entity.approve == 'approved'  %}
+                                        <span  class="btn green"><i class="icon-ok"></i>&nbsp;Approved</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    '@InventoryBundle/Resources/public/js/puschase.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    ApproveProcess();
+    InventoryPurchasePage();
+{% endblock %}
+

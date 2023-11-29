@@ -1,0 +1,21 @@
+services:
+#    appstore_inventory.example:
+#        class: Appstore\Bundle\InventoryBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+
+    appstore.purchase.requisition.event.listener:
+        class: Appstore\Bundle\ProcurementBundle\EventListener\PurchaseRequisitionListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.purchase.order.event.listener:
+        class: Appstore\Bundle\ProcurementBundle\EventListener\PurchaseOrderListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.purchaseitem.requisition.event.listener:
+        class: Appstore\Bundle\InventoryBundle\EventListener\PurchaseItemListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+

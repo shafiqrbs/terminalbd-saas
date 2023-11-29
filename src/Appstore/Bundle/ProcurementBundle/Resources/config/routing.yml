@@ -1,0 +1,19 @@
+procurement_barnch-requsition:
+    resource: "@ProcurementBundle/Resources/config/routing/branchrequsition.yml"
+    prefix:   /barnch-requsition
+
+procurement_purchase_requsition:
+    resource: "@ProcurementBundle/Resources/config/routing/purchaserequisition.yml"
+    prefix:   /purchase-requsition
+
+procurement_purchase_order:
+    resource: "@ProcurementBundle/Resources/config/routing/purchaseorder.yml"
+    prefix:   /purchase-order
+
+procurement_receive:
+    resource: "@ProcurementBundle/Resources/config/routing/receive.yml"
+    prefix:   /receive
+
+procurement_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ProcurementBundle:Default:index }

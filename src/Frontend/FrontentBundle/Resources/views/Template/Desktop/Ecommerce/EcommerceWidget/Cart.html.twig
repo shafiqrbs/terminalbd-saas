@@ -1,0 +1,500 @@
+
+<div class="row-fluid">
+    {% if app.user is empty %}
+        <div class="login-area" id="login-modal">
+        <div class="modal-header" style="position: relative">
+            <h5 class="modal-title">Sign up / Login </h5>
+            <button type="button" class="close-btn btn btn-sm modal-close-btn btn-transparent" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+        <div class="modal-body">
+            <div id="cart-search">
+                <form name="customerOtpLogin" method="post" action="{{ path(globalOption.subDomain ~ '_webservice_otp') }}"  id="customerOtpLogin" class="" novalidate="novalidate">
+                    <div class="clearfix"></div>
+                    <div class="" >
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12 text-center">
+                            <h4 class="modal-title">Enter Your Mobile Number</h4>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-transparent" aria-label="Bold"><img src="{{ asset('assets/img/flags/bd.png') }}"></button></div>
+                                <input type="text" class="form-control text-center input-number mobile" style="width: 100%" id="mobile" name="mobile" >
+                            </div><!-- /.input-group -->
+                            <span class="help-inline-otp">e.g 01710000000</span>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                            <div class="input-group">
+                                <div class="input-group-btn text-center">
+                                    <button type="submit" class="btn btn-warning "> SEND OTP CODE </button>
+                                </div>
+                            </div><!-- /.input-group -->
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+                <form name="customerOtp" method="post" action="{{ path(globalOption.subDomain ~ '_webservice_otp_confirm') }}"  id="customerOtp" class="" novalidate="novalidate">
+                    <div class="clearfix"></div>
+                    <div class="" >
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12 text-center">
+                            <h4 class="modal-title">We've sent a 4-digit one time PIN in your mobile. <b id="sender-mobile"></b></h4>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-4 col-xs-4 col-md-4 col-sm-4 col-sm-offset-3">
+                            <input type="text" class="form-control text-center" maxlength="4" id="otp" name="otp" placeholder="Please enter 4 digit on time pin code" >
+                            <input type="hidden" id="otpCode" name="otpCode" value="">
+                            <input type="hidden" id="resendMobile" name="resendMobile" value="">
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                            <div class="text-center">
+                                <input type="hidden" name="token" value="{{ csrf_token('valid') }}"/>
+                                <button type="submit" class="btn btn-warning "> Submit </button>
+                                <a href="javascript:" data-url="{{ path(globalOption.subDomain ~ '_webservice_otp') }}" data-content="" id="resendPin">Re-send Pin</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <div class="login-area" id="user-modal" style="display: none">
+            <div class="modal-header" style="position: relative">
+                <h4 class="modal-title">Delivery Information</h4>
+                <button type="button" class="close-btn btn btn-sm modal-close-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+            <div class="modal-body" style="width: 400px">
+                <div id="cart-search" >
+                    <form class="register" name="registerFormCreate" id="registerFormCreate" action="{{ path(globalOption.subDomain ~ '_webservice_ecommerce_customer_update') }}" method="post" novalidate="novalidate" style="display: block">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                    <input type="text" id="registration_name" name="registration_name" required="required" class=" form-control" placeholder="Enter your full name" value="{% if app.user is not empty %}{{ app.user.profile.name }}{% endif %}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="fa fa-map-marker"></span></span>
+                                    <select id="registration_location" name="registration_location" class="form-control" >
+                                        {% for location in locations %}
+                                            <option {% if app.user is not empty and app.user.profile.deliveryLocation is not empty and app.user.profile.deliveryLocation.id == location.id %} selected="selected" {% endif %} value="{{ location.id }}">{{ location.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="address" name="registration_address" required="required" class="form-control" placeholder="Enter your address" >{% if app.user is not empty %}{{ app.user.profile.address }}{% endif %}</textarea>
+                            </div>
+                            <div class="checkbox"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="token" value="{{ csrf_token('valid') }}"/>
+                            <button type="submit"  class="btn btn-sm btn-info pull-right" role="button">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% if app.user is not empty and app.user.profile is defined and app.user.profile.name is empty %}
+    <div class="login-area" id="user-modal">
+        <div class="modal-header" style="position: relative">
+            <h4 class="modal-title">Delivery Information</h4>
+            <button type="button" class="close-btn btn btn-sm modal-close-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+        <div class="modal-body" style="width: 400px">
+            <div id="cart-search" >
+                <form class="register" name="registerFormCreate" id="registerFormCreate" action="{{ path(globalOption.subDomain ~ '_webservice_ecommerce_customer_update') }}" method="post" novalidate="novalidate" style="display: block">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                <input type="text" id="registration_name" name="registration_name" required="required" class=" form-control" placeholder="Enter your full name" value="{% if app.user is not empty %}{{ app.user.profile.name }}{% endif %}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-map-marker"></span></span>
+                                <select id="registration_location" name="registration_location" class="form-control" >
+                                    {% for location in locations %}
+                                        <option {% if app.user is not empty and app.user.profile.deliveryLocation is not empty and app.user.profile.deliveryLocation.id == location.id %} selected="selected" {% endif %} value="{{ location.id }}">{{ location.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="address" name="registration_address" required="required" class="form-control" placeholder="Enter your address" >{% if app.user is not empty %}{{ app.user.profile.address }}{% endif %}</textarea>
+                        </div>
+                        <div class="checkbox"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="token" value="{{ csrf_token('valid') }}"/>
+                        <button type="submit"  class="btn btn-sm btn-info pull-right" role="button">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<style>
+    #prescription-content{
+        width: 980px;
+    }
+    .accordion {
+        background: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        color: #212121;
+        cursor: pointer;
+        display: block;
+        text-align: left;
+        margin-left: 0;
+        padding-left: 0;
+        padding-bottom: 15px;
+    }
+
+    .accordion-control {
+        background: #fff;
+        cursor: pointer;
+        display: block;
+        padding: 8px 15px;
+        text-align: left;
+        position: relative;
+        border-bottom: 1px solid #f88216;
+    }
+
+    .accordion-control::after {
+        width: 8px;
+        height: 8px;
+        border-right: 1px solid #4a6e78;
+        border-bottom: 1px solid #4a6e78;
+        position: absolute;
+        right: 10px;
+        content: " ";
+        top: 13px;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .accordion-control.active::after {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .accordion li {
+        padding: 0;
+        list-style-type:none;
+    }
+    .accordion-panel {
+        display:none;
+        padding: 15px;
+    }
+    .payment-hide{
+        display: none;
+    }
+    .modal-dialog , .product-modal-content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .panel-body , .modal-footer {
+        padding-top: 0;
+        padding-bottom: 0;
+        border-top: 0!important;
+    }
+    input.form-cart, .form-cart:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #fff;
+        color: #000;
+        border-radius: 0;
+        font-size: 11px;
+        padding: 3px 6px;
+        height: 20px;
+        border: 1px solid transparent!important;
+        border-bottom: 1px solid #ddd!important;
+        width: 100%;
+        line-height: 20px;
+
+    }
+    input.form-cart:focus,select.form-cart:focus,textarea.address:focus{
+        border-bottom: 1px solid #6165dd !important;
+    }
+
+    .select-cart {
+        text-align: center;
+        height: 24px!important;
+        margin-top: 0!important;
+        border: 1px solid transparent;
+        padding-left:6px;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        font-size: 11px;
+        background: #fff;
+    }
+
+    #couponCode {
+        border: 2px solid red!important;
+        text-align: right;
+    }
+
+    .cart-quantity{
+        width: 50px;
+        border: 1px solid #ffffff!important;
+        height: 30px;
+        text-align: center;
+        display: inline-block;
+    }
+    .cart-input-group{
+        width: 110px;
+        border: 1px solid #DDDDDD;
+    }
+    .cart-product-title{
+        font-size: 11px;
+        line-height: 14px;
+        display: block;
+    }
+
+    .address {
+        width: 100%;
+        padding: 3px 6px;
+        font-size: 11px;
+        resize: none;
+        height: 36px!important;
+        line-height: 12px;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .address:focus{
+        border: 1px solid transparent!important;
+        border-bottom: 1px solid #6165dd !important;
+    }
+
+    .cart-head {
+        padding-bottom: 15px;
+        color: #f88216;
+        margin-left: 15px;
+        margin-top: 15px;
+    }
+
+    p label{
+        font-size: 11px;
+        line-height: 11px;
+        height: 11px;
+        display: block;
+        font-weight: normal;
+        margin-bottom: 0;
+        color: #999999;
+
+    }
+    .dropzone-upload{
+        overflow: hidden!important;
+    }
+    .closest-dropzone {
+        line-height: 15px;
+        font-size: 11px;
+    }
+
+    #cart-search {
+        background: #f5f5f5;
+        padding-top: 15px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+
+    #cart-item-list #cart-item-list-box{
+        max-height: 400px;
+    }
+
+    #customerOtp{
+        display: none;
+    }
+    .login-area {
+        width: 100%;
+    }
+    .modal-close-btn {
+        position: absolute;
+        right: 0;
+        top: 15px!important;
+        color: red!important;
+    }
+    .help-inline-otp {
+        font-size: 12px;
+        line-height: 12px;
+        display: inline-block;
+        padding-top: 3px;
+        padding-bottom: 8px;
+        text-align: center;
+        width: 100%;
+    }
+    #success-msg{
+        color: #009b3a;
+        font-size: 11px;
+        line-height: 28px;
+        display: none;
+    }
+
+
+    #cart-item-list {
+        border: 1px solid #f5f5f5;
+        margin: 10px auto;
+        margin-top: 15px;
+    }
+
+    #cart-item-list #cart-item-list-box {
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    #cart-item-list dl {
+        border-bottom: 1px solid #f5f5f5;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    #cart-item-list dt {
+        font-weight: normal;
+    }
+
+    #cart-item-list dt img {
+        border: 1px solid #fafafa;
+        float: left;
+        margin: 0 15px 0 0;
+    }
+
+    #cart-item-list dd {
+        margin-top: 10px;
+        overflow: auto;
+    }
+
+    #cart-item-list .bottom {
+        background-color: #f5f5f5;
+        color: #000;
+        height: 40px;
+        line-height: 40px;
+        margin-top: 10px;
+        overflow: auto;
+        text-align: center;
+    }
+
+    /*
+    #cart-item-list .top {
+        background-color: #f5f5f5;
+        height: 40px;
+        overflow: auto;
+        padding-left: 11px;
+        text-align: left;
+    }
+    */
+
+    #cart-item-list .dd-span {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #cart-item-list .dd-span-name {
+        display: inline-block;
+        width: 70%;
+        text-align: left;
+        height: 43px;
+        overflow: hidden;
+    }
+
+    #cart-item-list .dd-span-action {
+        display: inline-block;
+        width: 13%;
+        text-align: left;
+    }
+
+    #cart-item-list .dd-span-price {
+        display: inline-block;
+        width: 85%;
+        text-align: right;
+    }
+
+    #cart-item-list p {
+        padding-top: 5px;
+        text-align: center;
+        color: red;
+        font-size: 12px;
+    }
+
+    #cart-item-list .dd-span-name {
+        align-items: center;
+        display: flex;
+        width:90%;
+        height: 75px;
+        font-size: 12px;
+        padding-right: 7px;
+        float: left;
+    }
+    #cart-item-list .dd-span-remove {
+        align-items: center;
+        display: flex;
+        height: 75px;
+        font-size: 12px;
+        padding-right: 7px;
+    }
+
+    .list-group-cash {
+        padding-left: 0;
+        margin-left: 0;
+    }
+    #payment-transaction{
+        margin-top: 15px;
+    }
+
+    .material-switch > input[type="checkbox"] {
+        display: none;
+    }
+
+    .material-switch > label {
+        cursor: pointer;
+        height: 0;
+        position: relative;
+        width: 40px;
+    }
+
+    .material-switch > label::before {
+        background: rgb(0, 0, 0);
+        box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        content: '';
+        height: 16px;
+        margin-top: -8px;
+        position:absolute;
+        opacity: 0.3;
+        transition: all 0.4s ease-in-out;
+        width: 40px;
+    }
+    .material-switch > label::after {
+        background: rgb(255, 255, 255);
+        border-radius: 16px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        content: '';
+        height: 24px;
+        left: -4px;
+        margin-top: -8px;
+        position: absolute;
+        top: -4px;
+        transition: all 0.3s ease-in-out;
+        width: 24px;
+    }
+    .material-switch > input[type="checkbox"]:checked + label::before {
+        background: inherit;
+        opacity: 0.5;
+    }
+    .material-switch > input[type="checkbox"]:checked + label::after {
+        background: inherit;
+        left: 20px;
+    }
+</style>

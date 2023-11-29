@@ -1,0 +1,257 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid">
+    <!-- BEGIN purchase_order HEADER-->
+    <div class="row-fluid">
+        <div class="span12">
+            <h3 class="purchase_order-title">
+              Requisition : #{{ entity.grn }}
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home"></i>
+                    <a href="{{ path('homepage') }}">Home</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li>
+                    <a href="{{ path('pro_purchaserequisition') }}">Purchase Requisition</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li><a href="#">Add/Edit purchase</a></li>
+                <li class="pull-right btn blue disabled mini">
+                    <i class="fa fa-calendar"></i>
+                    {{ "now"|date("d-F-Y") }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END purchase_order HEADER-->
+    <!-- BEGIN purchase_order CONTENT-->
+    <div class="row-fluid">
+        <div class="span12" style="position:relative">
+
+            <div class="portlet box green tabbable">
+                <div id="dataProces"></div>
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>Purchase Requisition Information</div>
+                    <div class="actions">
+                        <div class="btn-group">
+                            <a class="btn red" href="{{ path('pro_purchaserequisition') }}"><i class="icon-th-list"></i>&nbsp;Requisition</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        <div class="clearfix"><br/></div>
+                        {{ form_start(purchaseItemForm) }}
+                        {{ form_row(purchaseItemForm._token) }}
+                        <div class="row-fluid">
+                            <div class="span4">
+                                <div class="control-group ">
+                                    <label class="control-label" for="name">Item <span class="required">*</span></label>
+                                    <div class="controls select-error-tooltip">
+                                        {{ form_widget(purchaseItemForm.item) }}
+                                        {{ form_errors(purchaseItemForm.item) }}
+                                    </div>
+                                </div>
+
+                            </div>
+                             <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label" for="name">Description</label>
+                                    <div class="controls">
+                                        {{ form_widget(purchaseItemForm.name) }}
+                                        {{ form_errors(purchaseItemForm.name) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span2">
+                                <div class="control-group">
+                                    <label class="control-label" for="salesPrice">Quantity<span class="required">*</span></label>
+                                    <div class="controls">
+                                        <div class="input-append">
+                                            {{ form_widget(purchaseItemForm.quantity) }}
+                                            <div class="btn-group"> <button type="submit" id="addPurchaseForm" name="addPurchaseForm"  class="btn blue"><i class="icon-save"></i>&nbsp;Save</button></div>
+                                        </div>
+                                        {{ form_errors(purchaseItemForm.quantity) }}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- END FORM-->
+                        </div>
+                        {{ form_end(purchaseItemForm) }}
+                        <div class="clearfix"><br/></div>
+                        <div class="form-actions portlet box blue">
+                            <div class="portlet-title"> <div class="caption"><i class="icon-reorder"></i>Purchase Item List</div></div>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-green">
+                                    <th class="numeric" ><i class="icon-reorder"></i></th>
+                                    <th class="numeric" >Item Mode</th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >Description</th>
+                                    <th class="numeric" >QTY</th>
+                                    <th class="numeric" >Unit Price</th>
+                                    <th class="numeric" >Sub-total</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="purchaseItem" >
+                                {% if entity.requisitionItems is not empty %}
+                                {% for purchaseItem in entity.requisitionItems %}
+                                    <tr id="remove-purchase-item-{{ purchaseItem.id }}">
+                                        <td class="numeric" >{{ loop.index }}.</td>
+                                        <td class="numeric" >{% if purchaseItem.item.productGroup is not empty %}{{ purchaseItem.item.productGroup.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ purchaseItem.item.name }}</td>
+                                        <td class="" ><input data-action="{{ path('pro_purchaserequisition_item_update',{'id':purchaseItem.id}) }}" data-id="{{ purchaseItem.id }}" class="td-inline-input-text updateItem" type="text" autocomplete = "off" name="description-{{ purchaseItem.id }}" id="description-{{ purchaseItem.id }}" value="{{ purchaseItem.name }}" /></td>
+                                        <td class="numeric" ><input data-action="{{ path('pro_purchaserequisition_item_update',{'id':purchaseItem.id}) }}" data-id="{{ purchaseItem.id }}" class="td-inline-input updateItem" type="text" autocomplete = "off" name="quantity-{{ purchaseItem.id }}" id="quantity-{{ purchaseItem.id }}" value="{{ purchaseItem.quantity }}" /></td>
+                                        <td class="numeric" ><input data-action="{{ path('pro_purchaserequisition_item_update',{'id':purchaseItem.id}) }}" data-id="{{ purchaseItem.id }}" class="td-inline-input updateItem" type="text" autocomplete = "off" name="price-{{ purchaseItem.id }}" id="price-{{ purchaseItem.id }}" value="{{ purchaseItem.price }}" /></td>
+                                        <td class="numeric" id="subTotal-{{ purchaseItem.id }}">{{ purchaseItem.purchaseSubTotal|number_format() }}</td>
+                                        <td><a href="javascript:" data-url="{{ path('pro_purchaserequisition_item_delete',{'purchase':entity.id ,'id':purchaseItem.id }) }}" class="btn red mini purchaseItemDelete"><i class="icon-trash"></i> Delete</a> </td>
+                                    </tr>
+                                {% endfor %}
+                                {% endif %}
+                                <tr>
+                                    <td colspan="4" class="numeric"><strong class=" pull-right">Total Quantity</strong></td>
+                                    <td class="numeric" ><strong>{{ entity.totalQnt }}</strong></td>
+                                    <td class="numeric" ><strong class=" pull-right">Total Amount</strong></td>
+                                    <td class="numeric" colspan="4" ><strong>{{ entity.totalAmount|number_format }}</strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="form-actions portlet box yellow">
+                            <div class="portlet-title">  <div class="caption"><i class="icon-reorder"></i>Purchase Requisition Information</div></div>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        {{ form_start(form) }}
+                        {{ form_row(form._token) }}
+                        <div class="row-fluid">
+                            <div class="span8">
+                            </div>
+                            <div class="span4">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Client<span class="required">*</span></label>
+                                            <div class="controls">
+                                                {{ form_widget(form.customer) }}{{ form_errors(form.customer) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Ref no<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    <i class="icon-sort-by-order"></i>
+                                                    {{ form_widget(form.memo) }}{{ form_errors(form.memo) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span10">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Attach file</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.file) }}
+                                                {{ form_errors(form.file) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-right">
+                                <button type="submit" class="btn green" id="action-button"><i class="icon-save"></i> Save</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+
+        .ui-menu-item{
+            border-bottom:1px solid #000000;
+        }
+
+        .ui-menu-item a{
+            text-decoration: none;
+            background: #d0dde4;
+            height: 30px !important;
+            line-height: 30px !important;
+            border: none!important;
+            border-bottom:1px solid #000000;
+        }
+
+        .ui-menu-item a:hover{
+            background-color: #d2d2d2;
+            height: 30px !important;
+            line-height: 30px !important;
+        }
+
+        .numeric input {
+            margin-bottom: 0;
+            min-height: 15px!important;
+            width: 50px;
+            height: 15px!important;
+            border: 1px solid #999;
+            font-size: 13px!important;
+            line-height: 15px!important;
+        }
+
+        .td-inline-input{
+            height: 15px!important;
+            line-height: 13px!important;
+            font-size: 13px!important;
+            border: 2px solid #4d90fe!important;
+            width: 60px;
+            margin-bottom:0!important;
+        }
+
+        .td-inline-input-text{
+            height: 15px!important;
+            line-height: 13px!important;
+            font-size: 13px!important;
+            border: 2px solid #4d90fe!important;
+            margin-bottom:0!important;
+        }
+
+        #inventoryItem{
+            display: none;
+        }
+
+    </style>
+    {% endblock %}
+    {% block javascriptBlock %}
+        {{ parent() }}
+        {% javascripts
+        '@ProcurementBundle/Resources/public/js/requisition.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock  %}
+    {% block documentready %}
+    {{ parent() }}
+    $( ".datePicker" ).datepicker({
+        dateFormat: "dd-mm-yy"
+    });
+    {% endblock %}

@@ -1,0 +1,14 @@
+services:
+#    customer.example:
+#        class: Appstore\Bundle\CustomerBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    appstore.customer.preorder.event.listener:
+        class: Appstore\Bundle\CustomerBundle\EventListener\PreOrderListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.customer.order.event.listener:
+            class: Appstore\Bundle\CustomerBundle\EventListener\OrderListener
+            tags:
+                - { name: doctrine.event_listener, event: prePersist }

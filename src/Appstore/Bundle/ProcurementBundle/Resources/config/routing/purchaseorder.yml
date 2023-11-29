@@ -1,0 +1,64 @@
+pro_purchaseorder:
+    path:     /
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:index" }
+
+pro_purchaseorder_poissue:
+    path:     /po-issue-item
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:poIssue" }
+
+pro_purchaseorder_itemprocess:
+    path:     /{process}/po-issue-item
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:prItemProcess" }
+
+pro_purchaseorder_show:
+    path:     /{id}/show
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:show" }
+
+pro_purchaseorder_new:
+    path:     /new
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:new" }
+
+pro_purchaseorder_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:edit" }
+
+
+pro_purchaseorder_update:
+    path:     /{id}/update
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:update" }
+    methods:  [POST, PUT]
+
+pro_purchaseorder_create:
+    path:     /create
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:createPurchaseOrderItem" }
+    methods:  POST
+
+pro_purchaseorder_approve:
+    path:     /{id}/approve
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:approve" }
+
+pro_purchaseorder_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:delete" }
+
+
+pro_purchaseorder_item_update:
+    path:     /{purchase}/{id}/purchase-order-item-update
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:purchaseItemUpdate" }
+
+pro_purchaseorder_item_delete:
+    path:     /{purchase}/{id}/purchase-simple-item-delete
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:purchaseItemDelete" }
+
+
+pro_grn_search:
+    path:     /pro_PurchaseOrder-auto-search
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:autoSearch" }
+    options:
+           expose: true
+
+pro_grn_name:
+    path:     /{grn}/pro_PurchaseOrder-search-name
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:searchName" }
+    options:
+           expose: true

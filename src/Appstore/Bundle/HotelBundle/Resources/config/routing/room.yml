@@ -1,0 +1,73 @@
+hotel_room:
+    path:     /
+    defaults: { _controller: "HotelBundle:Room:index" }
+
+hotel_room_new:
+    path:     /new
+    defaults: { _controller: "HotelBundle:Room:new" }
+
+hotel_room_create:
+    path:     /create
+    defaults: { _controller: "HotelBundle:Room:create" }
+    methods:  POST
+
+hotel_room_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:Room:edit" }
+
+hotel_room_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:Room:update" }
+    methods:  [POST, PUT]
+
+hotel_room_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:Room:delete" }
+
+hotel_room_transfer:
+    path:     /{id}/transfer
+    defaults: { _controller: "HotelBundle:Room:transfer" }
+
+hotel_room_status:
+    path:     /{id}/status
+    defaults: { _controller: "HotelBundle:Room:status" }
+
+hotel_room_inline:
+    path:     /inline-update
+    defaults: { _controller: "HotelBundle:Room:inlineUpdate" }
+
+hotel_room_production:
+    path:     /{id}/production
+    defaults: { _controller: "HotelBundle:Room:production" }
+
+
+hotel_room_item_image:
+    path:     /{id}/stock-item-image
+    defaults: { _controller: "HotelBundle:Room:uploadItemImage" }
+    options:
+            expose: true
+
+hotel_room_item_meta_delete:
+    path:     /{id}/item-key-value-delete
+    defaults: { _controller: "HotelBundle:Room:keyValueDelete" }
+    options:
+            expose: true
+
+hotel_room_attribute_sorted:
+    path:     /{item}/item-key-value-delete
+    defaults: { _controller: "HotelBundle:Room:keyValueSorted" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_room_search:
+    path:     /search
+    defaults: { _controller: "HotelBundle:Room:autoSearch" }
+    options:
+            expose: true
+
+hotel_room_name_search:
+    path:     /{stock}/search-name
+    defaults: { _controller: "HotelBundle:Room:searchName" }
+    options:
+            expose: true

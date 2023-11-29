@@ -1,0 +1,179 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                   Manage Room
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('hotel_room') }}">Manage Room</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green ">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Room</div>
+                        <div class="actions">
+                            <a href="{{ path('hotel_room_new') }}" class=" btn red"><i class="icon-plus"></i> Add Room</a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <div class="row-fluid" >
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                {%  set sort = app.request.query.get('sort') %}
+                                {%  set direction = app.request.query.get('direction') %}
+                                <div class="row-fluid" style="margin-bottom: 10px">
+                                    <div class="span3">
+                                        <input class="m-wrap span12 select2ParticularName" name="name" id="name" value="{% if searchForm.name is defined %}{{ searchForm.name }}{% endif %}"  autocomplete="off" placeholder="Search room/package name">
+                                    </div>
+                                    <div class="span2">
+                                        <select name="category" id="category" class="m-wrap span12">
+                                            <option value="" >--Category--</option>
+                                            {% for cat in options %}
+                                                {% if cat.hotelParticularType.slug == 'room-category' %}
+                                                <option value="{{ cat.id }}" {% if searchForm.category is defined and searchForm.category == cat.id %} selected="selected" {% endif %} >{{ cat.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="span2">
+                                        <select name="category" id="category" class="m-wrap span12">
+                                            <option value="" >--Room Type--</option>
+                                            {% for cat in options %}
+                                                {% if cat.hotelParticularType.slug == 'room-type' %}
+                                                <option value="{{ cat.id }}" {% if searchForm.category is defined and searchForm.category == cat.id %} selected="selected" {% endif %} >{{ cat.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="span2">
+                                        <select name="category" id="category" class="m-wrap span12">
+                                            <option value="" >--Room Floor--</option>
+                                            {% for cat in options %}
+                                                {% if cat.hotelParticularType.slug == 'floor' %}
+                                                <option value="{{ cat.id }}" {% if searchForm.category is defined and searchForm.category == cat.id %} selected="selected" {% endif %} >{{ cat.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="span3">
+                                        <div class="controls">
+                                            <div class="input-append span12">
+                                                <select name="type" id="type" class="m-wrap span10">
+                                                    <option value="" >--Room mode--</option>
+                                                    {% for cat in types %}
+                                                        <option value="{{ cat.id }}" {% if searchForm.type is defined and searchForm.type == cat.id %} selected="selected" {% endif %} >{{ cat.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <div class="btn-group">
+                                                    <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+
+                        </div>
+                        <!-- BEGIN FORM-->
+                        <div class="portlet-body flip-scroll">
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >SKU</th>
+                                    <th {% if entities.isSorted('rc.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Category', 'rc.name') }}{% if( direction == 'desc' and sort == 'rc.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Name', 'e.name') }}{% if( direction == 'desc' and sort == 'e.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('pt.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Product Mode', 'pt.name') }}{% if( direction == 'desc' and sort == 'pt.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('rt.nane') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Room Type', 'rt.name') }}{% if( direction == 'desc' and sort == 'rt.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('vp.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'View Position', 'vp.name') }}{% if( direction == 'desc' and sort == 'vp.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('rf.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Floor', 'rf.name') }}{% if( direction == 'desc' and sort == 'rf.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.purchasePrice') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Cost Price', 'e.purchasePrice') }}{% if( direction == 'desc' and sort == 'e.purchasePrice') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.salesPrice') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Sales Price', 'e.salesPrice') }}{% if( direction == 'desc' and sort == 'e.salesPrice') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.particularCode }}</td>
+                                        <td class="numeric" >{% if entity.roomCategory is not empty %}{{ entity.roomCategory.name }}{% endif %}</td>
+                                        <td class="numeric" ><a href="{{ path('hotel_room_edit',{'id': entity.id })}}">{{ entity.name }}</a></td>
+                                        <td class="numeric" >{{ entity.hotelParticularType.name }}</td>
+                                        <td class="numeric" >{% if entity.roomType is not empty %}{{ entity.roomType.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.viewPosition is not empty %}{{ entity.viewPosition.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.roomFloor is not empty %}{{ entity.roomFloor.name }}{% endif %}</td>
+
+                                        <td class="numeric">
+                                                <a  class="editable" data-name="purchasePrice" href="#"  data-url="{{ path('hotel_room_inline') }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change purcahse price">{{ entity.purchasePrice }}</a>
+                                        </td>
+                                        <td class="numeric">
+                                                <a  class="editable" data-name="salesPrice" href="#"  data-url="{{ path('hotel_room_inline') }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change sales price">{{ entity.salesPrice }}</a>
+
+                                        </td>
+                                       <td class="numeric" >
+                                            {% if( entity.status == 1) %}
+                                                <a class="btn mini blue btn-action" href="{{ path('hotel_room_status', { 'id': entity.id}) }}"><i class="icon-ok"></i></a>
+                                            {% else %}
+                                                <a class="btn mini red btn-action" href="{{ path('hotel_room_status', { 'id': entity.id}) }}">x</a>
+                                            {% endif %}
+                                            <a href="{{ path('hotel_room_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                            {% if entity.purchaseQuantity is empty or entity.salesQuantity is empty %}
+                                                <a title="Are you sure went to delete ?" href="{{ path('hotel_room_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center" >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@HospitalBundle/Resources/public/js/editable.js'
+    '@HotelBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableWithOutReloadInit();
+{% endblock %}

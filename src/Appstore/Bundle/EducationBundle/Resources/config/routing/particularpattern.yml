@@ -1,0 +1,31 @@
+education_particularpattern:
+    path:     /
+    defaults: { _controller: "EducationBundle:ParticularPattern:index" }
+
+education_particularpattern_search:
+    path:     /search
+    defaults: { _controller: "EducationBundle:ParticularPattern:autoSearch" }
+    options:
+            expose: true
+
+education_particularpattern_create:
+    path:     /create
+    defaults: { _controller: "EducationBundle:ParticularPattern:create" }
+    methods:  POST
+
+education_particularpattern_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EducationBundle:ParticularPattern:edit" }
+
+education_particularpattern_update:
+    path:     /{id}/update
+    defaults: { _controller: "EducationBundle:ParticularPattern:update" }
+    methods:  [POST, PUT]
+
+education_particularpattern_status:
+    path:     /{id}/status
+    defaults: { _controller: "EducationBundle:ParticularPattern:status" }
+
+education_particularpattern_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EducationBundle:ParticularPattern:delete" }

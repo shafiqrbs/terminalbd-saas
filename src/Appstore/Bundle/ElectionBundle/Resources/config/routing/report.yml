@@ -1,0 +1,66 @@
+election_report_vote_center:
+    path:     /vote-center
+    defaults: { _controller: "ElectionBundle:Report:voteCenter" }
+
+election_report_union_base_vote_center:
+    path:     /union-base-vote-center
+    defaults: { _controller: "ElectionBundle:Report:voteCenterUnion" }
+
+election_report_voter_cenetr_details:
+    path:     /vote-center-details
+    defaults: { _controller: "ElectionBundle:Report:voteCenterDetails" }
+
+election_report_member_list:
+    path:     /member-list
+    defaults: { _controller: "ElectionBundle:Report:memberList" }
+
+election_report_location_group_member:
+    path:     /location-group-member
+    defaults: { _controller: "ElectionBundle:Report:locationGroupMember" }
+
+election_report_location_base_committee:
+    path:     /location-group-member
+    defaults: { _controller: "ElectionBundle:Report:locationBaseCommittee" }
+
+election_report_location_type_committee:
+    path:     /union-base-voter
+    defaults: { _controller: "ElectionBundle:Report:locationTypeBaseCommittee" }
+
+
+election_report_campaign_list:
+    path:     /union-base-voter
+    defaults: { _controller: "ElectionBundle:Report:campaignList" }
+
+election_report_campaign_details:
+    path:     /location-group-member
+    defaults: { _controller: "ElectionBundle:Report:campaignDetails" }
+
+election_report_analysis_list:
+    path:     /analysis-list
+    defaults: { _controller: "ElectionBundle:Report:analysisList" }
+
+election_report_analysis_details:
+    path:     /analysis-details
+    defaults: { _controller: "ElectionBundle:Report:analysisDetails" }
+
+election_report_vote_center_list:
+    path:     /vote-center-list
+    defaults: { _controller: "ElectionBundle:Report:voteCenterList" }
+
+election_report_vote_center_details:
+    path:     /vote-center-details
+    defaults: { _controller: "ElectionBundle:Report:voteCenterDetails" }
+
+
+election_report_committee_list:
+    path:     /committee-list
+    defaults: { _controller: "ElectionBundle:Report:committeeList" }
+
+election_report_committee_details:
+    path:     /union-base-voter
+    defaults: { _controller: "ElectionBundle:Report:committeeDetails" }
+
+election_report_election_result:
+    path:     /location-group-member
+    defaults: { _controller: "ElectionBundle:Report:electionResult" }
+

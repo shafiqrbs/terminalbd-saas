@@ -1,0 +1,90 @@
+assets_particular:
+    resource: "@AssetsBundle/Resources/config/routing/particular.yml"
+    prefix:   /particular
+
+assets_depreciation_model:
+    resource: "@AssetsBundle/Resources/config/routing/model.yml"
+    prefix:   /depreciation-model
+
+assets_disposal:
+    resource: "@AssetsBundle/Resources/config/routing/disposal.yml"
+    prefix:   /disposal
+
+assets_club:
+    resource: "@AssetsBundle/Resources/config/routing/club.yml"
+    prefix:   /club-department
+
+assets_office:
+    resource: "@AssetsBundle/Resources/config/routing/officenote.yml"
+    prefix:   /office-note
+
+assets_distribution:
+    resource: "@AssetsBundle/Resources/config/routing/distribution.yml"
+    prefix:   /distribution
+
+assets_product:
+    resource: "@AssetsBundle/Resources/config/routing/product.yml"
+    prefix:   /product
+
+assets_ledger:
+    resource: "@AssetsBundle/Resources/config/routing/ledger.yml"
+    prefix:   /ledger
+
+assets_stockitem:
+    resource: "@AssetsBundle/Resources/config/routing/stockitem.yml"
+    prefix:   /stockitem
+
+assets_item:
+    resource: "@AssetsBundle/Resources/config/routing/item.yml"
+    prefix:   /item
+
+assets_itemreceive:
+    resource: "@AssetsBundle/Resources/config/routing/itemreceive.yml"
+    prefix:   /item-receive
+
+assets_stockissue:
+    resource: "@AssetsBundle/Resources/config/routing/stockissue.yml"
+    prefix:   /stock-issue
+
+assets_purchase:
+    resource: "@AssetsBundle/Resources/config/routing/purchase.yml"
+    prefix:   /purchase
+
+assets_purchase_item:
+    resource: "@AssetsBundle/Resources/config/routing/purchaseitem.yml"
+    prefix:   /purchase-item
+
+assets_item_brand:
+    resource: "@AssetsBundle/Resources/config/routing/itembrand.yml"
+    prefix:   /item-brand
+
+assets_vendor:
+    resource: "@AssetsBundle/Resources/config/routing/vendor.yml"
+    prefix:   /vendor
+
+assets_category:
+    prefix:     /category
+    resource: "@AssetsBundle/Resources/config/routing/category.yml"
+
+assets_stock_import:
+    prefix:     /stock-item-import
+    resource: "@AssetsBundle/Resources/config/routing/stockItemImport.yml"
+
+voucher_item:
+    resource: "@AssetsBundle/Resources/config/routing/voucheritem.yml"
+    prefix:    /opening-item
+
+assets_depreciation:
+    path:     /depreciation
+    defaults: { _controller: AssetsBundle:Depreciation:edit }
+
+assets_depreciation_update:
+    path:     /depreciation/update
+    defaults: { _controller: AssetsBundle:Depreciation:update }
+    methods:  [POST, PUT]
+
+assets_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: AssetsBundle:Default:index }
+
+

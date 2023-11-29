@@ -1,0 +1,142 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN purchase_order HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="purchase_order-title">
+                    Receive GRN # {{ entity.grn }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('dms_purchase') }}">Receive</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Receive</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>c
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN purchase_order CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Receive Details</div>
+
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('dms_purchase_new') }}"><i class="icon-plus-sign"></i> Accessories Receive</a>
+                                <a class="btn" href="{{ path('dms_purchase') }}"><i class="icon-th-list"></i> Accessories</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body form">
+                            <div class="row-fluid">
+
+                                <div class="span4">
+                                    <h4>About:</h4>
+                                    <ul class="unstyled">
+                                        {% if entity.dmsVendor is not empty %}<li><strong>Vendor #:</strong>&nbsp;{{ entity.dmsVendor.name }}</li>{% endif %}
+                                        {% if entity.dmsVendor is not empty %}<li><strong>Mobile #:</strong>&nbsp;{{ entity.dmsVendor.mobile }}</li>{% endif %}
+                                        <li><strong>Created:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                                    </ul>
+                                </div>
+
+                                <div class="span4 invoice-payment">
+                                    <h4>Payment Details:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Total BDT:</strong>&nbsp;{{ entity.netTotal|number_format() }}</li>
+                                        <li><strong>Payment BDT:</strong>&nbsp;{{ entity.payment|number_format() }}</li>
+                                        {% if entity.discount %}<li><strong>Discount BDT:</strong>&nbsp;{{ entity.discount|number_format() }}</li>{% endif %}
+                                        {% if entity.due %}<li><strong>Due BDT:</strong>&nbsp;{{ entity.due|number_format() }}</li>{% endif %}
+                                    </ul>
+
+                                </div>
+                                <div class="span4">
+                                    <h4>Payment Method:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Payment Method:</strong>&nbsp;{% if  entity.TransactionMethod is not empty %}{{ entity.TransactionMethod.name }}{% endif %}</li>
+                                        {% if entity.accountMobileBank is not empty %}<li><strong>Payment Mobile:</strong>&nbsp;{{ entity.accountMobileBank.name }}</li>{% endif %}
+                                        {% if entity.accountBank is not empty %}<li><strong>Bank:</strong>&nbsp;{{ entity.accountBank.name  }}</li>{% endif %}
+                                        <li><strong>Created By:</strong>&nbsp;{% if entity.createdBy is defined and entity.createdBy is not empty %}{{ entity.createdBy }}{% endif %}</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid box green">
+                                {% if entity.purchaseItems is defined and  entity.purchaseItems is not empty  %}
+                                    <table class="table table-bordered table-striped table-condensed flip-content ">
+                                        <thead class="flip-content ">
+                                        <tr class="head-green">
+                                            <td class="span1">&nbsp;&nbsp;<i class="icon-list"></i></td>
+                                            <th class="span1">Code</th>
+                                            <th class="span4">Particular</th>
+                                            <th class="span1">Qnt</th>
+                                            <th class="span2">Sales Price</th>
+                                            <th class="span2">Purchase Price</th>
+                                            <th class="span1">Sub-Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in entity.purchaseItems %}
+                                            <tr id="remove-{{ item.id }}">
+                                                <td  class="span1">{{ loop.index }}</td>
+                                                <td  class="span1">{{ item.dmsParticular.particularCode }}</td>
+                                                <td class="span4">{{ item.dmsParticular.name }}</td>
+                                                <td class="span1">{{ item.quantity }}</td>
+                                                <td class="span2">{{ item.salesPrice }}</td>
+                                                <td class="span2">{{ item.purchasePrice }}</td>
+                                                <td class="span1">{{ item.purchaseSubTotal|number_format }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right" id="action-{{ entity.id }}">
+                                    {% if ( entity.process == 'Done') %}
+                                    <a  href="javascript:"  data-url="{{ path('dms_purchase_approved',{'id':entity.id}) }}" class="btn blue approve"><i class="icon-refresh"></i>&nbsp;Approve</a>
+                                    {% endif %}
+                                    <span  class="btn purple"><i class=" icon-ok"></i>&nbsp;{{ entity.process }}</span>
+                                </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@DmsBundle/Resources/public/js/purchase.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+

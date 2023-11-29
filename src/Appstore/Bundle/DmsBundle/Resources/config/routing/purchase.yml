@@ -1,0 +1,65 @@
+dms_purchase:
+    path:     /
+    defaults: { _controller: "DmsBundle:Purchase:index" }
+
+dms_purchase_show:
+    path:     /{id}/show
+    defaults: { _controller: "DmsBundle:Purchase:show" }
+
+dms_purchase_new:
+    path:     /new
+    defaults: { _controller: "DmsBundle:Purchase:new" }
+
+dms_purchase_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Purchase:edit" }
+
+dms_purchase_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Purchase:update" }
+    methods:  [POST, PUT]
+
+dms_purchase_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Purchase:edit" }
+
+
+dms_purchase_approve:
+    path:     /{id}/approve
+    defaults: { _controller: "DmsBundle:Purchase:approve" }
+
+dms_purchase_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Purchase:delete" }
+
+dms_purchase_particular_search:
+    path:     /{id}/particular-search
+    defaults: { _controller: "DmsBundle:Purchase:particularSearch" }
+
+
+dms_purchase_particular_add:
+    path:     /{invoice}/particular-add
+    defaults: { _controller: "DmsBundle:Purchase:addParticular" }
+    methods:  POST
+    options:
+            expose: true
+
+dms_purchase_discount_update:
+    path:     /purchase/dicount-update
+    defaults: { _controller: "DmsBundle:Purchase:invoiceDiscountUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+dms_purchase_approved:
+    path:     /{id}/invoice-approved
+    defaults: { _controller: "DmsBundle:Purchase:approved" }
+
+
+dms_purchase_particular_delete:
+    path:     /{invoice}/{id}/particular-delete
+    defaults: { _controller: "DmsBundle:Purchase:invoiceParticularDelete" }
+
+dms_purchase_print_invoice:
+    path:     /{id}/print
+    defaults: { _controller: "DmsBundle:Purchase:invoicePrint" }

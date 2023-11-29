@@ -1,0 +1,31 @@
+assets_officenote:
+    path:     /
+    defaults: { _controller: "AssetsBundle:OfficeNote:index" }
+
+assets_officenote_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:OfficeNote:show" }
+
+assets_officenote_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:OfficeNote:new" }
+
+assets_officenote_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:OfficeNote:edit" }
+
+assets_officenote_approve:
+    path:     /{id}/approve
+    defaults: { _controller: "AssetsBundle:OfficeNote:approve" }
+
+assets_officenote_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:OfficeNote:update" }
+    methods:  [POST, PUT]
+
+assets_officenote_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:OfficeNote:delete" }
+
+
+

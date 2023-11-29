@@ -1,0 +1,93 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                   Manage Fees
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('education_fees') }}">Manage Fees</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green ">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Fees</div>
+                        <div class="actions">
+                            <a href="{{ path('education_fees_new') }}" class=" btn red"><i class="icon-plus"></i> Add Fees</a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        <div class="portlet-body flip-scroll">
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric span9" >Pattern Name</th>
+                                    <th class="numeric span1" >Amount</th>
+                                    <th class="numeric span2" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in pagination %}
+                                    <tr>
+                                        <td class="numeric" >{{ loop.index }}. <a href="{{ path('education_fees_edit',{'id': entity.id })}}">{% if entity.pattern is not empty %}{{ entity.pattern.patternName }} {% else %} Add Pattern Name{% endif %}</a></td>
+                                        <td class="numeric" >{{ entity.amount }}</td>
+                                        <td class="numeric" >
+                                            {% if( entity.status == 1) %}
+                                                <a class="btn mini blue btn-action" href="{{ path('education_fees_status', { 'id': entity.id}) }}"><i class="icon-ok"></i></a>
+                                            {% else %}
+                                                <a class="btn mini red btn-action" href="{{ path('education_fees_status', { 'id': entity.id}) }}">x</a>
+                                            {% endif %}
+                                            <a href="{{ path('education_fees_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                            <a  href="{{ path('education_fees_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@HospitalBundle/Resources/public/js/editable.js'
+    '@BusinessBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableWithOutReloadInit();
+{% endblock %}

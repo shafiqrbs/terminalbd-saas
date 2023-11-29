@@ -1,0 +1,202 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN purchase_order HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="purchase_order-title">
+                   Opening Product Entity
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('voucheritem') }}">  Opening Item</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>Add Opening Item</li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN purchase_order CONTENT-->
+        <div class="row-fluid" style="position: relative">
+
+            <div class="span12">
+                <div id="dataProces"></div>
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Opening Item Information</div>
+
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="red btn" href="{{ path('voucheritem_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a>
+                                <a class="btn" href="{{ path('voucheritem') }}"><i class="icon-th-list"></i>&nbsp;  Bill Voucher</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body" >
+
+                        <div class="portlet-body form" >
+
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Product Group <span class="required">*</span></label>
+                                        <div class="controls">
+                                            {{ form_widget(form.productGroup) }}
+                                            {{ form_errors(form.productGroup) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Product Name <span class="required">*</span></label>
+                                        <div class="controls">
+                                            {{ form_widget(form.name) }}
+                                            {{ form_errors(form.name) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Unit Price <span class="required">*</span></label>
+                                        <div class="controls">
+                                            {{ form_widget(form.price) }}
+                                            {{ form_errors(form.price) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Quantity <span class="required">*</span></label>
+                                        <div class="controls">
+                                            {{ form_widget(form.quantity) }}
+                                            {{ form_errors(form.quantity) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="form-actions portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Product Assurance</div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Assurance Type</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.assuranceType) }}
+                                            {{ form_errors(form.assuranceType) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Assurance Warning</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.itemWarning) }}
+                                            {{ form_errors(form.itemWarning) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Effected Date</label>
+                                        <div class="controls">
+                                            <div class="input-icon left">
+                                                <i class="icon-calendar"></i>
+                                                {{ form_widget(form.effectedDate) }}
+                                                {{ form_errors(form.effectedDate) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Expired Date</label>
+                                        <div class="controls">
+                                            <div class="input-icon left">
+                                                <i class="icon-calendar"></i>
+                                                {{ form_widget(form.expiredDate) }}
+                                                {{ form_errors(form.expiredDate) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Remarks</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.remark) }}
+                                            {{ form_errors(form.remark) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+
+                            <!--/span-->
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    $( ".dateCalendar" ).datepicker({
+        dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        changeYear: true,
+    });
+{% endblock %}

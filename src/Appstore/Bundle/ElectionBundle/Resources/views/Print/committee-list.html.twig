@@ -1,0 +1,72 @@
+{% extends '::baseprint.html.twig' %}
+{% block body %}
+<div id="invoice">
+        <div class="toolbar hidden-print">
+            <div class="text-right">
+                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            </div>
+            <hr>
+        </div>
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <main>
+                    <div class="row contacts">
+                        <div class="col invoice-to">
+                            <h2 class="to">List of Committee Lists</h2>
+                        </div>
+
+                    </div>
+                   <table border="0" cellspacing="0" cellpadding="0" style="border: 2px solid #999">
+                       <thead>
+                       <tr>
+                           <th>Committee Name</th>
+                           <th>Location</th>
+                           <th>Location Type</th>
+                           <th>Duration</th>
+                       </tr>
+                       </thead>
+                       <tbody>
+
+                       {% for entity in entities %}
+                           <tr>
+                               <td>{{ entity.name }}</td>
+                               <td>{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</td>
+                               <td>{% if entity.location is not empty %}{{ entity.location.locationType.name }}{% endif %}</td>
+                               <td>{{ entity.startDate|date('d-m-Y') }} To {{ entity.endDate|date('d-m-Y') }}</td>
+                          </tr>
+                       {% endfor %}
+                       </tbody>
+
+                    </table>
+                    <div style="clear: both; display: flex"></div>
+                </main>
+                <footer>
+                    <span class="right">Developed by: {{ portal_design_development }}</span>
+                </footer>
+            </div>
+        </div>
+</div>
+<style>
+    .invoice table td, .invoice table th{
+        background: none;
+        font-size: 13px;
+    }
+    .invoice .contacts {
+        margin-bottom: 75px;
+    }
+    .invoice table th {
+        white-space: nowrap;
+        font-size: 16px;
+        background: #000;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #ffffff;
+        height: 48px;
+        line-height: 48px;
+
+    }
+    tr:nth-child(even) {background: #CCC}
+    tr:nth-child(odd) {background: #FFF}
+</style>
+{% endblock %}
+

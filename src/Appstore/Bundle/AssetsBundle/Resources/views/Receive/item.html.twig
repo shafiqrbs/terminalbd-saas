@@ -1,0 +1,32 @@
+{% if entity.receiveItems is not empty %}
+    {% for item in entity.receiveItems %}
+        <tr id="remove-{{ item.id }}">
+            <td>{{ loop.index }}</td>
+            <td >{{ item.barcode }}</td>
+            <td >{{ item.purchaseItem.item.category.name }}</td>
+            <td >{{ item.purchaseItem.item.name }}<br/>{{ item.purchaseItem.name }}</td>
+            <td><input type="text" class="numeric m-wrap span12 td-inline-input quantity" data-action="{{ path('assets_itemreceive_inline_update',{'id':item.id}) }}" max="{{ item.poQuantity }}" data-id="{{ item.id }}" value="{{ item.quantity }}"></td>
+            <td>{{ item.price }}</td>
+            <td id="subTotal-{{ item.id }}">{{ item.subTotal|number_format }}</td>
+            <td><a id="{{ item.id }}" data-url="{{ path('assets_itemreceive_item_delete',{'invoice': entity.id ,'id': item.id }) }}" href="javascript:" class="btn red mini item-delete" ><i class="icon-trash"></i></a></td>
+        </tr>
+    {% endfor %}
+{% endif %}
+<tr>
+    <td colspan="9" class="span12" style="border: 1px double #000"></td>
+</tr>
+<tr>
+    <td colspan="6" class="span9"><span class="pull-right"><strong>Sub-Total TK.</strong> =</span></td>
+    <td class="span2"><strong class="subTotal">{{ entity.subTotal|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>
+<tr>
+    <td colspan="6" class="span9"><span class="pull-right"><strong>VAT TK.</strong> =</span></td>
+    <td class="span2"><strong class="vat">{{ entity.vat|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>
+<tr>
+    <td colspan="6" class="span9"><span class="pull-right"><strong>Grand Total TK.</strong> =</span></td>
+    <td class="span2"><strong class="netTotal">{{ entity.netTotal|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>

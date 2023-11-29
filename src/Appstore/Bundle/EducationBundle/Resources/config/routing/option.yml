@@ -1,0 +1,30 @@
+education_option:
+    path:     /
+    defaults: { _controller: "EducationBundle:EducationOption:index" }
+
+education_option_show:
+    path:     /{id}/show
+    defaults: { _controller: "EducationBundle:EducationOption:show" }
+
+education_option_new:
+    path:     /new
+    defaults: { _controller: "EducationBundle:EducationOption:new" }
+
+education_option_create:
+    path:     /create
+    defaults: { _controller: "EducationBundle:EducationOption:create" }
+    methods:  POST
+
+education_option_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EducationBundle:EducationOption:edit" }
+
+education_option_update:
+    path:     /{id}/update
+    defaults: { _controller: "EducationBundle:EducationOption:update" }
+    methods:  [POST, PUT]
+
+education_option_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EducationBundle:EducationOption:delete" }
+    methods:  [POST, DELETE]

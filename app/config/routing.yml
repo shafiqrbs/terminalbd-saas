@@ -1,0 +1,64 @@
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+app_report:
+    resource: "@ReportBundle/Resources/config/routing.yml"
+    prefix:   /app-report
+
+
+android_portal_api:
+    resource: "@BinduBundle/Resources/config/apiPortal.yml"
+    prefix:   /android-api-portal
+
+android_sales_api:
+    resource: "@BinduBundle/Resources/config/apiSales.yml"
+    prefix:   /android-api
+
+poskeeper_portal_api:
+    resource: "@BinduBundle/Resources/config/apiPoskeeper.yml"
+    prefix:   /flutter-api
+
+android_ecommerce_api:
+    resource: "@BinduBundle/Resources/config/apiEcommerce.yml"
+    prefix:   /android-api-ecommerce
+
+doctor_prescription:
+    resource: "@DoctorPrescriptionBundle/Resources/config/routing.yml"
+    prefix:   /doctor-prescription
+
+medicine:
+    resource: "@MedicineBundle/Resources/config/routing.yml"
+    prefix:   /medicine
+
+human_resource:
+    resource: "@HumanResourceBundle/Resources/config/routing.yml"
+    prefix:   /human-resource
+
+hospital:
+    resource: "@HospitalBundle/Resources/config/routing.yml"
+    prefix:   /hms
+
+core_user_bundle:
+    resource: "@UserBundle/Resources/config/routing.yml"
+
+accounting:
+    resource: "@AccountingBundle/Resources/config/routing.yml"
+    prefix:   /accounting
+
+setting_tool:
+    resource: "@SettingToolBundle/Resources/config/routing.yml"
+    prefix:   /
+
+domain_user:
+    resource: "@DomainUserBundle/Resources/config/routing.yml"
+    prefix:   /domain-user
+
+fos_comment_api:
+    type: rest
+    resource: "@FOSCommentBundle/Resources/config/routing.yml"
+    prefix: /api
+    defaults: { _format: html }
+
+main_route:
+    resource: "@BinduBundle/Resources/config/main.yml"
+    prefix:

@@ -1,0 +1,42 @@
+election_campaign:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Campaign:index" }
+
+election_campaign_search:
+    path:     /search
+    defaults: { _controller: "ElectionBundle:Campaign:autoSearch" }
+    options:
+            expose: true
+
+election_campaign_name:
+    path:      /{particular}/particular-name
+    defaults: { _controller: "ElectionBundle:Campaign:searchCampaignName" }
+    options:
+            expose: true
+
+election_campaign_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Campaign:create" }
+    methods:  POST
+
+election_campaign_show:
+    path:     /{id}/show
+    defaults: { _controller: "ElectionBundle:Campaign:show" }
+
+election_campaign_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:Campaign:edit" }
+
+election_campaign_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:Campaign:update" }
+    methods:  [POST, PUT]
+
+election_campaign_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:Campaign:status" }
+
+election_campaign_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Campaign:delete" }
+

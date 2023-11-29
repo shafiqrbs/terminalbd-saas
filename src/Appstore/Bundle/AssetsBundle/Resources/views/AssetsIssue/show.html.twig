@@ -1,0 +1,166 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN purchase_order HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="purchase_order-title">
+                    Assets Issue Invoice # {{ entity.invoice }}  - {% if entity.branches is not empty %}{{ entity.branches.name }} {% endif %}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('tally_assetsissue') }}">Assets Issue Invoice </a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Add/Edit sales</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>c
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN purchase_order CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Invoice Details</div>
+
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn yellow" href="{{ path('tally_assetsissue') }}"><i class="icon-th-list"></i>&nbsp;Assets Issue Invoice</a>
+                                <a class="btn red" href="{{ path('tally_assetsissue_new') }}"><i class="icon-plus"></i>&nbsp;New Sales</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body form">
+                            <div class="row-fluid">
+
+                                <div class="span4">
+                                    <h4>About:</h4>
+                                    <ul class="unstyled">
+                                        {% if entity.branches is not empty %}<li><strong>Branch Name #:</strong>&nbsp;{{ entity.branches.name }}</li>{% endif %}
+                                        {% if entity.branches is not empty %}<li><strong>Mobile #:</strong>&nbsp;{{ entity.branches.mobile }}</li>{% endif %}
+                                        {% if entity.branches is not empty %}<li><strong>Address #:</strong>&nbsp;{{ entity.branches.address }}</li>{% endif %}
+                                        {% if entity.branches is not empty and entity.branches.location is not empty   %}<li><strong>Location #:</strong>&nbsp;{{ entity.branches.location.name }}, {{ entity.branches.location.parent.name }}</li>{% endif %}
+                                    </ul>
+                                </div>
+
+                                <div class="span4 invoice-payment">
+                                    <h4>Invoice Details:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Created:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                                        <li><strong>Total Item:</strong>&nbsp;{{ entity.totalItem }}</li>
+                                        <li><strong>Total BDT:</strong>&nbsp;{{ entity.total|number_format() }}</li>
+                                    </ul>
+                                </div>
+                                <div class="span4">
+                                    <h4>Approve :</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Process:</strong>&nbsp;{{ entity.process }}</li>
+                                        <li><strong>Created By:</strong>&nbsp;{% if entity.createdBy is defined and entity.createdBy is not empty %}{{ entity.createdBy }}{% endif %}</li>
+                                        <li><strong>Checked By:</strong>&nbsp;{% if entity.checkedBy is defined and entity.checkedBy is not empty %}{{ entity.checkedBy }}{% endif %}</li>
+                                        <li><strong>Approved By:</strong>&nbsp;{% if entity.approvedBy is defined and entity.approvedBy is not empty %}{{ entity.approvedBy }}{% endif %}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid box green">
+                                {% if entity.stockItems is defined and  entity.stockItems is not empty  %}
+                                    <table class="table table-bordered table-striped table-condensed flip-content ">
+                                        <thead class="flip-content ">
+                                        <tr class="head-green">
+                                            <td>&nbsp;&nbsp;<i class="icon-reorder"></i></td>
+                                            <th class="numeric" >Item</th>
+                                            <th class="numeric" >Barcode</th>
+                                            <th class="numeric span6" >Serial No</th>
+                                            <th class="numeric" >Assurance Type</th>
+                                            <th class="numeric" >Expired Date</th>
+                                            <th class="numeric" >Qnt</th>
+                                            <th class="numeric" >Unit price</th>
+                                            <th class="numeric" >Sub-total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for salesItem in entity.stockItems %}
+                                            <tr>
+                                                <td class="numeric" >{{ loop.index }}</td>
+                                                <td class="numeric" >{{ salesItem.item.sku }}-{{ salesItem.item.name }}</td>
+                                                <td class="numeric" >{{ salesItem.purchaseItem.barcode }}</td>
+                                                <td class="numeric" >
+                                                    {{  salesItem.serialNo|raw }}
+                                                </td>
+                                                <td class="numeric" >{{ salesItem.assuranceType }}</td>
+                                                <td class="numeric" >{{ salesItem.expiredDate|date('d-m-Y') }}</td>
+                                                <td class="numeric" >{{ salesItem.quantity|abs }}</td>
+                                                <td class="numeric" >{{ salesItem.purchasePrice|number_format() }}</td>
+                                                <td class="numeric" >{{ salesItem.subTotal|number_format() }}</td>
+                                            </tr>
+
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}
+                            </div>
+                            <div class="clearfix">&nbsp;</div>
+                            <div class="form-actions portlet box grey">
+                                <div class="span8" id="message"></div>
+                                <div class="pull-right" id="action-{{ entity.id }}">
+                                    <a href="{{ path('inventory_sales_print_invoice',{'invoice':entity.invoice}) }}" target="_blank" class="btn green" ><i class="icon-print"></i> Print</a>
+                                    <a type="reset" class="btn blue"><i class=" icon-download-alt"></i>&nbsp;Pdf</a>
+                                    {% if entity.process == 'Done' %}
+                                        <a href="javascript:" data-url="{{ path('tally_assetsissue_approve',{'id':entity.id,'process':'Checked'}) }}"  class="btn yellow approve"><i class=" icon-retweet"></i>&nbsp;{{ entity.process }}</a>
+                                    {% elseif entity.process == 'Checked' %}
+                                        <a href="javascript:" data-url="{{ path('tally_assetsissue_approve',{'id':entity.id,'process':'Approved'}) }}"  class="btn purple approve"><i class=" icon-retweet"></i>&nbsp;{{ entity.process }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/editable.js'
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    ApproveProcess();
+    $(document).on('click', '.itemBranchPreview', function() {
+    var url = $(this).attr("data-url");
+    var id = $(this).attr("id");
+    $.ajax({
+    url: url,
+    type: 'GET',
+    success: function (response) {
+    $('#branchDetails-'+id).html(response);
+    }
+    })
+    });
+{% endblock %}

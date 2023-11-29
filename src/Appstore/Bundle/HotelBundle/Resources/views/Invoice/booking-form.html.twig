@@ -1,0 +1,63 @@
+<div class="portlet box blue">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i> {{ particular.particularCode }} - {{ particular.name }}</div>
+    </div>
+    <div class="row-fluid" style="background:#f9f9f9;">
+        <form class="" id="stockInvoice" name="stockInvoice" action="" method="post">
+            <div class="span12">
+                <div class="clearfix">&nbsp;</div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="row-fluid particular-info" >
+                            <div class="span3">
+                                <div class="input-icon left span6">
+                                    <i class="icon-calendar"></i>
+                                    <input type="date" class="m-wrap span12" style="padding-right:0!important" name="startDate" id="bookingStartDate" value=" {{ "now"|date("d-m-Y") }}"  autocomplete="off" placeholder="" >
+                                </div>
+                                <div class="input-icon left span6">
+                                    <i class="icon-calendar"></i>
+                                    <input type="date" class="m-wrap span12" style="padding-right:0!important;" name="endDate" id="bookingEndDate" value=" {{ "tomorrow"|date("d-m-Y") }}"  autocomplete="off" placeholder="">
+                                </div>
+                            </div>
+                            <div class="span3">
+                                <div class="input-append span12" style="margin-bottom:0!important">
+                                    <div class="input-group">
+                                        {% set counts =[1,2,3,4,5,6,7,8,9,10] %}
+                                        <input type="text" class="m-wrap span4 form-control input-number" id="salesPrice" name="salesPrice" placeholder="Price" value="" min="">
+                                        <select id="adult" name="adult" class="m-wrap span4">
+                                            <option value="">Adult</option>
+                                            {% for count in counts  %}
+                                                <option value="{{ count }}">{{ count }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <select id="child" name="child" class="m-wrap span4">
+                                            <option value="">Child</option>
+                                            {% for count in counts  %}
+                                                <option value="{{ count }}">{{ count }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span3">
+                                <div class="input-icon left">
+                                    <i class="icon-user"></i>
+                                    <input class="m-wrap span12 search-input " style="padding-right:0!important" name="guestName" id="guestName" value=""  autocomplete="off" placeholder="Enter room member name" >
+                                </div>
+                            </div>
+                            <div class="span3">
+                                <div class="input-append span12" style="margin-bottom:0!important">
+                                    <div class="input-group">
+                                        <input type="text" class="m-wrap span8 form-control" id="guestMobile" name="guestMobile" placeholder="Enter mobile no" value="" min="">
+                                        <button type="submit" class="btn blue" id="addRoom" ><i class="icon-save"></i> Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               <div class="clearfix">&nbsp;</div>
+            </div>
+        </form>
+    </div>
+</div>

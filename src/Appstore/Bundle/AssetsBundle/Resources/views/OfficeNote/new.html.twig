@@ -1,0 +1,309 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid">
+    <!-- BEGIN Disposal_order HEADER-->
+    <div class="row-fluid">
+        <div class="span12">
+            <h3 class="Disposal_order-title">
+                Office Notes :
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home"></i>
+                    <a href="{{ path('homepage') }}">Home</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li>
+                    <a href="{{ path('assets_officenote') }}">Office Notes</a>
+                    <span class="icon-angle-right"></span>
+                </li>
+                <li><a href="#">Add/Edit Office Notes</a></li>
+                <li class="pull-right btn blue disabled mini">
+                    <i class="fa fa-calendar"></i>
+                    {{ "now"|date("d-F-Y") }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- END Disposal_order HEADER-->
+    <!-- BEGIN Disposal_order CONTENT-->
+    <div class="row-fluid">
+        <div class="span12" style="position:relative">
+
+            <div class="portlet box green tabbable">
+                <div id="dataProces"></div>
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>Office Notes Information</div>
+                    <div class="actions">
+                        <div class="btn-group">
+                            <a class="btn red" href="{{ path('assets_officenote') }}"><i class="icon-th-list"></i>&nbsp;Office Notes</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        {{ form_start(form) }}
+                        {{ form_row(form._token) }}
+                        <div class="row-fluid">
+                            <div class="span8">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Notes Title</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.name) }}{{ form_errors(form.name) }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Content</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.content) }}{{ form_errors(form.content) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span4">
+
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Note Mode<span class="required">*</span></label>
+                                            <div class="controls">
+                                                {{ form_widget(form.noteMode) }}{{ form_errors(form.noteMode) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Ref. No<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    <i class="icon-sort-by-order"></i>
+                                                    {{ form_widget(form.meetingNoteNo) }}{{ form_errors(form.meetingNoteNo) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Requested By</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.requestedBy) }}{{ form_errors(form.requestedBy) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Entry Date<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    <i class="icon-calendar"></i>
+                                                    {{ form_widget(form.meetingDate) }}{{ form_errors(form.meetingDate) }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Financial Amount</label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                <i class="icon-sort-by-order"></i>
+                                                {{ form_widget(form.amount) }}{{ form_errors(form.amount) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Process</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.process) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Attach file</label>
+                                    <div class="controls">
+                                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                                            <div class="input-append span12">
+                                                <div class="uneditable-input span12">
+                                                    <i class="icon-file fileupload-exists"></i>
+                                                    <span class="fileupload-preview"></span>
+                                                </div>
+                                                <span class="btn btn-file">
+                                                        <span class="fileupload-new blue">Select file</span>
+                                                        <span class="fileupload-exists">Change</span>
+                                                                {{ form_widget(form.file) }}
+                                                    {{ form_errors(form.file) }}
+                                                        </span>
+                                                <a href="#" class="btn fileupload-exists red" data-dismiss="fileupload">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped table-condensed flip-content">
+
+                            <thead>
+                            <tr class="head-blue">
+                                <th class="numeric" >Created</th>
+                                <th class="numeric" >Created By</th>
+                                <th class="numeric" >PR No</th>
+                                <th class="numeric" >Club/Department</th>
+                                <th class="numeric" >Ref no</th>
+                                <th class="numeric" >Item/Quantity</th>
+                                <th class="numeric" >Approx. Amount</th>
+                                <th class="numeric" >Approved Date</th>
+                                <th class="numeric" >Approve</th>
+                                <th class="numeric" >Process</th>
+                            </tr>
+                            </thead>
+                            <tbody class="flip-content " id="purchase">
+                            {% set approves = ['created','in-progress'] %}
+                            {% for entity in entities %}
+                                <tr id="delete-{{ entity.id }}">
+                                    <td class="numeric" >{{ entity.receiveDate|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ entity.createdBy }}</td>
+                                    <td class="numeric" >{{ entity.grn }}</td>
+                                    <td class="numeric" >{% if entity.club is not empty %}{{ entity.club.name }}{% endif %}</td>
+                                    <td class="numeric" >{{ entity.memo }}</td>
+                                    <td class="numeric" >{{ entity.totalItem }}/{{ entity.totalQnt }}</td>
+                                    <td class="numeric" >{{ entity.totalAmount|number_format() }}</td>
+                                    <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ entity.approve|capitalize }}</td>
+                                    <td class="numeric pull-center" ><a title="Approve" href="javascript:" class="btn green disabled mini" >&nbsp;{{ entity.process|capitalize }}</a></td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-striped table-condensed flip-content">
+
+                            <thead>
+                            <tr class="head-blue">
+                                <th>Department/Branch</th>
+                                {% if records is not empty %}
+                                    {% for item in records['items'] %}
+                                        <th class="numeric" >{{ item.name }}</th>
+                                    {% endfor %}
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if records['clubs'] is not empty %}
+                                {% for club in records['clubs'] %}
+                                    <tr>
+                                        <th>{{ club.clubName }}</th>
+                                        {% for item in records['items'] %}
+                                            <td class="text-right">{% set row = club['clubId']~'-'~item['item'] %}
+                                             {% if records['data'][row] is defined and records['data'][row] is not empty %}{{ records['data'][row].quantity }}{% endif %}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Current Stock</th>
+                                    {% if records is not empty %}
+                                        {% for item in records['items'] %}
+                                            <th class="text-right">{{ item.remainQty }}</th>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <th>Remaining Stock</th>
+                                    {% if records is not empty %}
+                                        {% for item in records['items'] %}
+                                            <th class="text-right" >{{ item.stock }}</th>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-right">
+                                <button type="submit" class="btn green" id="action-button"><i class="icon-save"></i> Save</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+
+        .ui-menu-item{
+            border-bottom:1px solid #000000;
+        }
+
+        .ui-menu-item a{
+            text-decoration: none;
+            background: #d0dde4;
+            height: 30px !important;
+            line-height: 30px !important;
+            border: none!important;
+            border-bottom:1px solid #000000;
+        }
+
+        .ui-menu-item a:hover{
+            background-color: #d2d2d2;
+            height: 30px !important;
+            line-height: 30px !important;
+        }
+
+        #inventoryItem{
+            display: none;
+        }
+
+    </style>
+    {% endblock %}
+    {% block javascriptBlock %}
+        {{ parent() }}
+        {% javascripts
+        '@InventoryBundle/Resources/public/js/puschase.js'
+        '@InventoryBundle/Resources/public/js/approveProcess.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock  %}
+    {% block documentready %}
+    {{ parent() }}
+    $( ".datePicker" ).datepicker({
+    dateFormat: "dd-mm-yy"
+    });
+    InventoryDisposalPage();
+    ApproveProcess();
+
+
+{% endblock %}

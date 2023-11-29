@@ -1,0 +1,213 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Election Setup
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Election Setup</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Election Setup Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a href="javascript:" data-trigger="hover" data-original-title="Add Election Setup" class=" btn red tooltips show"><i class="fa fa-angle-double-down"></i> Add Election Setup</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body form" id="{% if show == 'show' %}show{% else %}hide{% endif %}">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid" >
+                                <div class="span8">
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Location</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.location) }}
+                                                {{ form_errors(form.location) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Election Type</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.electionType) }}
+                                                {{ form_errors(form.electionType) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Election Date</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.electionDate) }}
+                                                    {{ form_errors(form.electionDate) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span4">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Active Election {{ form_widget(form.currentElection) }}</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="span4">
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Vote Center</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.voteCenter) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Male Voter</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.maleVoter) }}
+                                                {{ form_errors(form.maleVoter) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Female Voter</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.femaleVoter) }}
+                                                {{ form_errors(form.femaleVoter) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Other Voter</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.otherVoter) }}
+                                                {{ form_errors(form.otherVoter) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <!--/span-->
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <!-- END FORM-->
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="portlet-body flip-scroll">
+
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Election Type</th>
+                                    <th class="numeric" >Election Date</th>
+                                    <th class="numeric" >Voter</th>
+                                    <th class="numeric" >Male</th>
+                                    <th class="numeric" >Female</th>
+                                    <th class="numeric" >Other</th>
+                                    <th class="numeric" >Center</th>
+                                    <th class="numeric" >Election</th>
+                                    <th class="numeric" >Location</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.created|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.electionType.name }}</td>
+                                        <td class="numeric" >{{ entity.electionDate|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.totalVoter }}</td>
+                                        <td class="numeric" >{{ entity.maleVoter }}</td>
+                                        <td class="numeric" >{{ entity.femaleVoter }}</td>
+                                        <td class="numeric" >{{ entity.otherVoter }}</td>
+                                        <td class="numeric" >{{ entity.voteCenter }}</td>
+                                        <td class="numeric" >{% if entity.currentElection == 1 %}Yes{% else %}No{% endif %}</td>
+                                        <td class="numeric" >{{ entity.location.name }}</td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                                <a href="{{ path('election_setup_edit', {'id': entity.id }) }}" data-id="{{ entity.id }}" class="btn green mini edit" ><i class="icon-edit"></i></a>
+                                                <a href="{{ path('election_setup_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                                <a data-title="{{ entity.location.name }}: {{ entity.electionDate|date('Y') }}" class="btn mini view blue" href="javascript:" data-url="{{ path('election_setup_result_generate',{'id':entity.id}) }}" ><i class="icon-eye-open"></i></a>
+                                                <a data-title="{{ entity.location.name }}: {{ entity.electionDate|date('Y') }}" class="btn mini purple" href="{{ path('election_setup_matrix', { 'id': entity.id }) }}" ><i class="icon-refresh"></i> Vote Matrix</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    $('#fos_comment_comment_body').addClass('span12');
+    $('.fos_comment_submit input[type="submit"]').addClass('btn blue');
+{% endblock %}
+
+

@@ -1,0 +1,434 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN inventory_member HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="inventory_member-title">
+                    Create new member
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('election_member') }}">Member List</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Create new member</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END inventory_member HEADER-->
+        <!-- BEGIN inventory_member CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Member Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <li><a class="btn black" href="{{ path('election_member') }}"><i class="icon-th-list"></i>&nbsp;Member</a></li>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Reference Member</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.referenceMember) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Name<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-user"></i>
+                                                        {{ form_widget(form.name) }}
+                                                        {{ form_errors(form.name) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Name BN</label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-user"></i>
+                                                        {{ form_widget(form.nameBn) }}
+                                                        {{ form_errors(form.nameBn) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="mobile">Mobile<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-phone"></i>
+                                                        {{ form_widget(form.mobile) }}
+                                                        {{ form_errors(form.mobile) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="email">Father Name<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-user"></i>
+                                                        {{ form_widget(form.fatherName) }}
+                                                        {{ form_errors(form.fatherName) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="email">Mother Name<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <div class="input-icon left">
+                                                        <i class="icon-user"></i>
+                                                        {{ form_widget(form.motherName) }}
+                                                        {{ form_errors(form.motherName) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Gender/Marital</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.gender) }}
+                                                    {{ form_widget(form.maritalStatus) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Date of Birth/Age</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.dob) }}
+                                                    {{ form_widget(form.age) }}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="span6">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Family Political Status</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.politicalStatus) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Previous Political Party</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.oldPoliticalParty) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Political Designation</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.politicalDesignation) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Religion</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.religion) }}
+                                                    {{ form_errors(form.religion) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">NID</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.nid) }}
+                                                    {{ form_errors(form.nid) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="gender">Village<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.location) }}
+                                                    {{ form_errors(form.location) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="gender">Vote Center<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.voteCenter) }}
+                                                    {{ form_errors(form.voteCenter) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="form-actions portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Member Other Information</div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Additional Mobile no</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.additionalMobileNo) }}
+                                                    {{ form_errors(form.additionalMobileNo) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Email Address</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.email) }}
+                                                    {{ form_errors(form.email) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Facebook ID</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.facebookId) }}
+                                                    {{ form_errors(form.facebookId) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Blood Group</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.bloodGroup) }}
+                                                    {{ form_errors(form.bloodGroup) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="location">Family Member</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.familyMember) }}
+                                                    {{ form_errors(form.familyMember) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="email">Education</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.education) }}
+                                                    {{ form_errors(form.education) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="email">Profession</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.profession) }}
+                                                    {{ form_errors(form.profession) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" >Profile Picture</label>
+                                            <div class="controls">
+                                                <div data-provides="fileupload" class="fileupload fileupload-new" style="text-align: center">
+                                                    <div  class="fileupload-new thumbnail">
+                                                        {% if(entity.webPath) %}
+                                                            <img class="fileupload-preview fileupload-exists" alt="" src="{{ image(entity.webPath).resize(250,150) }}">
+                                                        {% else %}
+                                                            <img alt="" src="http://www.placehold.it/250x150/EFEFEF/AAAAAA&amp;text=no+image">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div  class="fileupload-preview fileupload-exists thumbnail"></div>
+                                                    <div>
+                                            <span class="btn btn-file">
+                                                <span class="fileupload-new blue btn">Select image</span>
+                                                <span class="fileupload-exists">Change</span>
+                                                {{ form_widget(form.file) }}
+                                                {{ form_errors(form.file) }}
+                                            </span>
+                                                        <a data-dismiss="fileupload" class="btn fileupload-exists" href="#">Remove</a>
+                                                    </div>
+                                                </div>
+                                                Remove Image {{ form_widget(form.removeImage) }}
+                                                {{ form_errors(form.removeImage) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="gender">Address</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.address) }}
+                                                    {{ form_errors(form.address) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="gender">Postal Code</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.postalCode) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" for="gender">Biography</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.biography) }}
+                                            {{ form_errors(form.biography) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <label class="control-label" for="gender">Remark/Comment</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.remark) }}
+                                            {{ form_errors(form.remark) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <!--/span-->
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save & Continue</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <!-- END FORM-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<style>
+    .fileupload .btn {
+        padding: 4px 15px !important;
+    }
+</style>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends ':frontend/template:ecommerce-base.html.twig' %}
+{% block body %}
+    <section class="siteBgColor">
+        <div class="clearfix"></div>
+        {% if globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'flat-left'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-6">
+                        <ul class="simple-breadcrumb-left ultra-breadcrumb">
+                            <li class=""><a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}">Home</a></li>
+                            {% if category is defined and category is not empty %}
+                                <li><a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a></li>
+                                <li class="active"><a href="javascript:">{{ categoryName }}</a></li>
+                            {% else %}
+                                <li class="active"><a href="javascript:">{{ menu.menu }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ categoryName }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                    </div>
+                </div>
+            </div>
+        {% elseif globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'flat-right'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-6">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ categoryName }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="simple-breadcrumb-right ultra-breadcrumb">
+                            {% if category is defined and category is not empty %}
+                                <li class="active"><a href="javascript:">{{ categoryName }}</a></li>
+                                <li><a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a></li>
+                            {% else %}
+                                <li class="active"><a href="javascript:">{{ menu.menu }}</a></li>
+                            {% endif %}
+                            <li class=""><a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}">Home</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% elseif globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'left'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-12 text-left">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ categoryName }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                        <p>
+                            <a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}"><span class="glyphicon glyphicon-home"></span> Home</a> &nbsp;&nbsp;<i class="fa fa-angle-right"></i>
+                            {% if category is defined and category is not empty %}
+                                <a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+                                {{ categoryName }}
+                            {% else %}
+                                {{ menu.menu }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% elseif globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'center'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-12 text-center">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ categoryName }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                        <p>
+                            <a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}"><span class="glyphicon glyphicon-home"></span> Home</a> &nbsp;&nbsp;<i class="fa fa-angle-right"></i>
+                            {% if category is defined and category is not empty %}
+                                <a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+                                {{ categoryName }}
+                            {% else %}
+                                {{ menu.menu }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-top')  %}
+            {% render controller("FrontendBundle:EcommerceWidget:featureTemplateWidget",{'globalOption':globalOption.id,'menu': menu.id,'position':'body-top'}) %}
+        {% endif %}
+        {% if menu.featureWidgets is defined and menu.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-top') %}
+            <div class="container" >
+                {% render controller("FrontendBundle:WebsiteWidget:featureWidget",{'globalOption':globalOption.id, 'menu': menu.id,'position':'body-top'}) %}
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
+        <section>
+            <div class="container " >
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'left' %}
+                    <div class="col-md-3 " >
+                        {% if globalOption.ecommerceConfig.titleBar == "top" or  globalOption.ecommerceConfig.titleBar == "both" %}
+                            <div class="row sidebar-top">
+                                <div class="col-md-12 paginate">
+                                    <div class="btn-group pull-left">
+                                        <div class="product-title"><span class="glyphicon glyphicon-filter"></span>&nbsp;REFINE</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-md-9 {% else %}col-md-12 {% endif %}">
+                    {% if globalOption.ecommerceConfig.titleBar == "top" or  globalOption.ecommerceConfig.titleBar == "both" %}
+                        <div class="row paginate">
+                            <div class="col-md-8">
+                                {% if searchForm['webName'] is defined and searchForm['webName'] is not empty %}
+                                <div class="product-title"> Keyword:  {{ searchForm['webName'] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 navbar-right">
+
+                                <form class="form-inline">
+                                    <div class="form-group paginate-form-group">
+                                        <label for="exampleInputName2">Sort By: </label>
+                                        {% set sortBy = app.request.get('sortBy') %}
+                                        <select name="sortBy" id="sortBy" class="input-selector" onchange='this.form.submit()' >
+                                            <option value="">-- Sorting by --</option>
+                                            <option {% if sortBy == 'product.name=?=ASC'  %} selected="selected" {% endif %} value="product.name=?=ASC">Name (A - Z)</option>
+                                            <option {% if sortBy == 'product.name=?=DESC'  %} selected="selected" {% endif %} value="product.name=?=DESC">Name (Z - A)</option>
+                                            <option {% if sortBy == 'categoryName=?=ASC'  %} selected="selected" {% endif %} value="categoryName=?=ASC">Category (A - Z)</option>
+                                            <option {% if sortBy == 'categoryName=?=DESC'  %} selected="selected" {% endif %} value="categoryName=?=DESC">Category (Z - A)</option>
+                                            <option {% if sortBy == 'brandName=?=ASC'  %} selected="selected" {% endif %} value="brandName=?=ASC">Brand (A - Z)</option>
+                                            <option {% if sortBy == 'brandName=?=DESC'  %} selected="selected" {% endif %} value="brandName=?=DESC">Brand (Z - A)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=ASC'  %} selected="selected" {% endif %} value="product.salesPrice=?=ASC">Price (Low &gt; High)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=DESC'  %} selected="selected" {% endif %} value="product.salesPrice=?=DESC">Price (High &gt; Low)</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="paginate-top"></div>
+                    {% endif %}
+                    {% if globalOption.ecommerceConfig.paginationShow == "top" or globalOption.ecommerceConfig.paginationShow == "both"  %}
+                        <div class="row" style="margin-bottom: 15px">
+                            <div class="col-md-12">  <div class="pull-right"> {{ knp_pagination_render(pagination) }} </div> </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'right' %}
+                    <div class="col-md-3" >
+                        {% if globalOption.ecommerceConfig.titleBar == "top" or  globalOption.ecommerceConfig.titleBar == "both" %}
+                            <div class="row sidebar-top">
+                                <div class="col-md-12 paginate">
+                                    <div class="btn-group pull-left">
+                                        <div class="product-title"><span class="glyphicon glyphicon-filter"></span>&nbsp;REFINE RESULTS</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="pagination">
+            <div class="container ">
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'left' %}
+                    <div class="col-md-3" data-match-height="body-content" >
+                        {{ include('@Frontend/Template/Desktop/'~globalOption.siteSetting.theme.folderName~'/sidebar.html.twig')}}
+                    </div>
+                {% endif %}
+
+                <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-md-9 {% else %} col-md-12 {% endif %}" data-match-height="body-content"   >
+                    <section class="grid-products">{{ entities|raw }}</section>
+                </div>
+                <div class="clearfix"></div>
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'right' %}
+                    <div class="col-md-3" data-match-height="body-content" >
+                        {{ include('@Frontend/Template/Desktop/'~globalOption.siteSetting.theme.folderName~'/sidebar.html.twig')}}
+                    </div>
+                {% endif %}
+                <div class="clearfix"></div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section>
+            <div class="container " >
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'left' %}
+                    <div class="col-md-3" >&nbsp;</div>
+                {% endif %}
+
+                <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-md-9 {% else %}col-md-12 {% endif %}">
+                    {% if globalOption.ecommerceConfig.titleBar == "bottom" or  globalOption.ecommerceConfig.titleBar == "both" %}
+
+                        <div class="row paginate">
+                            <div class="col-md-6">
+                                <div class="btn-group pull-left">
+                                    <div style="float: right">
+                                        <button type="button" class="btn btn-cookie {% if cookieVal != 'faThLarge' %} btn-pagination {% else %} btn-pagination-active {% endif %}" id="faThLarge"
+                                                data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cookie_base_list') }}">
+                                            <i class="fa fa-th"></i></button>
+
+                                        <button type="button" class="btn btn-cookie {% if cookieVal != 'list-line' %} btn-pagination {% else %} btn-pagination-active {% endif %}" id="list-line"
+                                                data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cookie_base_list') }}">
+                                            <i class="fa fa-th-list"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 navbar-right">
+
+                                <form class="form-inline">
+                                    <div class="form-group paginate-form-group">
+                                        <label for="exampleInputName2">Sort By: </label>
+                                        {% set sortBy = app.request.get('sortBy') %}
+                                        <select name="sortBy" id="sortBy" class="input-selector" onchange='this.form.submit()'>
+                                            <option value="">-- Sorting by --</option>
+                                            <option {% if sortBy == 'product.name=?=ASC'  %} selected="selected" {% endif %} value="product.name=?=ASC">Name (A - Z)</option>
+                                            <option {% if sortBy == 'product.name=?=DESC'  %} selected="selected" {% endif %} value="product.name=?=DESC">Name (Z - A)</option>
+                                            <option {% if sortBy == 'brandName=?=ASC'  %} selected="selected" {% endif %} value="brandName=?=ASC">Brand (A - Z)</option>
+                                            <option {% if sortBy == 'brandName=?=DESC'  %} selected="selected" {% endif %} value="brandName=?=DESC">Brand (Z - A)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=ASC'  %} selected="selected" {% endif %} value="product.salesPrice=?=ASC">Price (Low &gt; High)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=DESC'  %} selected="selected" {% endif %} value="product.salesPrice=?=DESC">Price (High &gt; Low)</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'right' %}
+                    <div class="col-md-3 sidebar-top" >&nbsp;</div>
+                {% endif %}
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        {% if globalOption.ecommerceConfig.paginationShow == "bottom" or  globalOption.ecommerceConfig.paginationShow == "both" %}
+            <section>
+                <div class="container " >
+                    <div class="col-md-12">
+                        <div class="paginate-footer"></div>
+                        <div class="row" >
+                            {% if app.request.get('page') is not empty %}
+                                {% set page = app.request.get('page') %}
+                            {% else %}
+                                {% set page = 1 %}
+                            {% endif %}
+                            <div class="col-md-3  navbar-left" style="line-height: 35px"><a href="javascript:">Total no of products: {{ pagination.getTotalItemCount }} out of {{ page * pagination|length }}</a></div>
+                            <div class="col-md-9">
+                                <div class="pull-right">
+                                    {{ knp_pagination_render(pagination) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+        <div class="clearfix"></div>
+        {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-bottom')  %}
+            {% render controller("FrontendBundle:EcommerceWidget:featureTemplateWidget",{'globalOption':globalOption.id,'menu': menu.id,'position':'body-bottom'}) %}
+        {% endif %}
+        {% if menu.featureWidgets is defined and menu.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-bottom') %}
+            <div class="container">
+                {% render controller("FrontendBundle:WebsiteWidget:featureWidget",{'globalOption':globalOption.id, 'menu': menu.id,'position':'body-bottom'}) %}
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
+        <!-- Modal -->
+    </section>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@FrontendBundle/Resources/public/template/desktop/css/product.css'
+    '@FrontendBundle/Resources/public/template/desktop/css/product-template.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@FrontendBundle/Resources/public/template/desktop/js/ecommerce.js'
+    '@FrontendBundle/Resources/public/template/desktop/js/owlcarousel.js'
+    '@FrontendBundle/Resources/public/template/desktop/js/cart.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    {% set  sliderItems = globalOption.ecommerceConfig.owlProductColumn  %}
+    productSliderOwl({{ sliderItems }});
+{% endblock %}

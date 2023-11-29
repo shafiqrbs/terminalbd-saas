@@ -1,0 +1,486 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN category HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="category-title">
+                    Guest Invoice #  <strong>{{ entity.invoice }}</strong>
+                    <span class="pull-right">
+                        <a href="javascript:" data-title="{{ "now"|date("d-F-Y") }} Booking Overview" id="booking"  class="btn yellow"><i class="icon-building"></i> Booking Overview</a>
+                    </span>
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('hotel_invoice') }}">Guest Invoice</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Guest Invoice</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END category HEADER-->
+        <!-- BEGIN category CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Add Room Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn black" href="{{ path('hotel_invoice') }}"><i class="icon-th-list"></i> Invoice</a>
+                                <a class="btn red" href="{{ path('hotel_invoice_new') }}"><i class="icon-plus-sign"></i> New Invoice</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        <div class="row-fluid" style="background:#f9f9f9;">
+                            <form class="" id="stockInvoice" name="stockInvoice" action="{{ path('hotel_invoice_particular_add',{'invoice':entity.id}) }}" method="post">
+                                <div class="clearfix">&nbsp;</div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+
+                                        <div class="row-fluid particular-info" >
+                                            <div class="span3">
+                                                <div class="controls">
+                                                    <div class="input-prepend">
+                                                        <span class="add-on"><i class="icon-calendar"></i></span><input type="text" class="m-wrap span12" name="reservation" id="reservation" value="{{ "now"|date('d-m-Y') }} To {{ "tomorrow"|date('d-m-Y') }}" />
+                                                        <input type="hidden" name="startDate" id="startDate" value="{{ "now"|date('Y-m-d') }}">
+                                                        <input type="hidden" name="endDate" id="endDate" value="{{ "tomorrow"|date('Y-m-d') }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="span6" id="room-load">
+                                                <select id="particular" name="particular"  class="span12 m-wrap select2">
+                                                    <option value="">--- Select Hotel Room/Package ---- </option>
+                                                    {% for particular in particulars %}
+                                                        <option value="{{ particular.id }}">{% if particular.categoryName is not empty %}{{ particular.categoryName }} - {% endif %} {{ particular.name }} {% if particular.type is not empty %} - {{ particular.type }}{% endif %} => BDT. {{ particular.salesPrice }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="span3">
+                                                <div class="input-append span12" style="margin-bottom:0!important">
+                                                    <div class="input-group">
+                                                        {% set counts =[1,2,3,4,5,6,7,8,9,10] %}
+                                                        <input type="text" class="m-wrap span4 form-control input-number" id="salesPrice" name="salesPrice" placeholder="Price" value="" min="">
+                                                        <select id="adult" name="adult" class="m-wrap span4">
+                                                            <option value="">Adult</option>
+                                                            {% for count in counts  %}
+                                                                <option value="{{ count }}">{{ count }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <select id="child" name="child" class="m-wrap span4">
+                                                            <option value="">Child</option>
+                                                            {% for count in counts  %}
+                                                                <option value="{{ count }}">{{ count }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="row-fluid particular-info" >
+                                            <div class="span6" ></div>
+                                            <div class="span3">
+                                                <div class="input-icon left">
+                                                    <i class="icon-user"></i>
+                                                    <input class="m-wrap span12 search-input " style="padding-right:0!important" name="guestName" id="guestName" value=""   placeholder="Enter room member name" >
+                                                </div>
+                                            </div>
+                                            <div class="span3">
+                                                <div class="input-append span12" style="margin-bottom:0!important">
+                                                    <div class="input-group">
+                                                        <input type="text" class="m-wrap span8 form-control" id="guestMobile" name="guestMobile" placeholder="Enter mobile no" value="" min="">
+                                                        <button type="submit" class="btn blue" id="addRoom" ><i class="icon-save"></i> Add</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix">&nbsp;</div>
+                            </form>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="span12" id="particular-table">
+                                    <table class="table table-bordered table-striped table-condensed table-fixed">
+                                        <thead>
+                                        <tr>
+                                            <th class="">Si/No</th>
+                                            <th class="">Particular</th>
+                                            <th class="">Booking Date</th>
+                                            <th class="">Guest</th>
+                                            <th class="">Adult</th>
+                                            <th class="">Child</th>
+                                            <th class="">Unit Price</th>
+                                            <th class="">Days</th>
+                                            <th class="">Amount</th>
+                                            <th class=""><i class="icon-trash"></i></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="invoiceParticulars">
+                                        {% for item in entity.hotelInvoiceParticulars %}
+                                            <tr id="remove-{{ item.id }}">
+                                                <td  class="">{{ loop.index }}.</td>
+                                                <td class="">{{ item.particular }}</td>
+                                                <td class="">{{ item.startDate|date('d-m-Y') }}To{{ item.endDate|date('d-m-Y') }}</td>
+                                                <td class="">{{ item.guestName }}/{{ item.guestMobile }}</td>
+                                                <td class="">{{ item.adult }}</td>
+                                                <td class="">{{ item.child }}</td>
+                                                <td class="">{{ item.price }}</td>
+                                                <td class="">{{ item.quantity }}</td>
+                                                <td class="" id="subTotal-{{ item.id }}">{{ item.subTotal|number_format }}</td>
+                                                <td class="">
+                                                    <a id="{{ item.id }}" data-id="{{ item.id }}"  data-url="{{ path('hotel_invoice_particular_delete',{'invoice': entity.id ,'id': item.id }) }}" href="javascript:" class="btn red mini particularDelete" ><i class="icon-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="10" class="span12" style="border: 1px double #000"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="span9"><span class="pull-right"><strong>Total Amount TK.</strong> =</span></td>
+                                            <td class="span1"><strong class="subTotal">{{ entity.subTotal|number_format }}</strong></td>
+                                            <td class="span1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="span9"><span class="pull-right"><strong>Vat/Tax ({{ entity.hotelConfig.vatForHotel }}%) TK.</strong> =</span></td>
+                                            <td class="span1"><strong class="vat">{{ entity.vat|number_format }}</strong></td>
+                                            <td class="span1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="span9"><span class="pull-right"><strong>Service Charge ({{ entity.hotelConfig.serviceCharge }}%) TK.</strong> =</span></td>
+                                            <td class="span1"><strong class="serviceCharge">{{ entity.serviceCharge|number_format }}</strong></td>
+                                            <td class="span1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="span9"><span class="pull-right"><strong>Discount TK.</strong> =</span></td>
+                                            <td class="span1"><strong class="discount">{{ entity.discount|number_format }}</strong></td>
+                                            <td class="span1"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="span9"><span class="pull-right"><strong>Received TK.</strong> =</span></td>
+                                            <td class="span1"><strong class="netTotal">{{ entity.total|number_format }}</strong></td>
+                                            <td class="span1"></td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                    <div class="clearfix">&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        {{ form_start(form) }}
+                        {{ form_row(form._token) }}
+                        <div class="clearfix"></div>
+
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="form-actions portlet box blue">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="icon-reorder"></i> Guest Booking & Payment information</div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="row-fluid">
+                            <div class="span8" style="padding-right: 30px; border-right: 2px solid #0378ad" >
+                                <div class="row-fluid">
+                                    <div class="span12 guest-info">
+                                        <div class="row-fluid">
+                                            <div class="span12">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Title</span>
+                                                        <span><input type="checkbox" id="title" value="1" name="namePrefix[]"> Mr.</span>
+                                                        <span><input type="checkbox" id="title" value="2" name="namePrefix[]"> Mrs.</span>
+                                                        <span><input type="checkbox" id="title" value="3" name="namePrefix[]"> Dr.</span>
+                                                        <span><input type="checkbox" id="title" value="4" name="namePrefix[]"> Prof.</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="row-fluid">
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">First Name</span>
+                                                        <span class="pull-right">
+                                                            <input type="text" id="firstName" name="firstName" class="m-wrap span12 customer-input"  placeholder="* First name" value="">
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Last Name</span>
+                                                        <span class="pull-right">
+                                                        <input type="text" id="lastName" name="lastName" class="m-wrap span12 customer-input"  placeholder="* Last name" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="row-fluid">
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Mobile no</span>
+                                                        <span class="pull-right">
+                                                       <input type="text" id="mobile" name="mobile" class="m-wrap span12 customer-input"  placeholder="* Enter mobile no" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Email</span>
+                                                        <span class="pull-right">
+                                                        <input type="text" id="email" name="email" class="m-wrap span12 customer-input"  placeholder="Enter e-mail address" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="row-fluid">
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Profession</span>
+                                                        <span class="pull-right">
+                                                       <input type="text" id="profession" name="profession" class="m-wrap span12 customer-input"  placeholder="Enter profession" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Organization</span>
+                                                        <span class="pull-right">
+                                                        <input type="text" id="organization" name="organization" class="m-wrap span12 customer-input"  placeholder="Enter organization name" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="row-fluid">
+                                            <div class="span12">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Mailing Address</span>
+                                                        <span class="pull-right" style="width: 76.7% !important;">
+                                                        <input type="text" style="width: 100% !important;" id="address" name="address" class="m-wrap span12 customer-input"  placeholder="* Enter mailing address" value="">
+                                                </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="row-fluid">
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Location</span>
+                                                        <span class="pull-right">
+                                                       <input type="text" id="location" name="location" class="m-wrap span12 customer-input select2Location"  placeholder="Enter city/state name" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Postal Code</span>
+                                                        <span class="pull-right">
+                                                        <input type="text" id="postalCode" name="postalCode" class="m-wrap span12 customer-input "  placeholder="Enter postal code" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="row-fluid">
+                                            <div class="span12">
+                                                <div class="control-group">
+                                                    <label class="control-label" for="firstName"><span class="label">Remark</span>
+                                                        <span class="pull-right" style="width: 76.7% !important;">
+                                                        <input type="text" style="width: 100% !important;" id="remark" name="remark" class="m-wrap span12 customer-input"  placeholder="Enter reason or remarks" value="">
+                                                    </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix">&nbsp;</div>
+                            </div>
+                            <div class="span4 payment-info">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName"><span class="label">Discount Type</span> <span class="pull-right sales-right">{{ form_widget(form.discountType) }}</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName"><span class="label">Discount TK.</span> <span class="pull-right sales-right">{{ form_widget(form.discountCalculation) }}</span></label>
+                                            {# {{ form_widget(form.discount) }}#}
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName"><span id="balance" class="label">Due TK.</span> <span class="pull-right sales-right due" style="text-align:left;width:110px; font-size: 20px"  id="due" >{{ entity.due }}</span></label>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row-fluid" style="background: red;height: 54px;padding-top: 13px;">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName" style="padding-bottom: 15px"><span class="label">Receive TK.</span> <span class="pull-right sales-right">{{ form_widget(form.received) }}</span></label>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <div class="row-fluid">
+                                    <div class="span12 input-append-border">
+                                        {{ form_widget(form.transactionMethod) }}
+                                        {{ form_errors(form.transactionMethod) }}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div id="cartMethod">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="input-prepend input-append input-append-border span12">
+                                                {{ form_widget(form.cardNo) }}
+                                                {{ form_errors(form.cardNo) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12 input-append-border">
+                                            {{ form_widget(form.paymentCard) }}
+                                            {{ form_errors(form.paymentCard) }}
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12 input-append-border">
+                                            {{ form_widget(form.accountBank) }}
+                                            {{ form_errors(form.accountBank) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="bkashMethod">
+                                    <div class="row-fluid">
+                                        <div class="span12 input-append-border">
+                                            {{ form_widget(form.accountMobileBank) }}
+                                            {{ form_errors(form.accountMobileBank) }}
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="input-prepend input-append input-append-border span12">
+                                                {{ form_widget(form.paymentMobile) }}
+                                                {{ form_errors(form.paymentMobile) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="input-prepend input-append input-append-border span12">
+                                                {{ form_widget(form.transactionId) }}
+                                                {{ form_errors(form.transactionId) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row-fluid">
+                                    <div class="span12 input-append-border">
+                                        {{ form_widget(form.salesBy) }}
+                                        {{ form_errors(form.salesBy) }}
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="form-actions portlet box yellow">
+                            <div class="pull-right">
+                                <input type="hidden" class="dueAmount" name="due" id="due" value="{{ entity.due }}">
+                                <input type="hidden" name="invoiceId" id="invoiceId" value="{{ entity.id }}">
+                                <input type="hidden" class="netTotal" name="paymentTotal" id="paymentTotal" value="{{ entity.total }}">
+                                <input type="hidden" name="invoiceId" id="invoiceId" value="{{ entity.id }}" >
+                                <div class="action"> <strong>Invoice For: </strong>
+                                    {{ form_widget(form.process) }}
+                                    {{ form_errors(form.process) }}
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn blue" id="receiveBtn" ><i class="icon-print"></i>&nbsp; Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        {{ form_end(form) }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<style>
+    .sales-right input[class*="span"].m-wrap {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: right;
+    }
+</style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@HotelBundle/Resources/public/css/invoice.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@HotelBundle/Resources/public/js/invoice.js'
+    '@HotelBundle/Resources/public/js/temporary-invoice.js'
+    '@HotelBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}

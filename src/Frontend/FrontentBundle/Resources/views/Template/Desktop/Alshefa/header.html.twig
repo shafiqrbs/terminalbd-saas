@@ -1,0 +1,230 @@
+<nav class="navbar navbar-inverse ">
+    {% if globalOption.templateCustomize.topBar is not empty %}
+        <section id="top-bar" class="header-position">
+            <div class="container" >
+                <div class="row">
+                    <div class="col-md-4 text-left">
+                        <div class="box">
+                            <ul class="info-links">
+                                <li class="top-mobile">Call Us <span>{{ globalOption.templateCustomize.contactNo }}</span></li>
+                                <li>|</li>
+                                <li class="top-email"> Mail Us <span>{{ globalOption.templateCustomize.contactEmail }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center"></div>
+                    <div class=" col-md-4 text-right">
+                        <div class="box"><a href="{{ path(globalOption.subDomain ~ '_webservice_product_cart_details') }}">Checkout</a> |
+                            {% if app.user %}
+                            <a href="javascript:" data-action="{{ path(globalOption.subDomain ~ '_webservice_logout') }}"  data-toggle="tooltip" title="System Logout" class="logout btn-logout">Logout</a>
+                            {% else %}
+                            <a href="javascript:" class="top-login cartUpload">Login</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    <section id="header" class="sticky" style="margin-bottom: 8px">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="col-md-2" id="logo-area">
+                    <a class="img-logo"
+                       href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}">{% if globalOption.templateCustomize.webPath('logo') is not empty %}
+                            <img src="{{ image(globalOption.templateCustomize.webPath('logo')).resize() }}"
+                                 alt="{{ globalOption.name }}" />{% else %}{{ globalOption.name }}{% endif %}</a>
+                </div>
+                <div class="bs-example-form text-left  {% if app.user %} col-md-6 {% else %} col-md-7 {% endif %}" style="padding-right: 0!important;">
+                    {% if globalOption.templateCustomize.showSearch == 1 %}
+                        <form class="action bs-example" action="{{ path(globalOption.subDomain ~ '_webservice_product') }}"  method="get" >
+                            {% if globalOption.ecommerceConfig.searchCategory == 1 %}
+                            <div class="col-md-4 col-lg-4" >
+                                        <select class="input-selector col-md-12 col-lg-12 search-category" name="category" id="category" >
+                                            <option value="">-- Select Category --</option>
+                                            {{ categoryTree|raw }}
+                                        </select>
+                            </div>
+                            {% endif %}
+                            <div class="input-group search-box {% if globalOption.ecommerceConfig.searchCategory == 1 %} col-md-8 col-lg-8 {% else %} col-md-12 col-lg-12 {% endif %}"  >
+                                <div class="input-group col-md-12 col-lg-12">
+
+                                    <input  type="text" id="webName" name="webName"  class="form-control serarch-keyword search-field col-md-12 col-lg-12" placeholder="Product name,category,brand etc" value="{{ app.request.get('webName') }}" >
+                                    <span class="input-group-btn">
+
+                                               <button class="btn btn-group btn-group-search search-box-bg" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                    <span style="position: relative;display: inline-block">
+                                          {% if globalOption.ecommerceConfig.uploadFile == 1 %}
+                                          <span id="item-qnt" class="totalItem">{{ cart.contents|length }}</span>
+                              <a  href="{{ path(globalOption.subDomain ~ '_webservice_product_cart_details') }}" class="btn btn-upload"> <i  class="fa fa-upload"></i> Upload</a></span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="{% if app.user %} col-md-4 {% else %} col-md-3 {% endif %} bs-example-form" >
+                    {% if app.user %}
+                        <div style="float: left;">
+                            <ul class="nav navbar-nav" id="header-login-menu" style="background: #009b3a">
+                                <li class="dropdown">
+                                    <a href="#" style="width: 160px" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ app.user }} </a>
+                                    <ul class="dropdown-menu">
+                                        <li>  <a href="{{ path(globalOption.subDomain ~ '_domain_authentication') }}" data-toggle="tooltip" title="Go To Your Order Panel"  > Dashboard</a>
+                                        </li>
+                                        <li><a href="{{ path(globalOption.subDomain ~ '_webservice_buyer_order') }}">Order</a></li>
+                                        <li><a href="{{ path(globalOption.subDomain ~ '_webservice_buyer_preorder') }}">Pre-order</a></li>
+                                        <li><a href="#"></a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="javascript:" data-action="{{ path(globalOption.subDomain ~ '_webservice_logout') }}"  data-toggle="tooltip" title="System Logout" class="logout btn-logout" >Sign Out <span class="fa fa-sign-out pull-right" style="margin-top: 4px"></span></a></li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <div class="attr-nav">
+                        {% if  globalOption.templateCustomize.topBarContent is not empty %}
+                            {{  globalOption.templateCustomize.topBarContent|raw }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if globalOption.ecommerceConfig.menuType == 'Mega' or globalOption.ecommerceConfig.menuType == 'Dropdown' %}
+        <div class="clearfix"></div>
+        <section id="menu-bar" >
+            {% set template = globalOption.siteSetting.theme.folderName|lower %}
+
+            <div class="container">
+                <div class="col-md-3" >
+                    <div class="category-list">
+                        <div class="box-category-heading">
+                            <div class="box-category">
+                                <span class="heading-img"></span>Shop By Top Categories
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9" >
+                    <nav id="header-menu">
+                        <ul>
+                            {% for  menu in globalOption.ecommerceMenus  %}
+                                {% if menu.status == 1  %}
+                                <li><a href="{% if menu.menu is not empty %}/{{ menu.menu.slug }}{% endif %}"> {{ menu.name }}</a>
+                                    <ul>
+                                        {% if menu.childMenus is not empty %}
+                                            {% for childMenu in  menu.childMenus %}
+                                                <li><a href="/{{ childMenu.slug }}">{{ childMenu.menu }}</a></li>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if menu.features is not empty %}
+                                            <li><a href="#">Feature's</a>
+                                                <ul>
+                                                    {% for feature in  menu.features %}
+                                                        {% if feature.targetTo == 'Category' and feature.category is not empty %}
+                                                            {% set path = path(globalOption.subDomain ~ '_webservice_product_category',{'category':feature.category.slug}) %}
+                                                        {% elseif feature.targetTo == 'Promotion' and feature.promotion is not empty %}
+                                                            {% set path = path(globalOption.subDomain ~ '_webservice_product_promotion',{'promotion':feature.promotion.slug}) %}
+                                                        {% elseif feature.targetTo == 'Tag' and feature.tag is not empty %}
+                                                            {% set path = path(globalOption.subDomain ~ '_webservice_product_tag',{'tag':feature.tag.slug}) %}
+                                                        {% elseif feature.targetTo == 'Discount' and feature.discount is not empty %}
+                                                            {% set path = path(globalOption.subDomain ~ '_webservice_product_discount',{'discount':feature.discount.slug}) %}
+                                                        {% elseif feature.targetTo == 'Brand' and feature.brand is not empty %}
+                                                            {% set path = path(globalOption.subDomain ~ '_webservice_product_brand',{'brand':feature.brand.slug}) %}
+                                                        {% elseif feature.targetTo == 'Page' and feature.menu is not empty %}
+                                                            {% set path = path(globalOption.subDomain ~ '_webservice_module',{'module':feature.menu.slug}) %}
+                                                        {% else %}
+                                                            {% set path = path(globalOption.subDomain ~ '_webservice_product') %}
+                                                        {% endif %}
+                                                        <li><a href="{{ path }}">{{ feature.name }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                        {% if menu.promotions is not empty %}
+                                            <li><a href="#">Promotion's</a>
+                                                <ul>
+                                                    {% for promotion in  menu.promotions %}
+                                                        <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product',{'promotion':promotion.slug}) }}">{{ promotion.name }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                        {% if menu.discounts is not empty %}
+                                            <li><a href="#">Discount Offer's</a>
+                                                <ul>
+                                                    {% for discount in  menu.discounts %}
+                                                        <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product',{'discount':discount.slug}) }}">{{ discount.name }}&nbsp;{{ discount.type|capitalize }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+
+                                        {% endif %}
+                                        {% if menu.tags is not empty %}
+                                            <li><a href="#">Popular Tag's</a>
+                                                <ul>
+                                                    {% for tag in  menu.tags %}
+                                                        <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product',{'tag':tag.slug}) }}">{{ tag.name }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                        {% if menu.categories is not empty %}
+                                            {% render controller("FrontendBundle:EcommerceWidget:returnSimpleCategoryMenu",{categories: menu.categories}) %}
+                                        {% endif %}
+                                        {% if menu.brands is not empty %}
+                                            {% for brand in menu.brands %}
+                                                <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'brand' : brand.slug}) }}">{{ brand.name }}</a></li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="verticle-menu category-list moremenu">
+                        <div class="category-box">
+                            <div class="home-category widget_product_categories">
+                                <h3 class="widget-title">Top Categories</h3>
+                                {% render controller("FrontendBundle:EcommerceWidget:returnProductFeatureCategory",{'globalOption':globalOption.id,'menu':menu.id}) %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+    {% endif %}
+    <div class="clearfix"></div>
+    {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('header')  %}
+        {% render controller("FrontendBundle:EcommerceWidget:featureTemplateWidget",{'globalOption':globalOption.id,'menu': menu.id,'position':'header'}) %}
+    {% endif %}
+    {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('header')  %}
+        {% render controller("FrontendBundle:WebsiteWidget:featureWidget",{'globalOption':globalOption.id, 'menu': menu.id,'position':'header'}) %}
+    {% endif %}
+</nav>
+<style>
+    .box-category-heading:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 30px;
+        right: auto;
+        top: auto;
+        bottom: -10px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 10px 0 10px;
+        border-color: #E12454 transparent transparent transparent;
+    }
+</style>
+

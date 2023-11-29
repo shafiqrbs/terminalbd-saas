@@ -1,0 +1,538 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN inventory_damage HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="inventory_damage-title">
+                    Manage Pre-order Item
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('preorder',{'shop':globalOption.slug}) }}">Manage Pre-order Item</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Pre-order new/edit</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="portlet box green">
+
+            <div class="portlet-title">
+                <div class="caption"><i class="icon-reorder"></i>Manage Pre-order Information</div>
+                <div class="actions">
+                    <div class="btn-group">
+                        {% if entity.process == 'created'  %}
+                        <a class="btn blue confirm" data-url="{{ path('preorder_approve',{'shop':globalOption.slug,id:entity.id}) }}" ><i class="icon-shopping-cart"></i> Checkout</button> </a>
+                       {% endif %}
+                        <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="icon-cogs"></i>&nbsp;Tools
+                            <i class="icon-tasks"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="{{ path('preorder_new',{'shop':globalOption.slug}) }}"><i class="icon-plus-sign"></i>&nbsp; Create</a></li>
+                            <li><a href="{{ path('preorder',{'shop':globalOption.slug}) }}"><i class="icon-th-list"></i>&nbsp;Lists</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% if entity.process == 'created'  %}
+            <div class="portlet-body form">
+                {% include('flash-message.html.twig')  %}
+                <!-- BEGIN FORM-->
+                {{ form_start(form) }}
+                {{ form_row(form._token) }}
+                <div class="row-fluid">
+                    <div class="span9">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Item name</label>
+                                    <div class="controls">
+                                        <div class="input-icon left">
+                                            <i class="icon-font"></i>
+                                            {{ form_widget(form.name) }}
+                                            {{ form_errors(form.name) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="url">Item url</label>
+                                    <div class="controls">
+                                        <div class="input-icon left">
+                                            <i class="icon-link"></i>
+                                            {{ form_widget(form.url) }}
+                                            {{ form_errors(form.url) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="quantity">Quantity</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.quantity) }}
+                                        {{ form_errors(form.quantity) }}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label" for="unitCurrency">Currency</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.currencyType) }}
+                                        {{ form_errors(form.currencyType) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label" for="unitPrice">Unit Price</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.unitPrice) }}
+                                        {{ form_errors(form.unitPrice) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="control-group">
+                            <label class="control-label" for="notes">Details</label>
+                            <div class="controls">
+                                {{ form_widget(form.details) }}
+                                {{ form_errors(form.details) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"><br/></div>
+                <!--/span-->
+                <div class="form-actions portlet box grey">
+                    <div class="pull-right">
+                        <button type="submit" value="" class="btn green"><i class="icon-plus"></i> Add Product</button>
+                    </div>
+                </div>
+                <div class="clearfix"><br/> </div>
+                {{ form_end(form) }}
+                <!-- END FORM-->
+            </div>
+            {% endif %}
+            <div class="portlet-body form">
+                <div class="row-fluid">
+                    <div class="span4">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <label><strong>Bill Overview</strong></label>
+                                <ul class="unstyled" >
+                                    <li><strong>Invoice</strong>:#&nbsp;{{ entity.invoice }}</li>
+                                    <li><strong>Grand Total</strong>:&nbsp;{{ entity.grandTotalAmount|number_format }}</li>
+                                    <li><sub>Grand Total(Total,Shipping,Tax,Vat Etc)</sub></li>
+                                    <li><strong>Pre-paid</strong>:&nbsp;{{ entity.prePaidAmount|number_format }}</li>
+                                    <li><strong>Paid</strong>:&nbsp;{{ entity.paidAmount|number_format }}</li>
+                                    {% if entity.paidAmount <  entity.grandTotalAmount and entity.dueAmount > 0 %}
+                                        <li><strong>Due</strong>:&nbsp;{{ entity.dueAmount|number_format }}</li>
+                                    {% elseif entity.paidAmount >  entity.grandTotalAmount and entity.returnAmount > 0 %}
+                                        <li><strong>Return</strong>:&nbsp;{{ entity.returnAmount|number_format }}</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <label><strong>Payment Details</strong></label>
+                                <ul class="unstyled" >
+                                    {% if entity.cashOnDelivery == 1 %}
+                                        <li><strong>Payment Method</strong>:&nbsp;Cash On Delivery</li>
+                                    {% endif %}
+                                    <li><strong>Shipping Method</strong>:&nbsp;{{ entity.delivery }}</li>
+                                    <li><strong>Delivery Date</strong>:&nbsp;{{ entity.deliveryDate|date('d-m-Y') }}</li>
+                                    <li><strong>Process</strong>:&nbsp;<strong>{{ entity.process|capitalize }}</strong></li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <label><strong>{{ entity.delivery|capitalize }} Address</strong></label>
+                                <ul class="unstyled" >
+                                    <li><strong>Name</strong>:&nbsp;{{ entity.createdBy.profile.name }}</li>
+                                    <li><strong>Mobile</strong>:&nbsp;{{ entity.createdBy.profile.mobile }}</li>
+                                    <li><strong>Location</strong>:&nbsp;{{ entity.createdBy.profile.location.name }}</li>
+                                    <li>{{ entity.address }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body flip-scroll">
+                    <table class="table table-bordered table-striped table-condensed flip-content ">
+                        <thead class="flip-content ">
+                        <tr class="head-green">
+                            <td>&nbsp;&nbsp;<i class="icon-list"></i></td>
+                            <th class="numeric" >Name</th>
+                            <th class="numeric" >Quantity</th>
+                            <th class="numeric" >Currency</th>
+                            <th class="numeric" >Unit Price</th>
+                            <th class="numeric" >Sub-Total</th>
+                            <th class="numeric" >Convert Rate(BDT)</th>
+                            <th class="numeric" >Convert Sub-Total</th>
+                            <th class="numeric" >Tax&Shipping</th>
+                            <th class="numeric" >Convert Total</th>
+                            <th class="numeric" >Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in entity.preOrderItems %}
+                            <tr id="remove-{{ item.id }}">
+                                <td>
+                                    {% if item.details %}
+                                        <span class="badge badge-warning toggle badge-custom" id="{{ item.id  }}" ><span>[+]</span></span>
+                                    {% endif %}
+                                </td>
+                                <td class="numeric" ><a target="_blank" href="{{ item.url }}"> {{ item.name|truncate(50) }}</a></td>
+                                <td class="numeric" >
+                                    {{ item.quantity }}</td>
+                                <td class="numeric">{{ item.currencyType|capitalize }}</td>
+                                <td class="numeric">{{ item.unitPrice }}</td>
+                                <td class="numeric">={{ item.subTotal|number_format }}</td>
+                                <td class="numeric">{{ item.convertRate }}</td>
+                                <td class="numeric">={{ item.convertSubTotal|number_format }}</td>
+                                <td class="numeric">{{ item.shippingCharge }}</td>
+                                <td class="numeric" >={{ item.convertTotal|number_format }}</td>
+                                <td class="numeric" >
+                                    {% set arr = {'created':'created','wfc':'wfc'} %}
+                                    {% if entity.process  in  arr|keys and item.status == 0  %}
+                                        <a title="Are you sure went to delete ?" data-id="{{ item.id }}" data-url="{{ path('preorder_item_delete',{'shop':globalOption.slug,'preOrder':entity.id,'id':item.id}) }}" class="btn red mini remove" ><i class="icon-trash"></i></a>
+                                    {% endif %}
+                                    {% if item.status == 1 %}
+                                        <a class="btn  mini green" ><i class=" icon-thumbs-up"></i> Accept</a>
+                                    {% elseif item.status == 2 %}
+                                        <a class="btn  mini yellow " ><i class="icon-thumbs-down"></i> Rejected</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr id="show-{{ item.id }}" class="showing-overview">
+                                <td colspan="9">{{ item.details }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr>
+                            <td colspan="11"><br/></td>
+                        </tr>
+                        <tr>
+                            <td class="numeric" colspan="9" ><span class="pull-right">Total Amount</span></td>
+                            <td class="numeric" >=&nbsp;{{ entity.totalAmount|number_format }}</td>
+                            <td class="numeric" ></td>
+                        </tr>
+                        <tr>
+                            <td class="numeric" colspan="9" ><span class="pull-right">Shipping & Tax</span></td>
+                            <td class="numeric" >=&nbsp;{{ entity.totalShippingCharge|number_format }}</td>
+                            <td class="numeric" ></td>
+                        </tr>
+                        {% if entity.delivery != 'pickup'  %}
+                            <tr>
+                                <td class="numeric" colspan="9" ><span class="pull-right">Delivery Charge</span></td>
+                                <td class="numeric">=&nbsp;{{ entity.deliveryCharge|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+                        {% endif %}
+
+                        {% if entity.ecommerceConfig.vatEnable == 1 %}
+                            <tr>
+                                <td class="numeric" colspan="9" ><span class="pull-right">Vat & Tax</span></td>
+                                <td class="numeric">=&nbsp;{{ entity.vat }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+                        {% endif %}
+                            <tr>
+                                <td class="numeric" colspan="9" ><span class="pull-right">Discount Amount</span></td>
+                                <td class="numeric"><strong>=&nbsp;{{  entity.discountAmount|number_format }}</strong></td>
+                                <td class="numeric" ></td>
+                            </tr>
+                            <tr>
+                                <td class="numeric" colspan="9" ><span class="pull-right">Delivery Charge</span></td>
+                                <td class="numeric"><strong>=&nbsp;{{  entity.deliveryCharge|number_format }}</strong></td>
+                                <td class="numeric" ></td>
+                            </tr>
+                        <tr>
+                            <td class="numeric" colspan="9" ><span class="pull-right">Grand Total</span></td>
+                            <td class="numeric"><strong>=&nbsp;{{ ( entity.grandTotalAmount)|number_format }}</strong></td>
+                            <td class="numeric" ></td>
+                        </tr>
+                        <tr>
+                            <td class="numeric" colspan="9" ><span class="pull-right">Paid Amount</span></td>
+                            <td class="numeric"><strong>=&nbsp;{{ ( entity.paidAmount)|number_format }}</strong></td>
+                            <td class="numeric" ></td>
+                        </tr>
+                        {% if entity.advanceAmount  > 0 %}
+                            <tr>
+                                <td class="numeric" colspan="9" ><span class="pull-right" >Advance Amount</span></td>
+                                <td class="numeric" >=&nbsp;{{ ( entity.advanceAmount)|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+                        {% endif %}
+                        {% if entity.dueAmount  > 0 %}
+                            <tr>
+                                <td class="numeric" colspan="9" ><span class="pull-right" >Due Amount</span></td>
+                                <td class="numeric" >=&nbsp;{{ ( entity.dueAmount)|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="clearfix"> </div>
+                    {% if entity.preOrderPayments is not empty %}
+                        <div class="form-actions portlet box blue">
+                            <div class="portlet-title"><div class="caption"><i class="icon-reorder"></i>Payment Information</div></div>
+                        </div>
+                        <div class="clearfix"><br/> </div>
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                            <thead class="flip-content ">
+                            <tr class="head-green">
+                                <th class="numeric" >Date</th>
+                                <th class="numeric" >Transaction Type</th>
+                                <th class="numeric" >Payment Mobile</th>
+                                <th class="numeric" >Transaction ID</th>
+                                <th class="numeric" >Receive Mobile</th>
+                                <th class="numeric" >Receive Amount</th>
+                                <th class="numeric" >Return Amount</th>
+                                <th class="numeric" >Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for payment in entity.preOrderPayments %}
+                                <tr id="remove-{{ payment.id }}">
+                                    <td>{{ payment.updated|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ payment.transactionType }}</td>
+                                    <td class="numeric" >{{ payment.mobileAccount }}</td>
+                                    <td class="numeric" >{{ payment.transaction }}</td>
+                                    <td class="numeric" >{{ payment.accountMobileBank.name }}</td>
+                                    <td class="numeric" >{% if payment.transactionType =='Payment' %}{{ payment.amount|number_format }}{% endif %}</td>
+                                    <td class="numeric" >{% if payment.transactionType =='Return' %}{{ payment.amount|number_format }}{% endif %}</td>
+                                    <td class="numeric" >
+                                        {% if payment.status == 1  %}
+                                        <a class="btn  mini green"><i class=" icon-thumbs-up"></i> Accept</a>
+                                        {% else %}
+                                        <a class="btn  mini yellow"><i class=" icon-refresh"></i> Waiting</a>
+                                        {% endif %}
+                                        {% set postCondition = {'wfc': 'wfc' ,'created':'created'} %}
+                                        {% if entity.process in  postCondition|keys and payment.status == 0  %}
+                                            <a class="btn  mini red remove" data-url="{{ path('preorder_payment_delete',{'shop':globalOption.slug,'id':payment.id}) }}"  data-id="{{ payment.id }}" ><i class=" icon-trash"></i> Delete</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td colspan="8"><br/></td>
+                            </tr>
+                            <tr>
+                                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Grand Total </strong></span></td>
+                                <td class="numeric" >=&nbsp;{{ entity.grandTotalAmount|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+                            <tr>
+                                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Total Receive</strong></span></td>
+                                <td class="numeric" >=&nbsp;{{ entity.paidAmount|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+
+                            <tr>
+                                <td class="numeric" colspan="6" ><span class="pull-right"><strong>Due Amount</strong></span></td>
+                                <td class="numeric" >=&nbsp;{{ entity.dueAmount|number_format }}</td>
+                                <td class="numeric" ></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    <div class="clearfix"> </div>
+                    {% set arr = {'created':'created','cancel':'cancel' ,'return':'return','delivered':'delivered'} %}
+                    {% if entity.process not in  arr|keys %}
+                        <div class="form-actions portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="icon-reorder"></i>Payment Process</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="clearfix"><br/> </div>
+                    {{ form_start(paymentForm) }}
+                    {{ form_row(paymentForm._token) }}
+                    <div class="row-fluid">
+                        <div class="span10">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <div class="span4">
+                                            <div class="row-fluid">
+                                                <div class="span12">
+                                                    <div class="control-group">
+                                                        {{ form_widget(paymentForm.amount) }}
+                                                        {{ form_errors(paymentForm.amount) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span8">
+                                            <div class="row-fluid">
+                                                <div class="span12">
+                                                    <div class="control-group">
+                                                        {{ form_widget(paymentForm.accountMobileBank) }}
+                                                        {{ form_errors(paymentForm.accountMobileBank) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row-fluid">
+                                                <div class="span4">
+                                                    <div class="control-group">
+                                                        <div class="controls">
+                                                            {{ form_widget(paymentForm.mobileAccount) }}
+                                                            {{ form_errors(paymentForm.mobileAccount) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="span8">
+                                                    <div class="control-group">
+                                                        <div class="controls">
+                                                            {{ form_widget(paymentForm.transaction) }}
+                                                            {{ form_errors(paymentForm.transaction) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="span2">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <div class="controls">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid" style="margin-top: 25px">
+                                <div class="span12">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            {% if entity.process != 'created' %}
+                                            <button type="button" id="customerSubmitPayment" name="customerSubmitPayment" value="payment"  class="btn green"><i class="icon-save"></i>&nbsp;Payment</button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {{ form_end(paymentForm) }}
+                    <div class="clearfix"><br/> </div>
+
+                <div class="clearfix"> </div>
+                <div class="form-actions portlet box red">
+                    <div class="portlet-title"><div class="caption"><i class="icon-reorder"></i>Delivery Address</div></div>
+                </div>
+                <div class="clearfix"><br/> </div>
+                <div class="row-fluid">
+                        <form id="orderProcess" name="orderProcess" action="{{ path('preorder_process',{'shop':globalOption.slug,id:entity.id}) }}">
+                            <div class="span12">
+                                <select class="span11 m-wrap" name="delivery" id="delivery">
+                                    <option value="pickup" {% if entity.delivery == 'pickup'  %} selected="selected" {% endif %}>Pickup address: [ {{ entity.ecommerceConfig.pickupLocation }} ]</option>
+                                    <option value="delivery" {% if entity.delivery == 'delivery'  %} selected="selected" {% endif %} >Delivery address</option>
+                                </select>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="span10">
+                                    <input type="text" name="address" id="address" class="m-wrap span12  tooltips" data-original-title = "Enter  delivery address ie: Unit,Floor,House,Road,Area,Thana,District Etc" placeholder = "Enter  delivery address ie: Unit,Floor,House,Road,Area,Thana,District Etc" data-trigger = "hover"   value="{% if entity.delivery == 'pickup'  %}{{ entity.ecommerceConfig.pickupLocation }}{% else %}{{ entity.address }}{% endif %}" />
+                                </div>
+                                <div class="span2">
+                                    <button type="button" id="submitProcess" name="submitProcess"  data-url=""  class="btn blue"><i class="icon-save"></i>&nbsp;Save</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/> </div>
+                        </form>
+                </div>
+                <div class="clearfix"> </div>
+                <div class="form-actions portlet box yellow">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Comments Information</div>
+                    </div>
+                </div>
+                <div class="clearfix"><br/> </div>
+                {% if entity.preOrderItems is not empty %}
+                {% set paymentID = entity.globalOption.id~'-pre-order-'~entity.id %}
+                {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': paymentID } %}
+                {% endif %}
+                <div class="clearfix"><br/> </div>
+
+
+            </div>
+        </div>
+        <!-- END inventory_damage HEADER-->
+        <!-- BEGIN inventory_damage CONTENT-->
+
+    </div
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@EcommerceBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/editable.js'
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    $(".editable").editable();
+    ApproveProcess();
+
+    $('#fos_comment_comment_body').addClass('span12');
+    $('.fos_comment_submit input[type="submit"]').addClass('btn blue');
+{% endblock %}
+

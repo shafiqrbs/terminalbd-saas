@@ -1,0 +1,32 @@
+
+{% if widget.featureBrandShow == 'slider' %}
+<div class="brand-slider">
+    {% for brand in  brands  %}
+        <div class="col-md-12">
+            <div class="thumbnail feature-brand" data-match-height="feature-brand">
+                <div class="product-preview" >
+                    <a href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'brand':brand.slug}) }}">
+                        <img class="img-responsive" src="{{ image(brand.webPath).resize(150,120) }}" alt=""></a>
+                </div>
+            </div>
+            <div class="caption">
+                <a class="group inner brand-name text-center" href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'brand':brand.slug}) }}">{{ brand.name }}</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% elseif widget.featureBrandShow == 'grid' %}
+    {% for brand in  brands  %}
+        <div class="col-md-12">
+            <div class="thumbnail feature-brand" data-match-height="feature-brand">
+                <div class="product-preview" >
+                    <a href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'brand':brand.slug}) }}">
+                        <img class="img-responsive" src="{{ image(brand.webPath).resize(150,120) }}" alt=""></a>
+                </div>
+            </div>
+            <div class="caption">
+                <a class="group inner brand-name text-center" href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'brand':brand.slug}) }}">{{ brand.name }}</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

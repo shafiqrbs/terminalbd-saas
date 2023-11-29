@@ -1,0 +1,20 @@
+{% if entity.requisitionItems is not empty %}
+    {% for purchaseItem in entity.requisitionItems %}
+        <tr id="remove-purchase-item-{{ purchaseItem.id }}">
+            <td class="numeric" >{{ loop.index }}.</td>
+            <td class="numeric" >{% if purchaseItem.item.productGroup is not empty %}{{ purchaseItem.item.productGroup.name }}{% endif %}</td>
+            <td class="numeric" >{{ purchaseItem.item.name }}</td>
+            <td class="" ><input data-action="{{ path('pro_purchaserequisition_item_update',{'id':purchaseItem.id}) }}" data-id="{{ purchaseItem.id }}" class="td-inline-input-text updateItem" type="text" autocomplete = "off" name="description-{{ purchaseItem.id }}" id="description-{{ purchaseItem.id }}" value="{{ purchaseItem.name }}" /></td>
+            <td class="numeric" ><input data-action="{{ path('pro_purchaserequisition_item_update',{'id':purchaseItem.id}) }}" data-id="{{ purchaseItem.id }}" class="td-inline-input updateItem" type="text" autocomplete = "off" name="quantity-{{ purchaseItem.id }}" id="quantity-{{ purchaseItem.id }}" value="{{ purchaseItem.quantity }}" /></td>
+            <td class="numeric" ><input data-action="{{ path('pro_purchaserequisition_item_update',{'id':purchaseItem.id}) }}" data-id="{{ purchaseItem.id }}" class="td-inline-input updateItem" type="text" autocomplete = "off" name="price-{{ purchaseItem.id }}" id="price-{{ purchaseItem.id }}" value="{{ purchaseItem.price }}" /></td>
+            <td class="numeric" id="subTotal-{{ purchaseItem.id }}">{{ purchaseItem.purchaseSubTotal|number_format() }}</td>
+            <td><a href="javascript:" data-url="{{ path('pro_purchaserequisition_item_delete',{'purchase':entity.id ,'id':purchaseItem.id }) }}" class="btn red mini purchaseItemDelete"><i class="icon-trash"></i> Delete</a> </td>
+        </tr>
+    {% endfor %}
+{% endif %}
+<tr>
+    <td colspan="4" class="numeric"><strong class=" pull-right">Total Quantity</strong></td>
+    <td class="numeric" ><strong>{{ entity.totalQnt }}</strong></td>
+    <td class="numeric" ><strong class=" pull-right">Total Amount</strong></td>
+    <td class="numeric" colspan="4" ><strong>{{ entity.totalAmount|number_format }}</strong></td>
+</tr>

@@ -1,0 +1,120 @@
+hotel_restaurantinvoice:
+    path:     /
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:index" }
+
+hotel_restaurantinvoice_show:
+    path:     /{id}/show
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:show" }
+
+hotel_restaurantinvoice_new:
+    path:     /new
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:new" }
+
+hotel_restaurantinvoice_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:edit" }
+
+hotel_restaurantparticular_search:
+    path:     /{id}/particular-search
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:particularSearch" }
+    options:
+            expose: true
+
+hotel_restaurantinvoice_particular_search:
+    path:     /invoice-particular-search
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:autoParticularSearch" }
+    options:
+            expose: true
+
+hotel_restaurantinvoice_particular_add:
+    path:     /{invoice}/particular-add
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:addParticular" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_restaurantinvoice_discount_update:
+    path:     /dicount-update
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:invoiceDiscountUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_restaurantinvoice_banner_sign:
+    path:     /{invoice}/stock-banner-sign
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:bannerSign" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_restaurantinvoice_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:update" }
+    methods:  [POST, PUT]
+
+hotel_restaurantinvoice_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:delete" }
+
+hotel_restaurantinvoice_reverse_show:
+    path:     /{id}/invoice-reverse-show
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:InvoiceReverseShow" }
+
+
+hotel_restaurantinvoice_particular_delete:
+    path:     /{invoice}/{id}/particular-delete
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:invoiceParticularDelete" }
+
+hotel_restaurantinvoice_print:
+    path:     /{id}/print
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:invoicePrint" }
+
+hotel_restaurantinvoice_chalan:
+    path:     /{id}/chalan
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:invoiceChalan" }
+
+
+
+hotel_restaurantinvoice_empty_delete:
+    path:     /delete/empty-invoice
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:deleteEmptyInvoice" }
+
+
+hotel_restaurantinvoice_item_update:
+    path:     /sales-item-update
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:invoiceItemUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_restaurantinvoice_payment:
+    path:     /{id}/payment
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:payment" }
+
+
+hotel_restaurantinvoice_payment_receive:
+    path:     /{id}/payment-receive
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:paymentReceive" }
+    methods:  [POST, PUT]
+    options:
+            expose: true
+
+hotel_restaurantinvoice_payment_delete:
+    path:     /{id}/payment-delete
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:paymentDelete" }
+
+hotel_restaurantinvoice_payment_print:
+    path:     /{id}/payment-print
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:paymentPrint" }
+
+hotel_restaurantinvoice_checkout:
+    path:     /{id}/check-out
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:checkout" }
+
+
+hotel_restaurantinvoice_payment_approve:
+    path:     /{id}/payment-approved
+    defaults: { _controller: "HotelBundle:RestaurantInvoice:paymentApprove" }
+    options:
+            expose: true
+

@@ -1,0 +1,117 @@
+political_committee:
+    resource: "@ElectionBundle/Resources/config/routing/politicalcommittee.yml"
+    prefix:   /political-committee
+
+election_particular:
+    resource: "@ElectionBundle/Resources/config/routing/particular.yml"
+    prefix:   /setting-option
+
+election_report:
+    resource: "@ElectionBundle/Resources/config/routing/report.yml"
+    prefix:   /report
+
+election_event:
+    resource: "@ElectionBundle/Resources/config/routing/event.yml"
+    prefix:   /campaign
+
+election_setup:
+    resource: "@ElectionBundle/Resources/config/routing/setup.yml"
+    prefix:   /election-setup
+
+election_candidate:
+    resource: "@ElectionBundle/Resources/config/routing/candidate.yml"
+    prefix:   /election-candidate
+
+election_votecenter:
+    resource: "@ElectionBundle/Resources/config/routing/votecenter.yml"
+    prefix:   /vote-center
+
+election_sms:
+    resource: "@ElectionBundle/Resources/config/routing/sms.yml"
+    prefix:   /sms
+
+election_campaign:
+    resource: "@ElectionBundle/Resources/config/routing/campaign.yml"
+    prefix:   /campaign-analysis
+
+election_committee:
+    resource: "@ElectionBundle/Resources/config/routing/committee.yml"
+    prefix:   /committee
+
+election_organizationcommittee:
+    resource: "@ElectionBundle/Resources/config/routing/organizationcommittee.yml"
+    prefix:   /organization-committee
+
+election_location:
+    resource: "@ElectionBundle/Resources/config/routing/location.yml"
+    prefix:   /setting-location
+
+election_member_import:
+    resource: "@ElectionBundle/Resources/config/routing/import.yml"
+    prefix:   /member-import
+
+election_member:
+    resource: "@ElectionBundle/Resources/config/routing/member.yml"
+    prefix:   /member
+
+election_voter:
+    resource: "@ElectionBundle/Resources/config/routing/voter.yml"
+    prefix:   /voter
+
+election_config:
+    resource: "@ElectionBundle/Resources/config/routing/config.yml"
+    prefix:   /config
+
+election_expenditure:
+    resource: "@ElectionBundle/Resources/config/routing/expenditure.yml"
+    prefix:   /expenditure
+
+election_expenditure_category:
+    resource: "@ElectionBundle/Resources/config/routing/expensecategory.yml"
+    prefix:   /expenditure-category
+
+election_homepage:
+    path:     /
+    defaults: { _controller: ElectionBundle:Default:index }
+
+
+election_homepage_member:
+    path:     /dashboard-member
+    defaults: { _controller: ElectionBundle:Default:memberData }
+    options:
+            expose: true
+
+
+election_homepage_voter:
+    path:     /dashboard-voter
+    defaults: { _controller: ElectionBundle:Default:voterData }
+    options:
+            expose: true
+
+
+election_homepage_votecenter:
+    path:     /dashboard-vote-center
+    defaults: { _controller: ElectionBundle:Default:voteCenterData }
+    options:
+            expose: true
+
+
+election_homepage_committee:
+    path:     /dashboard-committee
+    defaults: { _controller: ElectionBundle:Default:committeeData }
+    options:
+            expose: true
+
+election_homepage_campaign:
+    path:     /dashboard-campaign
+    defaults: { _controller: ElectionBundle:Default:campaignData }
+    options:
+            expose: true
+
+
+election_homepage_analysis:
+    path:     /dashboard-analysis
+    defaults: { _controller: ElectionBundle:Default:analysisData }
+    options:
+            expose: true
+

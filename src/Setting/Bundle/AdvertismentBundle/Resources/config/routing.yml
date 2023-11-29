@@ -1,0 +1,7 @@
+setting_advertisment_advertisment:
+    resource: "@SettingAdvertismentBundle/Resources/config/routing/advertisment.yml"
+    prefix:   /advertisment
+
+setting_advertisment_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: SettingAdvertismentBundle:Default:index }

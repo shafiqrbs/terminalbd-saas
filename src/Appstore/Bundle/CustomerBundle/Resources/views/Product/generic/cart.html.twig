@@ -1,0 +1,124 @@
+<div class="cart-inbox">
+    <div class="cart-top">Recent Buy Item's <span class="pull-right cart-top-right"><span class="btn btn-warning "><strong class="totalItem">{{ cart.contents|length }}</strong> | <strong class="cartQuantity">{{ cart.total_items }}</strong></span></span></div>
+    <table class="table">
+        {% if cart.contents is not empty %}
+            {% for product in cart.contents %}
+                <tr id="remove-{{ product.rowid }}">
+                <td colspan="2">
+                    <strong>{{ product.name }}</strong>
+                    <br>
+                    <div class="clearfix"></div>
+                    <div style="margin-top: 15px">
+                        <div class="" style="width:50%; float: left">
+                            <div class="input-append">
+                            <span class="input-group-btn">
+                            <input type="number" name="quantity[]" id="quantity-{{ product.rowid }}" class="td-inline-input" value="{{ product.quantity }}">
+                            <button type="button" class="btn mini"> x {{ product.price }} TK</button>
+                            </span>
+                            </div>
+                        </div>
+                        <div style="float:left;">
+                            <div class="input-append">
+                                <span class="input-group-btn">
+                                    <a class="btn green mini cartSubmit" href="javascript:" data-url="{{ path('order_cart_to_update',{'shop':globalOption.slug,'id':product.rowid}) }}" data-id="{{ product.rowid }}" data-price="{{ product.price }}" >Update</a> </span>
+                            </div>
+                        </div>
+                        <div style="float: right">
+                            <strong class="numeric" id="subTotal-{{ product.rowid }}">{{ (product.quantity * product.price)|number_format(2) }}</strong>
+                            <a class="cartItemRemove red" href="javascript:" data-id="{{ product.rowid }}" data-url="{{ path('order_cart_to_remove_item', { 'shop': globalOption.slug,'id':product.rowid}) }}"><i class="fa fa-remove"></i></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td style="padding-bottom: 10px; background:#eeeef3">
+                    <div class="" style="width:70%; float: left"><strong>SubTotal</strong></div>
+                    <div class="" style="float: right; width: 30%; text-align: right" ><strong class="totalAmount">{{ cart.total|number_format(2) }}</strong></div>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+    <div class="cart-footer">
+                                        <span style="float: left; width: 50%">
+                                            <a class="red cartRemove" href="javascript:"  data-url="{{ path('order_cart_to_remove',{'shop':globalOption.slug}) }}">Remove Cart <i class="icon-remove"></i></a>
+
+                                           </span>
+        <span style="float: right; width: 50%; text-align: right">
+
+                                              <a class="blue"  href="{{ path('shoppingbag_to_order',{'shop':globalOption.slug}) }}"><strong>Order Place&nbsp;<i class="m-icon-swapright"></i></strong></a>
+                                           </span>
+    </div>
+</div>
+
+<style>
+
+    .cart-inbox {
+        min-width: 223px !important;
+        max-width: 380px !important;
+        width: 310px !important;
+        background-color: #ffffff !important;
+        margin: 0 auto;
+        border: 1px solid #000;
+    }
+
+    .cart-top{
+        background-color: #debd91;
+        height: 40px;
+        line-height: 40px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        padding-left: 15px;
+
+    }
+
+    .cart-top .cart-top-right{
+        margin-right: 10px;
+        margin-top: -1px;
+    }
+
+    input[type="number"].td-inline-input {
+        height: 20px!important;
+        line-height: 13px!important;
+        font-size: 13px!important;
+        border: 2px solid #4d90fe!important;
+        width: 50px;
+        margin-bottom: 0!important;
+        padding:0!important;
+        padding-left:5px !important;
+    }
+
+    .cart-footer {
+        padding: 10px;
+        background-color: #debd91;
+        font-size: 14px;
+        font-weight: 300;
+        color: #000;
+        height: 42px;
+        padding-bottom: 15px;
+    }
+
+    .dropdown-menu.extended li .description{
+        color: #000;
+        font-size: 12px;
+        margin-left: 13px;
+        line-height: 20px;
+    }
+    .dropdown-menu.extended li .cart-left{
+        width: 80%;
+        float: left;
+    }
+    .dropdown-menu.extended li .cart-right{
+        width: 20%;
+        float: right;
+    }
+
+
+    .red{
+        color: red;
+    }
+    .blue{
+        color: #3598dc;
+    }
+
+</style>

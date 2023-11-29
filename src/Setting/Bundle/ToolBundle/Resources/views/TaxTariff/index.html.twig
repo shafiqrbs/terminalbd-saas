@@ -1,0 +1,121 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                  Tax Incidence Tariff
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('taxtariff') }}"> Tax Incidence Tariff</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#"> Tax Incidence Tariff</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Tax Incidence Tariff Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('taxtariff_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a>                 </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    {%  set sort = app.request.query.get('sort') %}
+                                    {%  set direction = app.request.query.get('direction') %}
+                                    <th class="numeric" >Created</th>
+                                    <th {% if pagination.isSorted('e.hsCode') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'HS Code', 'e.hsCode') }}{% if( direction == 'desc' and sort == 'e.hsCode') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if pagination.isSorted('e.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'Name', 'e.name') }}{% if( direction == 'desc' and sort == 'e.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if pagination.isSorted('e.customsDuty') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'CD', 'e.customsDuty') }}{% if( direction == 'desc' and sort == 'e.customsDuty') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('e.supplementaryDuty') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'SD', 'e.supplementaryDuty') }}{% if( direction == 'desc' and sort == 'e.supplementaryDuty') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('e.valueAddedTax') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'VAT', 'e.valueAddedTax') }}{% if( direction == 'desc' and sort == 'e.valueAddedTax') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('e.advanceIncomeTax') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'AIT', 'e.advanceIncomeTax') }}{% if( direction == 'desc' and sort == 'e.advanceIncomeTax') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('e.recurringDeposit') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'RD', 'e.recurringDeposit') }}{% if( direction == 'desc' and sort == 'e.recurringDeposit') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('e.advanceTradeVat') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'ATV', 'e.advanceTradeVat') }}{% if( direction == 'desc' and sort == 'e.advanceTradeVat') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+
+                                    <th {% if pagination.isSorted('e.totalTaxIncidence') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(pagination, 'TTI', 'e.recurringDeposit') }}{% if( direction == 'desc' and sort == 'e.totalTaxIncidence') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in pagination %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.hsCode }}</td>
+                                        <td class="numeric" >{{ entity.name }}</td>
+                                        <td class="numeric" >
+                                            <a class="editable" data-name="CustomsDuty" href="#"  data-url="{{ path('taxtariff_inline_update',{'id':entity.id }) }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change product quantity">{{ entity.customsDuty }}</a></td>
+                                        <td class="numeric" >
+                                            <a class="editable" data-name="SupplementaryDuty" href="#"  data-url="{{ path('taxtariff_inline_update',{'id':entity.id }) }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change product quantity">{{ entity.supplementaryDuty }}</a></td>
+                                        <td class="numeric" >
+                                            <a class="editable" data-name="ValueAddedTax" href="#"  data-url="{{ path('taxtariff_inline_update',{'id':entity.id }) }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change tariff amount"> {{ entity.valueAddedTax }}</a>
+                                           </td>
+                                        <td class="numeric" >
+                                            <a class="editable" data-name="AdvanceIncomeTax" href="#"  data-url="{{ path('taxtariff_inline_update',{'id':entity.id }) }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change tariff amount"> {{ entity.advanceIncomeTax }}</a>
+                                           </td>
+                                        <td class="numeric" >
+                                            <a class="editable" data-name="RecurringDeposit" href="#"  data-url="{{ path('taxtariff_inline_update',{'id':entity.id }) }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change tariff amount"> {{ entity.recurringDeposit }}</a>
+                                           </td>
+                                        <td class="numeric" >
+                                            <a class="editable" data-name="AdvanceTradeVat" href="#"  data-url="{{ path('taxtariff_inline_update',{'id':entity.id }) }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Change tariff amount"> {{ entity.advanceTradeVat }}</a>
+                                           </td>
+                                        <td class="numeric" >
+                                            {{ entity.totalTaxIncidence }}
+                                           </td>
+                                        <td class="numeric" >
+                                            <div class="actions">
+                                                <div class="btn-group">
+                                            <a title="" href="{{ path('taxtariff_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-pencil"></i></a>
+                                            <a title="Are you sure went to delete ?" href="{{ path('taxtariff_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center" >
+                                {{ knp_pagination_render(pagination) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

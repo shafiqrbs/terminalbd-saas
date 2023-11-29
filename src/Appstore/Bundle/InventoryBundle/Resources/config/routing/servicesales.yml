@@ -1,0 +1,76 @@
+inventory_servicesales:
+    path:     /
+    defaults: { _controller: "InventoryBundle:ServiceSales:index" }
+
+inventory_servicesales_show:
+    path:     /{id}/show
+    defaults: { _controller: "InventoryBundle:ServiceSales:show" }
+
+inventory_servicesales_add:
+    path:     /{id}/item-add
+    defaults: { _controller: "InventoryBundle:ServiceSales:add" }
+
+inventory_servicesales_new:
+    path:     /new
+    defaults: { _controller: "InventoryBundle:ServiceSales:new" }
+
+inventory_servicesales_create:
+    path:      /create
+    defaults: { _controller: "InventoryBundle:ServiceSales:create" }
+    methods:  POST
+    options:
+            expose: true
+
+inventory_servicesales_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "InventoryBundle:ServiceSales:edit" }
+
+inventory_servicesales_update:
+    path:     /{id}/update
+    defaults: { _controller: "InventoryBundle:ServiceSales:update" }
+    methods:  [POST, PUT]
+
+inventory_servicesales_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "InventoryBundle:ServiceSales:delete" }
+
+inventory_vendoritem_status:
+    path:     /{id}/web-status
+    defaults: { _controller: "InventoryBundle:ServiceSales:webStatus" }
+
+inventory_servicesales_copy:
+    path:     /{id}/item-copy
+    defaults: { _controller: "InventoryBundle:ServiceSales:itemCopy" }
+
+inventory_product_inline_discount_search:
+    path:     /inline-discount-search
+    defaults: { _controller: "InventoryBundle:ServiceSales:discountSelect" }
+    options:
+           expose: true
+
+inventory_product_inline_tag_search:
+    path:     /inline-tag-search
+    defaults: { _controller: "InventoryBundle:ServiceSales:tagSelect" }
+    options:
+           expose: true
+
+inventory_servicesales_inline_update:
+    path:     /inline-goods-update
+    defaults: { _controller: "InventoryBundle:ServiceSales:inlineItemUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+inventory_vendoritem_gallery:
+    path:     /{item}/upload
+    defaults: { _controller: "InventoryBundle:ServiceSales:uploadItemImage" }
+    options:
+           expose: true
+
+inventory_servicesales_subItem_delete:
+    path:     /{id}/sub-item-delete
+    defaults: { _controller: "InventoryBundle:ServiceSales:subItemDelete" }
+
+inventory_servicesales_itemkeyvalue_delete:
+    path:     /{id}/item-key-value-delete
+    defaults: { _controller: "InventoryBundle:ServiceSales:keyValueDelete" }

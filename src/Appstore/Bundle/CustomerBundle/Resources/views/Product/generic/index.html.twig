@@ -1,0 +1,255 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Wel Come {{ globalOption.name }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product Lists</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn blue" id="orderCart" href="javascript:" data-url="{{ path('product_cart_preview',{'shop':globalOption.slug}) }}">
+                                    <i class="icon-tasks"></i>&nbsp;Cart
+                                </a>
+                                <a class="dropdown-toggle btn purple cart" id="orderCart" href="javascript:" data-url="{{ path('product_cart_preview',{'shop':globalOption.slug}) }}">
+                                    {{ globalOption.ecommerceConfig.currency }} <span class="vsidebar">{{ cart.contents|length }} | {{ cart.total|number_format(2) }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid" >
+
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <input type="text" id="item" name="item"  class="span12 m-wrap select2Product" value="{% if searchForm.item is defined %}{{ searchForm.item }}{% endif %}"  autocomplete="off" placeholder="Enter item name ">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="category" name="category"  class="leftMargin m-wrap span12 select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}"  autocomplete="off" placeholder="Product category">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="brand" name="brand"  class="leftMargin m-wrap span12 select2Brand" value="{% if searchForm.brand is defined %}{{ searchForm.brand }}{% endif %}"  autocomplete="off" placeholder="Product brand name">
+                                        </div>
+
+                                        <div class="span3">
+                                            <div class="controls">
+                                                <div class="input-append span10">
+                                                    <input type="text" id="endDate" name="endDate"  class="span12 m-wrap date-picker" value="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% else %}End date{% endif %}  ">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    {%  set sort = app.request.query.get('sort') %}
+                                    {%  set direction = app.request.query.get('direction') %}
+                                    <th class="numeric" >Category</th>
+                                    <th {% if entities.isSorted('e.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Name', 'e.name') }}{% if( direction == 'desc' and sort == 'e.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.brand') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Brand Name', 'e.brand') }}{% if( direction == 'desc' and sort == 'e.brand') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >MRP</th>
+                                    <th class="numeric" >Sales Qnt</th>
+                                    <th class="numeric" >Unit</th>
+                                    <th class="numeric" >SubTotal</th>
+                                    <th class="numeric" >More</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >
+                                            {% if globalOption.ecommerceConfig.showCategory == 1 and entity.category is not empty %}
+                                                <a href="{{ path('order_product', {'shop': globalOption.slug,'category':entity.category.name}) }}" class="category-name pull-right"> {{ entity.category.name }}</a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric dropdown" >
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                                {{ entity.webName }}
+                                            </a>
+                                            {% if entity.webPath is not empty  %}
+                                            <ul class="dropdown-menu extended inbox">
+                                                <li>
+                                                    <p>{{ entity.webName }}</p>
+                                                </li>
+                                                <li>
+                                                    <img src="{% if entity.webPath is not empty  %}{{ image(entity.webPath).scaleResize(300,300) }}{% elseif entity.webPath is not empty  %}{{ image(entity.webPath).scaleResize(300,300) }}{% endif %}" alt="" />
+                                                </li>
+                                                <li><p class="pull-center"><strong>BDT: {{ entity.salesPrice|number_format }}</strong></p></li>
+                                            </ul>
+                                            {% endif %}
+                                        </td>
+                                        <td class="numeric" >
+                                            {% if globalOption.ecommerceConfig.showBrand == 1 and entity.brand is not empty %}
+                                                <a href="{{ path('order_product', { 'shop': globalOption.slug,'brandName':entity.brand.name}) }}" class="brand-name"> {{ entity.brand.name }}</a>
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="numeric">{{ entity.salesPrice|number_format(2) }}</td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                                <input type="text" name="quantity[]" id="quantity-{{ entity.id }}" class="td-inline-input" value="{% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %} {{ cartProducts[entity.id].quantity }} {% endif %}" max="{{ entity.maxQuantity }}" >
+                                                {% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %}           <a class="btn yellow mini cartSubmit" href="javascript:" data-url="{{ path('order_cart_to_update',{'shop':globalOption.slug,'id':cartProducts[entity.id].rowid}) }}" data-id="{{ entity.id }}" data-price="{{ entity.salesPrice }}" >Update</a> {% else %}
+                                                    <a class="btn blue mini cartSubmit" href="javascript:" data-url="{{ path('order_cart_to_item',{'shop':globalOption.slug,'id':entity.id}) }}" data-id="{{ entity.id }}" data-price="{{ entity.salesPrice }}" >Add</a>
+                                                {% endif %}
+
+                                            </div>
+                                        </td>
+                                        <td class="numeric" >{% if entity.productUnit is not empty %}{{ entity.productUnit.name }}{% endif %}</td>
+                                        <td class="numeric" id="subTotal-{{ entity.id }}" >
+                                            {% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %} {{ (cartProducts[entity.id].quantity * cartProducts[entity.id].price)|number_format(2) }} {% endif %}
+                                        </td>
+                                       <td>
+                                           <a href="javascript:" class="btn green mini toggle"  id="{{ entity.id  }}" ><i class="icon-shopping-cart"></i>&nbsp;More</a>
+                                       </td>
+                                    </tr>
+                                    <tr id="show-{{ entity.id }}" class="showing-overview remove-vendor-item-{{ entity.id }}">
+                                        <td colspan="11">
+                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                <tr>
+                                                    <td class="numeric span3" >
+                                                        <img src="{% if entity.webPath is not empty  %}{{ image(entity.webPath).scaleResize(300,300) }}{% elseif entity.webPath is not empty %}{{ image(entity.webPath).scaleResize(300,300) }}{% endif %}" alt="" />
+                                                    </td>
+                                                    <td class="numeric span4" >
+                                                        <ul class="dropdown-menu-list" >
+                                                            <li><strong>{{ entity.ecommerceConfig.currency }}&nbsp;{{ entity.salesPrice|number_format }}</strong></li>
+                                                            <li>{% if entity.productUnit is not empty %}{{ entity.productUnit.name }}{% endif %}</li>
+                                                            {% if entity.category is not empty %}<li>{{ entity.category.name }}</li>{% endif %}
+                                                            {% if entity.brand is not empty %}<li>{{ entity.brand.name }}</li>{% endif %}
+                                                            {% if entity.country is not empty %}<li>{{ entity.country.name }}</li>{% endif %}
+                                                            <li>{{ entity.content|raw }}</li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="numeric span5" >
+                                                        {% if entity.itemSubs is not empty and entity.itemSubs is defined %}
+                                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                                <thead class="flip-content ">
+                                                                <tr class="head-grey">
+                                                                    <th class="numeric" >Size</th>
+                                                                    <th class="numeric" >Price</th>
+                                                                    <th class="numeric" >Qnt</th>
+                                                                    <th class="numeric" >SubTotal</th>
+
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="purchaseItem" >
+                                                                {% for purchaseItem in  entity.itemSubs %}
+                                                                    <tr id="remove-purchase-item-{{ entity.id }}">
+                                                                        <td class="numeric" >
+                                                                            {% if purchaseItem.size %}
+                                                                                <input type="hidden" name="item" id="name-{{ purchaseItem.id }}">
+                                                                                {{ purchaseItem.size.name }} {% if purchaseItem.productUnit %}&nbsp;- {{ purchaseItem.productUnit.name }} {% endif %}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                        <td class="numeric" > {{ purchaseItem.salesPrice }}</td>
+                                                                        <td class="numeric" >
+                                                                            <div class="btn-group">
+                                                                            <input type="text" name="quantity[]" id="quantity-{{ entity.id }}" max="{{ entity.maxQuantity }}" min="{{ entity.minQuantity }}" class="td-inline-input" value="{% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %} {{ cartProducts[entity.id].quantity }} {% endif %}">
+                                                                            {% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %}           <a class="btn yellow mini cartSubmit" href="javascript:" data-url="{{ path('order_cart_to_subitem_update',{'shop':globalOption.slug,'id':cartProducts[entity.id].rowid}) }}" data-id="{{ entity.id }}" data-price="{{ entity.salesPrice }}" ><i class="icon-pencil"></i></a> {% else %}
+                                                                                <a href="javascript:" data-url="{{ path('order_cart_to_subitem',{'shop':globalOption.slug,'id':purchaseItem.id}) }}" id="{{ purchaseItem.id }}" class="btn red mini addCart" ><i class="icon-shopping-cart"></i></a> {% endif %}</div>
+                                                                        </td>
+                                                                        <td id="subItem-{{ purchaseItem.id }}"></td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                                </tbody>
+
+                                                            </table>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .td-select{
+            height: 28px!important;
+            margin: 0!important;
+            border: 1px solid #999;
+            width: 100%;
+        }
+
+    </style>
+    <style>
+        input[type="text"].td-inline-input {
+            height: 25px!important;
+            line-height: 13px!important;
+            font-size: 13px!important;
+            border: 2px solid #4d90fe!important;
+            width: 70px;
+            margin-bottom: 0!important;
+            padding:0!important;
+            padding-left:5px !important;
+        }
+        .dropdown-menu.extended li p {
+            padding: 10px;
+            background-color: #debd91;
+            margin: 0px;
+            font-size: 14px;
+            font-weight: 300;
+            color: #000;
+        }
+    </style>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@CustomerBundle/Resources/public/js/ecommerce.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+

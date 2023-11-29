@@ -1,0 +1,31 @@
+education_education:
+    resource: "@EducationBundle/Resources/config/routing/option.yml"
+    prefix:   /option
+
+education_config:
+    resource: "@EducationBundle/Resources/config/routing/config.yml"
+    prefix:   /config
+
+education_student:
+    resource: "@EducationBundle/Resources/config/routing/student.yml"
+    prefix:   /student
+
+education_particular:
+    resource: "@EducationBundle/Resources/config/routing/particular.yml"
+    prefix:   /particular
+
+education_particular_pattern:
+    resource: "@EducationBundle/Resources/config/routing/particularpattern.yml"
+    prefix:   /particular-pattern
+
+education_stock:
+    resource: "@EducationBundle/Resources/config/routing/stock.yml"
+    prefix:   /stock
+
+education_fees:
+    resource: "@EducationBundle/Resources/config/routing/fees.yml"
+    prefix:   /fees
+
+education_homepage:
+    path:     /dashboard
+    defaults: { _controller: EducationBundle:Default:index }

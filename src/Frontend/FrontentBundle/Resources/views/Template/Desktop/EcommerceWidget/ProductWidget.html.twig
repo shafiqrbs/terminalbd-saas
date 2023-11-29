@@ -1,0 +1,46 @@
+{% if widget.categoryShow == 'imageProduct' or widget.brandShow == 'imageProduct' or widget.discountShow == 'imageProduct' or widget.promotionShow == 'imageProduct' or widget.tagShow == 'imageProduct' %}
+    {% if entity is not empty and featureMode == "category" %}
+        {% set category = "'"~featureMode~"'" %}
+        <div class="feature-slider-left" >
+            <div id="" class="product-canvas feature-cat-image categoryProductLeft" >
+                <a data-match-height="product-item-height" class="img-card" href="{{ path(globalOption.subDomain ~ '_webservice_product_'~featureMode,{category:entity.slug }) }}">
+                    <img style="max-height: 100%"  src="{{ image(entity.webPath).resize() }}"/>
+                </a>
+                <div class="card-read-more text-center">
+                    <a  href="{{ path(globalOption.subDomain ~ '_webservice_product_'~featureMode,{category:entity.slug }) }}" ><strong>{{ entity.name }}</strong></a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div  class="feature-slider-right category-slider-4" >
+        {{ products|raw }}
+    </div>
+{% elseif widget.categoryShow == 'categorySubCategory' %}
+    {% if entity.children is not empty %}
+        <div class="feature-slider-left" data-match-height="product-item-height" >
+            <ul class="list-line list-group" style="margin-left: 15px">
+                {% for child in entity.children %}
+                    <li><a href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'category':child.slug }) }}">{{ child.name }}</a> </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="feature-slider-left" >
+            <div id="" class="product-canvas feature-cat-image categoryProductLeft" >
+                <a data-match-height="product-item-height" class="img-card" href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'category':entity.slug }) }}">
+                    <img style="max-height:100%"  src="{{ image(entity.webPath).resize() }}"/>
+                </a>
+                <div class="card-read-more text-center">
+                    <a class="" href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'category':entity.slug }) }}"><strong>{{ entity.name }}</strong></a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="feature-slider-right category-slider-4">{{ products|raw }}</div>
+{% elseif widget.categoryShow == 'slider' or widget.brandShow == 'slider' or widget.discountShow == 'slider' or widget.promotionShow == 'slider' or widget.tagShow == 'slider' %}
+    <div class="category-slider"> {{ products|raw }}</div>
+{% else %}
+    {{ products|raw }}
+{% endif %}
+
+

@@ -1,0 +1,48 @@
+services:
+#    medicine.example:
+#        class: Appstore\Bundle\MedicineBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    appstore.election.member.event.listener:
+        class: Appstore\Bundle\ElectionBundle\EventListener\MemberListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.election.particular.event.listener:
+        class: Appstore\Bundle\ElectionBundle\EventListener\ParticularListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore_election_member_import:
+        class: Appstore\Bundle\ElectionBundle\Importer\Member
+        calls:
+              - [ setContainer, [ @service_container ] ]
+
+    appstore_election.importer.member_import:
+        class: Appstore\Bundle\ElectionBundle\Importer\MemberDataReader
+        arguments: [ @phpexcel ]
+
+    appstore_election_voter_import:
+        class: Appstore\Bundle\ElectionBundle\Importer\Voter
+        calls:
+              - [ setContainer, [ @service_container ] ]
+
+    appstore_election.importer.voter_import:
+        class: Appstore\Bundle\ElectionBundle\Importer\VoterDataReader
+        arguments: [ @phpexcel ]
+
+    appstore_election.listener.election_sms:
+        class: Appstore\Bundle\ElectionBundle\EventListener\ElectionSmsListener
+        arguments: [@setting_tool.sms_gateWay]
+        tags:
+            - { name: kernel.event_listener, event: appstore_election.post.election_sms, method: sendSms }
+
+    appstore_election.listener.election_bulk_sms:
+        class: Appstore\Bundle\ElectionBundle\EventListener\ElectionSmsBulkListener
+        arguments: [@doctrine ,@setting_tool.sms_gateWay]
+        tags:
+            - { name: kernel.event_listener, event: appstore_election.post.election_bulk_sms , method: sendSms }
+
+
+
+

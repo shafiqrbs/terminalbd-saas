@@ -1,0 +1,5 @@
+{% if widget.categoryShow == 'slider' or widget.brandShow == 'slider' or widget.discountShow == 'slider' or widget.promotionShow == 'slider' or widget.tagShow == 'slider' %}
+    <div class="mobile-category-slider"> {{ products|raw }}</div>
+{% else %}
+    <div class="feature-grid-products"> {{ products|raw }}</div>
+{% endif %}

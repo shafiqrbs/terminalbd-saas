@@ -1,0 +1,39 @@
+voucheritem:
+    path:     /
+    defaults: { _controller: "AssetsBundle:VoucherItem:index" }
+
+voucheritem_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:VoucherItem:new" }
+
+voucheritem_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:VoucherItem:create" }
+    methods:  POST
+
+voucheritem_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:VoucherItem:delete" }
+
+
+voucheritem_approve:
+    path:     /{id}/approved
+    defaults: { _controller: "AssetsBundle:VoucherItem:approve" }
+
+voucheritem_inline_update:
+    path:     /{id}/approved
+    defaults: { _controller: "AssetsBundle:VoucherItem:inlineUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+voucheritem_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:VoucherItem:edit" }
+
+
+voucheritem_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:VoucherItem:update" }
+    methods:  [POST, PUT]
+

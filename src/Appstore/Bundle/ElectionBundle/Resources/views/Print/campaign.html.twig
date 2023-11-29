@@ -1,0 +1,76 @@
+{% extends '::baseprint.html.twig' %}
+{% block body %}
+<div id="invoice">
+        <div class="toolbar hidden-print">
+            <div class="text-right">
+                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            </div>
+            <hr>
+        </div>
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <main>
+                    <div class="row contacts">
+                        <div class="col invoice-to">
+                            <h2 class="to">Campaign: {{ entity.name }}</h2>
+                            <div class="address">Location: {% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</div>
+                            <div class="address">Campaign Type: {% if entity.eventType is not empty %}{{ entity.eventType.name }}{% endif %}</div>
+                            <div class="address">Campaign Date & Time: {{ entity.eventDate|date('d-m-Y') }} {{ entity.eventTime }}</div>
+                        </div>
+                        <div class="col invoice-details">
+                            <h5 class="invoice-id">Organiser Information</h5>
+                            <div class="date">Organiser: {{ entity.organiser.name }}</div>
+                            <div class="date">Mobile: {{ entity.mobile }}</div>
+                            <div class="date">Facebook Page: {{ entity.facebookEvent }}</div>
+                        </div>
+                    </div>
+                   <table border="0" cellspacing="0" cellpadding="0" style="border: 2px solid #999">
+                        <thead>
+                        <tr>
+                            <th> S/N</th>
+                            <th class="text-left">Name</th>
+                            <th class="text-left">Designation</th>
+                            <th class="text-left">Mobile no</th>
+                            <th class="text-left">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for index,committe in entity.eventMembers %}
+                            <tr>
+                                <td class="no">0{{ loop.index }}</td>
+                                <td class="numeric">{{ committe.name }}</td>
+                                <td class="numeric">{{ committe.designation }}</td>
+                                <td class="numeric"><a href="tel:+88 {{ committe.mobile }}"> {{ committe.mobile }}</a></td>
+                                <td class="numeric">{{ committe.description|raw }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div style="clear: both; display: flex"></div>
+                </main>
+                <footer>
+                    <span class="right">Developed by: {{ portal_design_development }}</span>
+                </footer>
+            </div>
+            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+            <div></div>
+        </div>
+    </div>
+<style>
+    .invoice .contacts {
+        margin-bottom: 75px;
+    }
+    .invoice table th {
+        white-space: nowrap;
+        font-size: 16px;
+        background: #000;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #ffffff;
+        height: 48px;
+        line-height: 48px;
+
+    }
+</style>
+{% endblock %}
+

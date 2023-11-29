@@ -1,0 +1,129 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN itembrand HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="itembrand-title">
+                    Depreciation Setup
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Depreciation Setup</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END itembrand HEADER-->
+        <!-- BEGIN itembrand CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Depreciation Setup Information</div>
+                    </div>
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        {{ form_start(form) }}
+                        {{ form_row(form._token) }}
+
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Depreciation Policy</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.policy) }}
+                                        {{ form_errors(form.policy) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Depreciation Rate(Yearly)</label>
+                                    <div class="controls">
+                                        <div class="input-icon left">
+                                            <i class="icon-money"></i>
+                                            {{ form_widget(form.rate) }}
+                                            {{ form_errors(form.rate) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Depreciation Year</label>
+                                    <div class="controls">
+                                        <div class="input-icon left">
+                                            <i class="icon-money"></i>
+                                            {{ form_widget(form.depreciationYear) }}
+                                            {{ form_errors(form.depreciationYear) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Depreciation Model</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.model) }}
+                                        {{ form_errors(form.model) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Depreciation Pulse</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.depreciationPulse) }}
+                                        {{ form_errors(form.depreciationPulse) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="span4">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Effected After</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.effected) }}
+                                        {{ form_errors(form.effected) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <!--/span-->
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-right">
+                                <button type="reset" class="btn yellow"><i class="icon-refresh"></i> Reset</button>
+                                <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                        <!-- END FORM-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

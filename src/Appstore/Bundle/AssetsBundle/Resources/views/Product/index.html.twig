@@ -1,0 +1,161 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Assets Product Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assets_product') }}">Assets Product</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Assets Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Assets Product Information</div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="row-fluid">
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        <input type="text" id="gpSku" name="gpSku"  class="span12 m-warp" value="{% if searchForm.gpSku is defined %}{{ searchForm.gpSku }}{% endif %}"  autocomplete="off" placeholder="Enter sku">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="category" name="category"  class="leftMargin span12 select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}"  autocomplete="off" placeholder="Product category">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="searialNo" name="searialNo"  class="span12 m-wrap" value="{% if searchForm.searialNo is defined %}{{ searchForm.searialNo }}{% endif %}"  autocomplete="off" placeholder="Enter serial no">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <input type="text" id="branch" name="branch"  class="leftMargin span12 select2Branch" value="{% if searchForm.branch is defined %}{{ searchForm.branch }}{% endif %}"  autocomplete="off" placeholder="Enter branch  name">
+                                    </div>
+                                    <div class="span5">
+                                        <input type="text" id="vendor" name="vendor"  class="span12 select2Vendor" value="{% if searchForm.vendor is defined %}{{ searchForm.vendor }}{% endif %}"  autocomplete="off" placeholder="Enter vendor name">
+                                    </div>
+                                    <div class="span1">
+                                        <div class="controls">
+                                            <div class="input-append span11">
+                                                <div class="btn-group">
+                                                    <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >Received</th>
+                                    <th class="numeric">Depreciation</th>
+                                  {#  <th class="numeric" >Branch</th>#}
+                                    <th class="numeric" >Product Name </th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >Category</th>
+                                   {# <th class="numeric" >PR</th>#}
+                                    <th class="numeric" >Serial No</th>
+                                   {# <th class="numeric" >Branch Code</th>#}
+                                    <th class="numeric" >Price</th>
+                                    <th class="numeric" >Service Price</th>
+                                    <th class="numeric" >Dep Rate</th>
+                                    <th class="numeric" >Dep Price</th>
+                                    <th class="numeric" >Book Value</th>
+                                    <th class="numeric" >Salvage Value</th>
+                                    <th class="numeric" >Status</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.created|date('d-m-y') }}</td>
+                                        <td class="numeric" >{{ entity.depreciationEffectedDate|date('M,y') }}</td>
+                                       {# <td class="numeric" >{{ entity.branch.name }}</td>#}
+                                        <td class="numeric" >{{ entity.name }}</td>
+                                        <td class="numeric" >{{ entity.item.name }}</td>
+                                        <td class="numeric" >{{ entity.category.name }}</td>
+                                      {#  <td class="numeric" >{{ entity.purchaseRequisition }}</td>#}
+                                        <td class="numeric" >{{ entity.serialNo }}</td>
+                                      {#  <td class="numeric" >{{ entity.branchSerialNo }}</td>#}
+                                        <td class="numeric" >{{ entity.purchasePrice }}</td>
+                                        <td class="numeric" >{{ entity.servicePrice }}</td>
+                                        <td class="numeric" >{{ entity.depreciationRate|number_format }}%</td>
+                                        <td class="numeric" >{{ entity.depreciationValue|number_format }}</td>
+                                        <td class="numeric" >{{ entity.bookValue|number_format }}</td>
+                                        <td class="numeric" ><a class="editable" data-name="SalvageValue" href="#"  data-url="{{ path('assets_product_inline_update') }}" data-type="text" data-pk="{{ entity.id }}" data-original-title="Enter salvage value">{{ entity.salvageValue }}</a></td>
+
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                                <a  data-type="select" class="btn red mini editable" id="depreciationStatus" data-name="DepreciationStatus" href="#" data-source="{{ path('assets_product_depreciation_status') }}"  data-url="{{ path('assets_product_inline_update') }}" data-pk="{{ entity.id }}" data-value="{% if entity.depreciationStatus is not empty %}{{ entity.depreciationStatus.id }}{% endif %}" data-original-title="Change depreciation status">{% if entity.depreciationStatus is not empty %}{{ entity.depreciationStatus.name }}{% endif %}</a>
+                                            </div>
+                                        </td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                            <a href="{{ path('assets_product_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                            <a href="{{ path('assets_product_show', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-eye-open"></i></a>
+                                            {#<a href="{{ path('serviceinvoice_generate', { 'id': entity.id }) }}" class="btn yellow mini" ><i class="icon-refresh"></i>Maintenance</a>#}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@AssetsBundle/Resources/public/js/editable.js'
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    ApproveProcess();
+{% endblock %}
+
+
+

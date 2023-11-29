@@ -1,0 +1,86 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                  Tax Incidence Upload
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('tarrif_upload') }}"> Tax Incidence Upload</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#"> Tax Incidence Upload</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Tax Incidence Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('tarrif_upload_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a>                 </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Name </th>
+                                    <th class="numeric" >File</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                        <td class="numeric" ><a href="/{{ entity.webPath }}">Download File</a> </td>
+                                        <td class="numeric" >
+                                            {% if entity.process == 'Created' %}
+                                            <a title="" href="{{ path('tarrif_upload_migration', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-upload-alt">&nbsp;Migration</i></a>
+                                            <a title="Are you sure went to delete ?" href="{{ path('tarrif_upload_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                            {% endif %}
+                                            {% if entity.process == 'Migrated' %}
+                                            <span  class="btn blue mini" ><i class="icon-ok">&nbsp;Migrated</i></span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

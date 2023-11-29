@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div id="dashboard">
+        <!-- BEGIN DASHBOARD STATS -->
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"><br/></div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@MedicineBundle/Resources/public/css/dashboard.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@MedicineBundle/Resources/public/js/jquery-canvas.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+
+
+

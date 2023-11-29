@@ -1,0 +1,340 @@
+{% if app.user is empty %}
+<div class="login-area">
+    <div class="modal-header" style="position: relative">
+    <h5 class="modal-title">Sign up / Login </h5>
+    <button type="button" class="close-btn btn btn-sm modal-close-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+</div>
+    <div class="modal-body">
+            <div id="cart-search">
+                <form name="customerOtpLogin" method="post" action="{{ path(globalOption.subDomain ~ '_webservice_otp') }}"  id="customerOtpLogin" class="" novalidate="novalidate">
+                    <div class="clearfix"></div>
+                    <div class="" >
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12 text-center">
+                            <h4 class="modal-title">Enter Your Mobile Number</h4>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-transparent" aria-label="Bold"><img src="{{ asset('assets/img/flags/bd.png') }}"></button></div>
+                                <input type="text" class="form-control text-center input-number mobile" id="mobile" name="mobile" >            </div><!-- /.input-group -->
+                            <span class="help-inline-otp">e.g 01710000000</span>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                            <div class="input-group">
+                                <div class="input-group-btn text-center">
+                                    <button type="submit" class="btn btn-warning "> SEND OTP CODE </button>
+                                </div>
+                            </div><!-- /.input-group -->
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+                <form name="customerOtp" method="post" action="{{ path(globalOption.subDomain ~ '_webservice_otp_confirm') }}"  id="customerOtp" class="" novalidate="novalidate">
+                    <div class="clearfix"></div>
+                    <div class="" >
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12 text-center">
+                            <h4 class="modal-title">We've sent a 4-digit one time PIN in your mobile. <b id="sender-mobile"></b></h4>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                            <input type="text" class="form-control text-center" maxlength="4" id="otp" name="otp" placeholder="Please enter 4 digit on time pin code" >
+                            <input type="hidden" id="otpCode" name="otpCode" value="">
+                            <input type="hidden" id="resendMobile" name="resendMobile" value="">
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-warning "> Submit </button>
+                                <a href="javascript:" data-url="{{ path(globalOption.subDomain ~ '_webservice_otp') }}" data-content="" id="resendPin">Re-send Pin</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+    </div>
+</div>
+{% elseif app.user is not empty and app.user.profile.name is empty %}
+    <div class="login-area">
+        <div class="modal-header" style="position: relative">
+            <h4 class="modal-title">Delivery Information</h4>
+            <button type="button" class="close-btn btn btn-sm modal-close-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+        <div class="modal-body">
+            <div id="cart-search">
+            <form class="register" name="registerFormUpdate" id="registerFormUpdate" action="{{ path(globalOption.subDomain ~ '_webservice_ecommerce_customer_update') }}" method="post" novalidate="novalidate" style="display: block">
+                <div class="modal-body">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                <input type="text" id="registration_name" name="registration_name" required="required" class=" form-control" placeholder="Enter your full name" value="{{ app.user.profile.name }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                                <input type="text" id="registration_mobile" name="registration_mobile" required="required" class="form-control" placeholder="Enter your mobile no" value="{{ app.user }}" disabled="disabled">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                                <input type="text" id="registration_additional_phone" name="registration_additional_phone" required="required" class="form-control" placeholder="Enter your pickup mobile no" value="{{ app.user.profile.additionalPhone }}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-map-marker"></span></span>
+                               <select id="registration_location" name="registration_location" class="form-control input-selector item-select" >
+                                   {% for location in locations %}
+                                   <option {% if app.user.profile.deliveryLocation is not empty and app.user.profile.deliveryLocation.id == location.id %} selected="selected" {% endif %} value="{{ location.id }}">{{ location.name }}</option>
+                                   {% endfor %}
+                               </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="address" name="registration_address" required="required" class="form-control" placeholder="Enter your address" >{{ app.user.profile.address }}</textarea>
+                        </div>
+                        <div class="checkbox"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="token" value="{{ csrf_token('valid') }}"/>
+                    <button type="submit"  class="btn btn-sm btn-blue pull-right" role="button">Confirm</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+{% else %}
+<div class="login-area">
+<div class="modal-header" style="position: relative">
+    <h5 class="modal-title">ORDER DETAILS</h5>
+    <button type="button" class="close-btn btn btn-sm modal-close-btn" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+</div>
+<div class="modal-body">
+    <div id="cart-search">
+    {% if globalOption.ecommerceConfig.cartSearch == 1 %}
+        <div id="cart-search">
+        <form name="stockItemForm" method="post" action="{{ path(globalOption.subDomain ~ '_webservice_stock_item_create') }}" enctype="multipart/form-data" id="stockItemForm" class="register" novalidate="novalidate">
+            <div class="clearfix"></div>
+            <div class="" >
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                    <input class="select2Stock form-control" autocomplete="off" name="itemName" id="itemName"  placeholder="Search your choose products..." style="border-radius:0!important;">
+                    <input type="hidden" name="stockId" id="stockId">
+                    <ul id="searchResult"></ul>
+                    <span class="help-inline">Here you can add on demand products. Just typing a product name and click add button.</span>
+                </div>
+
+            </div>
+            <div class="" >
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-sm-cus-12">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-transparent" aria-label="Bold"><strong class="currency" >{{ globalOption.ecommerceConfig.currency }}</strong><span id="salesPrice"></span></button></div>
+
+                        <div class="input-group-btn">
+                            <button type="button" class="btn  btn-number-stock text-center" data-type="minus" data-field="itemQuantity">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control text-center input-number" style="width: 100%" value="1" min="1" max="1000"  id="itemQuantity" name="itemQuantity">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn  btn-number-stock" data-type="plus" data-field="itemQuantity">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                            <button type="button" id="unit" class="btn btn-unit">Unit</button> <button type="submit" class="btn btn-warning " id="stockSubmit" data-url="{{ path(globalOption.subDomain ~ '_webservice_stock_item_create') }}"><span class="glyphicon glyphicon-shopping-cart"></span> Add</button>
+                        </div>
+                    </div><!-- /.input-group -->
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+        </div>
+    {% endif %}
+    <div class="clearfix"></div>
+    <form class="" id="cartForm" name="cartForm" action="{{ path('order_checkout',{'shop':globalOption.uniqueCode}) }}" method="post" enctype="multipart/form-data">
+        <div id="cart-item-list">
+                <div id="stockCart">
+                     {% if  cart.contents is not empty %}
+                    <div class="top">Recent Buy Item's <span class="pull-right" style="margin-right:10px; margin-top:-2px" ><span class="btn btn-warning "><strong class="totalItem">{{ cart.contents|length }}</strong> | <strong class="cartQuantity">{{ cart.total_items }}</strong></span></span></div>
+                <div id="cart-item-list-box">
+                    {% for product in cart.contents %}
+                        <dl class="entity-list" id="item-remove-{{ product.rowid }}">
+                            <dt>
+                                {% if product.productImg is not empty %}
+                                    <img src="{{ image(product.productImg).scaleResize(80,80) }}" alt=""/>
+                                {% else %}
+                                    <img style="height: 80px; width: 80px" src="{{ asset('assets/img/product-icon.png') }}">
+                                {% endif %}
+                                <span class="dd-span-name">
+                            {{ loop.index }}. {{ product.name }}
+                                    <br/>  ৳ {{ product.price }} {% if product.productUnit is not empty %}/ {{ product.productUnit }} {% endif %}</span>
+                                <span class="dd-span-remove">
+                             <button id="{{ product.rowid }}"
+                                     data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_remove',{'cartid':product.rowid}) }}"
+                                     class="btn btn-transparent btn-sm hunger-remove-cart">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                        </span>
+                            </dt>
+
+                            <dd>
+                                <div class="col-xs-6 col-md-6">
+                                    <div class="input-group">
+              <span class="input-group-btn input-group-btn-custom">
+                  <button type="button" class="btn btn-sm btn-transparent btn-danger btn-number-cart"
+                          data-type="minus" data-field="quantity" data-id="{{ product.rowid }}"
+                          id="btn-left-{{ product.rowid }}"
+                          data-url="{{ path(globalOption.subDomain ~ '_webservice_product_medicine_cart_update',{'cartid': product.rowid}) }}"
+                          data-text="{{ product.id }}" data-title="{{ product.price }}">
+                                                    <span class="fa fa-minus"></span>
+                                           </button>
+              </span>
+                                        <input type="text" readonly="readonly" name="quantity" id="quantity-{{ product.rowid }}"
+                                               class="btn-number-cart" value="{{ product.quantity }}"
+                                               min="1" max="100">
+                                        <span class="input-group-btn">
+                                    <button type="button" class="btn btn-transparent btn-sm btn-success btn-number-cart"
+                                            data-type="plus" data-field="quantity"
+                                            data-id="{{ product.rowid }}"
+                                            data-url="{{ path(globalOption.subDomain ~ '_webservice_product_medicine_cart_update',{'cartid': product.rowid}) }}"
+                                            data-text="{{ product.id }}" data-title="{{ product.price }}">
+                                                      <span class="fa fa-plus"></span>
+                                              </button>
+
+              </span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-6 text-right">
+                                    ৳ <strong id="btn-total-{{ product.rowid }}">{{ product.price * product.quantity }}</strong>
+                                </div>
+                            </dd>
+                        </dl>
+                    {% endfor %}
+                </div>
+                <div class="bottom">
+                    <span class="dd-span pull-left">SubTotal:</span>
+                    <span class="dd-span pull-right"><strong>{{ globalOption.ecommerceConfig.currency }}
+                            &nbsp;<span class="totalAmount">{{ cart.total|number_format(2) }}</span></strong></span>
+                </div>
+                 <div class="bottom">
+                     <span class="dd-span pull-left">Delivery Day</span>
+                     <span class="dd-span pull-right"><input type="date" class="form-control" name="deliveryDate" id="deliveryDate"></span>
+                 </div>
+                 <div class="bottom">
+                     <span class="dd-span pull-left">Time Slot</span>
+                     <span class="dd-span pull-right">
+                      <select id="timePeriod" name="timePeriod" class="form-control input-selector item-select" >
+                           {% for period in timePeriods %}
+                               <option value="{{ period.id }}">{{ period.name }}</option>
+                           {% endfor %}
+                       </select>
+                     </span>
+                 </div>
+
+                {% endif %}
+                </div>
+                {% if globalOption.ecommerceConfig.uploadFile == 1 %}
+                <div>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="text-right">
+                                <div style="height:100px;">
+                                    <input type="file" id="uploadFile" name="uploadFile" class="dropzone"/>
+                                </div>
+                                <p style="font-size: 11px; color: red; line-height: 20px; margin-bottom: 0">*JPG/GIF/PDF/PNG, less than 5MB</p>
+                                <textarea name="comment" id="comment" rows="5" style="width: 100%; padding: 7px; font-size: 12px" placeholder="Enter order related instruction"></textarea>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                {% if  cart.contents is not empty or globalOption.ecommerceConfig.uploadFile == 1 %}
+                <div class="bottom" id="login-cart" style="margin-bottom: 15px">
+                    <span class="dd-span pull-center" id="login-cart">
+                    {% if app.user is empty %}
+                            <a  href="#login-modal"
+                                class="btn popup-top-anim btn-success"> Login & Place Order <span class="glyphicon glyphicon-play"></span></a>
+                    {% else %}
+                            <button  type="submit" class="btn btn-success">Place Order <span class="glyphicon glyphicon-play"></span></button>
+                    {% endif %}
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </form>
+    </div>
+</div>
+</div>
+{% endif %}
+<style>
+    .closest-dropzone span{
+        top:0!important;
+    }
+    #cart-item-list .dd-span-name {
+        align-items: center;
+        display: flex;
+        width:90%;
+        height: 75px;
+        font-size: 12px;
+        padding-right: 7px;
+        float: left;
+    }
+    #cart-item-list .dd-span-remove {
+        align-items: center;
+        display: flex;
+        height: 75px;
+        font-size: 12px;
+        padding-right: 7px;
+    }
+</style>
+<style>
+    .modal-dialog , .product-modal-content{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 97%;
+    }
+    #cart-search {
+        background: #eeeeee;
+        padding-top: 15px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+
+    #customerOtp{
+        display: none;
+    }
+    .login-area {
+        width: 100%;
+    }
+    .modal-close-btn {
+        position: absolute;
+        right: 0;
+        top: 8px!important;
+    }
+    .help-inline-otp {
+        font-size: 12px;
+        line-height: 12px;
+        display: inline-block;
+        padding-top: 3px;
+        padding-bottom: 8px;
+        text-align: center;
+        width: 100%;
+    }
+</style>
+
+
+
+
+
+

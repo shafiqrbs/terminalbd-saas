@@ -1,0 +1,163 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Product Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assetsitem') }}">Product</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product lists</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                             {#   {% set gpSku = searchForm.gpSku is defined ? searchForm.gpSku :'' %}
+                                {% set item = searchForm.item is defined ? searchForm.item :'' %}
+                                {% set category = searchForm.category is defined ? searchForm.category :'' %}
+                                {% set brand = searchForm.brand is defined ? searchForm.brand :'' %}
+                                <a  class="btn yellow" target="_blank" href=""><i class="fa fa-download"></i>&nbsp;Export Excel</a>#}
+                                <a class="btn red" href="{{ path('assetsitem_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a>
+                                <a href="{{ path('barcode_new') }}" id="btn-create-barcode" class="btn"  onclick="return prepareBarCode()" >
+                                    Barcode
+                                    <i class="icon-barcode"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid">
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span4">
+                                            <input type="text" id="category" name="category"  class="leftMargin span12 select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}"  autocomplete="off" placeholder="Product category">
+                                        </div>
+                                        <div class="span4">
+                                            <input type="text" id="item" name="item"  class="span12 select2Product" value="{% if searchForm.item is defined %}{{ searchForm.item }}{% endif %}"  autocomplete="off" placeholder="Enter item name ">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="brand" name="brand"  class="leftMargin span12 select2Brand" value="{% if searchForm.brand is defined %}{{ searchForm.brand }}{% endif %}"  autocomplete="off" placeholder="Product brand name">
+                                        </div>
+                                        <div class="span1">
+                                            <div class="controls">
+                                                <div class="input-append span11">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead>
+                                <tr class="head-green">
+                                    <td>&nbsp;&nbsp;<i class="icon-list"></i> Group</td>
+                                    <th class="numeric" >Category</th>
+                                    <th class="numeric" >Name </th>
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Stock Keeping Unit">SKU</span></th>
+
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Opening Quantity">Open</span></th>
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Purchase Quantity">
+                                            Purchase </span> </th>
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Purchase Return Quantity">
+                                            P. Return </span> </th>
+
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Damage Quantity">
+                                            Damage </span> </th>
+
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Remaining Quantity">Remaining</span></th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="flip-content ">
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{% if entity.productGroup is not empty %}{{ entity.productGroup.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.category.name }}</td>
+                                        <td class="numeric" >{{ entity.name }}</td>
+                                        <td class="">{{entity.sku}}</td>
+                                        <td class="numeric" >{{entity.openingQuantity}}</td>
+                                        <td class="numeric" >{{ entity.purchaseQuantity }}</td>
+                                        <td class="numeric" >{{ entity.purchaseReturnQuantity }}</td>
+                                        <td class="numeric" >{{ entity.damageQuantity }}</td>
+                                        <td class="numeric" >{{ entity.remainingQuantity }}</td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                            {% if  entity.category.categoryType == 'Assets' %}
+                                                <a href="{{ path('assetsitem_edit_web', { 'id': entity.id }) }}" class="btn yellow mini" ><i class="icon-retweet"></i></a>
+                                            {% endif %}
+                                            <a  href="{{ path('assetsitem_edit', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-pencil"></i></a>
+                                            {% if entity.purchaseQuantity == 0 and entity.openingQuantity == 0 and entity.remainingQuantity == 0 %}
+                                                <a title="Are you sure went to delete ?" href="{{ path('item_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                            {% endif  %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<style>
+    .disabled{
+        opacity: 0.5;
+    }
+</style>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/editable.js'
+    '@InventoryBundle/Resources/public/js/item.js'
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    $( "#search-product" ).hide();
+    $( "#searchToggole" ).click(function() {
+    $( "#search-product" ).slideToggle( "slow" );
+    });
+    EditableInit();
+    InventoryItemListPage();
+    ApproveProcess();
+{% endblock %}

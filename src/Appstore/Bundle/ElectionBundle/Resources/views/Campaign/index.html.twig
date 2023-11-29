@@ -1,0 +1,192 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Campaign Analysis
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Campaign Analysis</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Campaign Analysis Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a href="javascript:" data-trigger="hover" data-original-title="Add Campaign Analysis" class=" btn red tooltips toggle-btn"><i class="fa fa-angle-double-down"></i> Add Campaign Analysis</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body form" id="{% if show == 'show' %}show{% else %}hide{% endif %}">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid" >
+                                <div class="span4">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Election For</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.electionSetup) }}
+                                                    {{ form_errors(form.electionSetup) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Location</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.location) }}
+                                                {{ form_errors(form.location) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"><br/></div>
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Analysis Type</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.analysisType) }}
+                                                {{ form_errors(form.analysisType) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="control-group">
+                                            <label class="control-label" for="firstName">Priority</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.priority) }}
+                                                {{ form_errors(form.priority) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="span8">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Campaign Name</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.name) }}
+                                                    {{ form_errors(form.name) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                            <label class="control-label" for="firstName">Content</label>
+                                            <div class="controls">
+                                                {{ form_widget(form.content) }}
+                                                {{ form_errors(form.content) }}
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <!--/span-->
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <!-- END FORM-->
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="portlet-body flip-scroll">
+
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Name</th>
+                                    <th class="numeric" >Election For</th>
+                                    <th class="numeric" >Analysis Type</th>
+                                    <th class="numeric" >Priority</th>
+                                    <th class="numeric" >Location</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr>
+
+                                        <td class="numeric" >{{ entity.created|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.name }}</td>
+                                        <td class="numeric" >{% if entity.electionSetup is not empty %}{{ entity.electionSetup.electionName }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.analysisType.name }}</td>
+                                        <td class="numeric" >{{ entity.priority.name }}</td>
+                                        <td class="numeric" >{{ entity.location.name }}</td>
+                                        <td class="numeric" >
+                                            <a href="{{ path('election_campaign_edit', {'id': entity.id }) }}" data-id="{{ entity.id }}" class="btn green mini edit" ><i class="icon-edit"></i></a>
+                                            <a title="Are you sure went to delete ?" href="{{ path('election_campaign_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                            <a data-title="{{ entity.name }}" class="btn mini view blue" href="javascript:" data-url="{{ path('election_campaign_show', { 'id': entity.id }) }}" >&nbsp;<i class="icon-eye-open"></i> </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    $('#fos_comment_comment_body').addClass('span12');
+    $('.fos_comment_submit input[type="submit"]').addClass('btn blue');
+{% endblock %}
+
+

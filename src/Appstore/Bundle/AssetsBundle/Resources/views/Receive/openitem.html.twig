@@ -1,0 +1,138 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                   Manage Goods Receive
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#"> Manage Goods Receive</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Goods Receive</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                {% if searchForm.vendor is defined and searchForm.vendor is not empty %}
+                                    {% set vendor = searchForm.vendor %}
+                                    <a class="btn red" href="{{ path('assets_itemreceive_new',{'vendor':vendor}) }}"><i class="icon-plus-sign"></i> Process Item</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body flip-scroll">
+                        {% include('flash-message.html.twig')  %}
+                        <div class="row-fluid">
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                <div class="row-fluid" >
+                                    <form class="search-form" action="" method="get" name="itemSearch">
+                                        <div class="row-fluid" style="margin-bottom: 10px">
+                                            <div class="span3"></div>
+                                            <div class="span3">
+                                                <input class="m-wrap span12  search-input" name="grn" id="grn" value="{% if searchForm.grn is defined %}{{ searchForm.grn }}{% endif %}"  autocomplete="off" placeholder="PO No">
+                                            </div>
+                                            <div class="span6">
+                                                <div class="controls">
+                                                    <div class="input-append span11">
+                                                        {% if vendors is not empty %}
+                                                            <select name="vendor" id="vendor" class="m-wrap span12" >
+                                                                <option value="">-- Select Vendor/Supplier --</option>
+                                                                {% for vendor in vendors %}
+                                                                    <option {% if searchForm.vendor is defined and searchForm.vendor == vendor.id %} selected="selected" {% endif %} value="{{ vendor.id }}">{{ vendor.companyName }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        {% endif %}
+                                                        <div class="btn-group">
+                                                            <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+                            </form>
+                        </div>
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                            <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" ><i class="icon icon-th-list"></i></th>
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >PO No</th>
+                                    <th class="numeric" >Item Name</th>
+                                    <th class="numeric" >Category</th>
+                                    <th class="numeric" >Quantity</th>
+                                    <th class="numeric" >Receive</th>
+                                    <th class="numeric" >Remain QTY</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for entity in entities %}
+                                <tr id="delete-{{ entity.id }}">
+                                    <td><input type="checkbox" class="checkbox stockId" id="" {% if entity.id in selected %} checked="checked" {% endif %}  value="{{ entity.id }}"></td>
+                                    <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ entity.grn }}</td>
+                                    <td class="numeric" >{{ entity.itemName }}</td>
+                                    <td class="numeric" >{{ entity.category }}</td>
+                                    <td class="numeric" >{{ entity.quantity }}</td>
+                                    <td class="numeric" >{{ entity.receiveQuantity }}</td>
+                                    <td class="numeric" >{{ entity.remainingQuantity }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="pagination pull-center" >
+                            {{ knp_pagination_render(entities) }}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@AssetsBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    var itemArr = $.cookie('barcodes') ? $.cookie('barcodes').split(',') : [];
+    $('body').on('change', 'input.stockId', function(el) {
+    console.log(itemArr);
+    var val = $(this).val();
+    if($(this).prop('checked')) {
+    itemArr.push(val);
+    }else{
+    var index = itemArr.indexOf(val);
+    if (index > -1) {
+    itemArr.splice(index, 1);
+    }
+    }
+    $.cookie('barcodes', itemArr, {path: '/'});
+    });
+
+{% endblock %}

@@ -1,0 +1,74 @@
+hotel_stock:
+    path:     /
+    defaults: { _controller: "HotelBundle:Stock:index" }
+
+hotel_stock_new:
+    path:     /new
+    defaults: { _controller: "HotelBundle:Stock:new" }
+
+hotel_stock_create:
+    path:     /create
+    defaults: { _controller: "HotelBundle:Stock:create" }
+    methods:  POST
+
+hotel_stock_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:Stock:edit" }
+
+hotel_stock_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:Stock:update" }
+    methods:  [POST, PUT]
+
+hotel_stock_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:Stock:delete" }
+
+hotel_stock_transfer:
+    path:     /{id}/transfer
+    defaults: { _controller: "HotelBundle:Stock:transfer" }
+
+hotel_stock_status:
+    path:     /{id}/status
+    defaults: { _controller: "HotelBundle:Stock:status" }
+
+hotel_stock_inline:
+    path:     /inline-update
+    defaults: { _controller: "HotelBundle:Stock:inlineUpdate" }
+
+hotel_stock_production:
+    path:     /{id}/production
+    defaults: { _controller: "HotelBundle:Stock:production" }
+
+
+hotel_stock_item_image:
+    path:     /{id}/stock-item-image
+    defaults: { _controller: "HotelBundle:Stock:uploadItemImage" }
+    options:
+            expose: true
+
+hotel_stock_item_meta_delete:
+    path:     /{id}/item-key-value-delete
+    defaults: { _controller: "HotelBundle:Stock:keyValueDelete" }
+    options:
+            expose: true
+
+hotel_stock_attribute_sorted:
+    path:     /{item}/item-key-value-delete
+    defaults: { _controller: "HotelBundle:Stock:keyValueSorted" }
+    methods:  POST
+    options:
+            expose: true
+
+
+hotel_stock_search:
+    path:     /search
+    defaults: { _controller: "HotelBundle:Stock:autoSearch" }
+    options:
+            expose: true
+
+hotel_stock_name_search:
+    path:     /{stock}/search-name
+    defaults: { _controller: "HotelBundle:Stock:searchName" }
+    options:
+            expose: true

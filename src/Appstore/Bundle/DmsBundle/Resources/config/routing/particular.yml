@@ -1,0 +1,25 @@
+dms_particular:
+    path:     /
+    defaults: { _controller: "DmsBundle:Particular:index" }
+
+dms_particular_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Particular:create" }
+    methods:  POST
+
+dms_particular_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Particular:edit" }
+
+dms_particular_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Particular:update" }
+    methods:  [POST, PUT]
+
+dms_particular_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Particular:delete" }
+
+dms_particular_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Particular:status" }

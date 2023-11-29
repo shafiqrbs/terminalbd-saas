@@ -1,0 +1,94 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Purchase Order Issue
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('inventory_barcode') }}">Purchase Order Issue</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Purchase Order Issue</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                 <form id="barcode" name="barcode" method="post" action="{{ path('pro_purchaseorder_create') }}">
+                <div class="portlet box green tabbable">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Purchase Order Issue</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('pro_purchaserequisition_poissue') }}"><i class="icon-th-list"></i>&nbsp;Purchase Requisition Item</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" ><i class="icon-list"></i></th>
+                                    <th class="numeric" >Issue Date</th>
+                                    <th class="numeric" >Branch Name</th>
+                                    <th class="numeric" >Item </th>
+                                    <th class="numeric" >Product Name</th>
+                                    <th class="numeric" >Purchase Price </th>
+                                    <th class="numeric" >Quantity</th>
+                                    <th class="numeric" >Issue Qnt</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% set quantity = 0 %}
+                                    {% for entity in entities %}
+                                        {% set quantity = quantity + entity.quantity %}
+                                        <tr>
+                                            <td class="numeric" >{{ loop.index }}.</td>
+                                            <td class="numeric" >{{ entity.requisition.updated|date('d-m-y') }}</td>
+                                            <td class="numeric" >{{ entity.requisition.club.name }}</td>
+                                            <td class="numeric" >{{ entity.item.name }}</td>
+                                            <td class="numeric" >{{ entity.name }}</td>
+                                            <td class="numeric" >{{ entity.purchasePrice }}</td>
+                                            <td class="numeric" >{{ entity.quantity }}</td>
+                                            <td class="numeric" >
+                                                <input type="text" name="issueQuantity[]" class="span4 numeric" id="" value="" >
+                                                <input type="hidden" name="item[]" value="{{ entity.id }}">
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr><td colspan="6"><strong class="pull-right" >Total Issue Quantity</strong></td><td><strong>{{ quantity }}</strong></td><td></td></tr>
+                                </tbody>
+                            </table>
+                            <!--/span-->
+                            <div class="action form-actions portlet box grey">
+                                <div class="pull-center">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> PO Generate </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                 </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

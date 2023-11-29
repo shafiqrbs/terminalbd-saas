@@ -1,0 +1,72 @@
+election_committee:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Committee:index" }
+
+election_committee_new:
+    path:     /new
+    defaults: { _controller: "ElectionBundle:Committee:new" }
+
+election_committee_show:
+    path:     /{id}/show
+    defaults: { _controller: "ElectionBundle:Committee:show" }
+    options:
+            expose: true
+
+election_committee_search:
+    path:     /search
+    defaults: { _controller: "ElectionBundle:Committee:autoSearch" }
+    options:
+            expose: true
+
+election_committee_name:
+    path:      /{particular}/particular-name
+    defaults: { _controller: "ElectionBundle:Committee:searchCommitteeName" }
+    options:
+            expose: true
+
+election_committee_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Committee:create" }
+    methods:  POST
+
+election_committee_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:Committee:edit" }
+
+election_committee_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:Committee:update" }
+    methods:  [POST, PUT]
+
+election_committee_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:Committee:status" }
+
+election_committee_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Committee:delete" }
+
+election_committee_member_new:
+    path:     /{id}/member-new
+    defaults: { _controller: "ElectionBundle:Committee:newMember" }
+    options:
+            expose: true
+
+election_committee_member_create:
+    path:     /{id}/member-create
+    defaults: { _controller: "ElectionBundle:Committee:createMember" }
+    methods:  POST
+    options:
+            expose: true
+
+election_committee_member_delete:
+    path:     /{id}/member-delete
+    defaults: { _controller: "ElectionBundle:Committee:memberDelete" }
+
+election_committee_print:
+    path:     /{id}/print
+    defaults: { _controller: "ElectionBundle:Committee:print" }
+
+election_committee_list_print:
+    path:     /list-print
+    defaults: { _controller: "ElectionBundle:Committee:listPrint" }

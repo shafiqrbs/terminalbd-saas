@@ -1,0 +1,71 @@
+hotel_report_purchase_summary:
+    path:     /purchase-overview
+    defaults: { _controller: "HotelBundle:Report:purchaseOverview" }
+
+hotel_report_purchase_vendor:
+    path:     /purchase-vendor-outstanding
+    defaults: { _controller: "HotelBundle:Report:purchaseVendor" }
+
+hotel_report_purchase_vendor_details:
+    path:     /purchase-vendor-details
+    defaults: { _controller: "HotelBundle:Report:purchaseVendorDetails" }
+
+hotel_report_purchase_vendor_sales:
+    path:     /purchase-vendor-sales
+    defaults: { _controller: "HotelBundle:Report:purchaseVendorSales" }
+
+hotel_report_sales_vendor_customer:
+    path:     /vendor-base-sales
+    defaults: { _controller: "HotelBundle:Report:salesVendorCustomer" }
+
+hotel_report_purchase_brand_sales:
+    path:     /purchase-brand-sales
+    defaults: { _controller: "HotelBundle:Report:purchaseBrandSales" }
+
+
+hotel_report_purchase_brand_sales_details:
+    path:     /purchase-brand-sales-details
+    defaults: { _controller: "HotelBundle:Report:purchaseBrandSalesDetails" }
+
+
+hotel_report_product_stock_sales:
+    path:     /product-vendor-stock-sales
+    defaults: { _controller: "HotelBundle:Report:productPurchaseStockSales" }
+
+hotel_report_product_stock_sales_price:
+    path:     /product-brand-stock-sales-price
+    defaults: { _controller: "HotelBundle:Report:productPurchaseStockSalesPrice" }
+
+
+hotel_report_purchase_details:
+    path:     /purchase-vendor
+    defaults: { _controller: "HotelBundle:Report:purchaseVendor" }
+
+hotel_report_purchase_stock:
+    path:     /purchase-vendor-
+    defaults: { _controller: "HotelBundle:Report:purchaseVendor" }
+
+hotel_report_sales_summary:
+    path:     /sales-overview
+    defaults: { _controller: "HotelBundle:Report:salesOverview" }
+
+hotel_report_sales_details:
+    path:     /sales-details
+    defaults: { _controller: "HotelBundle:Report:salesDetails" }
+
+hotel_report_sales_stock:
+    path:     /sales-stock
+    defaults: { _controller: "HotelBundle:Report:salesStockItem" }
+
+hotel_report_customer_sales_item:
+    path:     /customer-sales-item
+    defaults: { _controller: "HotelBundle:Report:customerSalesItem" }
+
+hotel_report_sales_user:
+    path:     /sales-user
+    defaults: { _controller: "HotelBundle:Report:salesUser" }
+
+hotel_report_sales_user_monthly:
+    path:     /sales-user-monthly
+    defaults: { _controller: "HotelBundle:Report:monthlyUserSales" }
+

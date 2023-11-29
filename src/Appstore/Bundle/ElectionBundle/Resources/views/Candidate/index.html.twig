@@ -1,0 +1,117 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Candidate List
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Election Candidate List</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i> Candidate Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('election_candidate_new') }}"><i class="icon-plus-sign"></i>&nbsp;Candidate Create</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+
+                        <div class="clearfix"><br/></div>
+                        <div class="portlet-body flip-scroll">
+
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >Name</th>
+                                    <th class="numeric" >Political Party</th>
+                                    <th class="numeric" >Marka</th>
+                                    <th class="numeric" >Mobile</th>
+                                    <th class="numeric" >Location</th>
+                                    <th class="numeric" >Election</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.name }}</td>
+                                        <td class="numeric" >{% if entity.politicalParty is not empty %}{{ entity.politicalParty.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.marka is not empty %}{{ entity.marka.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.mobile }}</td>
+                                        <td class="numeric" >{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.electionSetup is not empty %}{{ entity.electionSetup.electionName }}{% endif %}</td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                            {% if( entity.status == 1) %}
+                                                <a href="{{ path('election_candidate_status', { 'id': entity.id}) }}" class="btn yellow mini"><i class="icon-ok"></i></a>
+                                            {% else %}
+                                                <a  href="{{ path('election_candidate_status', { 'id': entity.id}) }}" class="btn yellow mini" >x</a>
+                                            {% endif %}
+                                            <a href="{{ path('election_candidate_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                            <a title="Are you sure went to delete ?" href="{{ path('election_candidate_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/style.css'
+    '@ElectionBundle/Resources/public/css/messagebox.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/messagebox.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+
+
+

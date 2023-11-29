@@ -1,0 +1,13 @@
+dms_config_manage:
+    path:     /manage
+    defaults: { _controller: "DmsBundle:DmsConfig:manage" }
+
+dms_default_service:
+    path:     /reset-default-service
+    defaults: { _controller: "DmsBundle:DmsConfig:resetDefaultService" }
+
+dms_config_update:
+    path:     /update
+    defaults: { _controller: "DmsBundle:DmsConfig:update" }
+    methods:  [POST, PUT]
+

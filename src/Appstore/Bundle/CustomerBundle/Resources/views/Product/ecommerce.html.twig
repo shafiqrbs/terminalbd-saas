@@ -1,0 +1,273 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Wel Come {{ globalOption.name }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product Lists</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn blue" href="{{ path('shoppingbag_to_order',{'shop':globalOption.slug}) }}">
+                                    <i class="icon-shopping-cart"></i>&nbsp;Shopping Bag
+                                    <i class="icon-tasks"></i>
+                                </a>
+
+                                <a class="dropdown-toggle btn purple cart" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" href="{{ path('order_cart',{'shop':globalOption.slug}) }}">
+                                    BDT. (<span>{{ cart.total|number_format }}</span>)
+                                </a>
+                                <ul class="dropdown-menu extended inbox">
+                                    <li>
+                                        <p>You have BDT: {{ cart.total|number_format }}({{ cart.total_items }}) </p>
+                                    </li>
+                                    <li>
+                                        <ul class="dropdown-menu-list scroller" style="height:250px">
+                                            {% for product in cart.contents %}
+                                            <li>
+                                                <a href="javascript:">
+                                                    <span class="subject">
+                                                        <span class="from">{{ product.name }}</span>
+                                                    </span>
+                                                    <dl>
+                                                        <dt>{{ product.quantity }} x BDT. {{ product.price }} = BDT. {{ product.quantity * product.price }}</dt>
+                                                        <dt>Size: {{ product.size }}{% if product.color is not empty %}, Color: {{ product.color }}{% endif %}</dt>
+                                                     </dl>
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li>
+                                       <p class="pull-right"><a class="green"  href="{{ path('shoppingbag_to_order',{'shop':globalOption.slug}) }}">Order Place&nbsp;<i class="m-icon-swapright"></i></a></p>
+                                    </li>
+                                </ul>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid" >
+
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <input type="text" id="item" name="item"  class="span12 select2Product" value="{% if searchForm.item is defined %}{{ searchForm.item }}{% endif %}"  autocomplete="off" placeholder="Enter item name ">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="category" name="category"  class="leftMargin span12 select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}"  autocomplete="off" placeholder="Product category">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="size" name="size"  class="span12 select2Size" value="{% if searchForm.size is defined %}{{ searchForm.size }}{% endif %}"  autocomplete="off" placeholder="Enter size name ">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="color" name="color"  class="span12 select2Color" value="{% if searchForm.color is defined %}{{ searchForm.color }}{% endif %}"  autocomplete="off" placeholder="Enter color name ">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row-fluid">
+                                        <div class="span6">
+                                            <input type="text" id="brand" name="brand"  class="leftMargin span12 select2Brand" value="{% if searchForm.brand is defined %}{{ searchForm.brand }}{% endif %}"  autocomplete="off" placeholder="Product brand name">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="startDate" name="startDate"  class="span12 m-wrap date-picker" value="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.startDate is defined %}{{ searchForm.startDate }}{% else %}Start date{% endif %} ">
+                                        </div>
+                                        <div class="span3">
+                                            <div class="controls">
+                                                <div class="input-append span10">
+                                                    <input type="text" id="endDate" name="endDate"  class="span12 m-wrap date-picker" value="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.endDate is defined %}{{ searchForm.endDate }}{% else %}End date{% endif %}  ">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >Product name</th>
+                                    <th class="numeric" >Category</th>
+                                    <th class="numeric" >Brand</th>
+                                    <th class="numeric" >Stock in</th>
+                                    <th class="numeric" >Price</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="purchaseentity" >
+                                {% for entity in entities %}
+                                    <tr class="remove-vendor-item-{{ entity.id }}">
+                                        <td class="numeric dropdown" >
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                             {{ entity.webName }}
+                                            </a>
+                                            <ul class="dropdown-menu extended inbox">
+                                                <li>
+                                                    <p>{{ entity.webName }}</p>
+                                                </li>
+                                                <li>
+                                                    <img src="{% if entity.webPath is not empty  %}{{ image(entity.webPath).scaleResize(300,300) }}{% elseif entity.masterItem is not empty  %}{{ image(entity.masterItem.webPath).scaleResize(300,300) }}{% endif %}" alt="" />
+                                                </li>
+                                                <li><p class="pull-center"><strong>BDT: {{ entity.salesPrice|number_format }}</strong></p></li>
+                                            </ul>
+                                        </td>
+                                        <td class="numeric"> {% if entity.category is not empty  %}{{ entity.category.name }}{% endif %}</td>
+                                        <td class="numeric"> {% if entity.brand is not empty %}{{ entity.brand.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.quantity }}&nbsp;{% if entity.productUnit is not empty  %}{{ entity.productUnit.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.discount is not empty  %}<strike>{% endif %}{{ entity.salesPrice|number_format() }}{% if entity.discount is not empty  %}</strike>{% endif %}{% if entity.discount is not empty  %}{{ entity.discountPrice|number_format() }}{% endif %}</td>
+                                        <td class="numeric" >
+                                            <a href="{{ path('order_product_show',{'shop':globalOption.slug,'slug':entity.slug}) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                            <a href="javascript:" class="btn green mini toggle"  id="{{ entity.id  }}" ><i class="icon-shopping-cart"></i>&nbsp;Preview & Cart</a>
+                                        </td>
+                                    </tr>
+
+                                    <tr id="show-{{ entity.id }}" class="showing-overview remove-vendor-item-{{ entity.id }}">
+                                        <td colspan="11">
+                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                <tr>
+                                                    <td class="numeric span3" >
+                                                        <img src="{% if entity.webPath is not empty  %}{{ image(entity.webPath).scaleResize(300,300) }}{% elseif entity.masterItem is not empty %}{{ image(entity.masterItem.webPath).scaleResize(300,300) }}{% endif %}" alt="" />
+                                                    </td>
+                                                    <td class="numeric span4" >
+                                                        <ul class="dropdown-menu-list" >
+                                                            <li><strong>{{ entity.ecommerceConfig.currency }}&nbsp;{{ entity.salesPrice|number_format }}</strong></li>
+                                                            <li><strong>{{ entity.quantity  }}</strong>&nbsp;{% if entity.productUnit is not empty %}{{ entity.productUnit.name }}{% endif %}</li>
+                                                            {% if entity.category is not empty %}<li>{{ entity.category.name }}</li>{% endif %}
+                                                            {% if entity.gender is not empty %}<li>{{ entity.gender }}</li>{% endif %}
+                                                            {% if entity.ageGroup is not empty %}<li>{{ entity.ageGroup }}</li>{% endif %}
+                                                            {% if entity.brand is not empty %}<li>{{ entity.brand.name }}</li>{% endif %}
+                                                            {% if entity.country is not empty %}<li>{{ entity.country.name }}</li>{% endif %}
+                                                            <li>{{ entity.content|raw }}</li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="numeric span5" >
+                                                        {% if entity.itemSubs is not empty and entity.itemSubs is defined %}
+                                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                                <thead class="flip-content ">
+                                                                <tr class="head-grey">
+                                                                    <th class="numeric" >Size & Price</th>
+                                                                    <th class="numeric" >Color</th>
+                                                                    <th class="numeric" >Qnt</th>
+                                                                    <th class="numeric" >&nbsp;</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="purchaseItem" >
+                                                                {% for purchaseItem in  entity.itemSubs %}
+                                                                    <tr id="remove-purchase-item-{{ entity.id }}">
+                                                                        <td class="numeric" >
+                                                                            {% if purchaseItem.size %}
+                                                                            <input type="hidden" name="item" id="name-{{ purchaseItem.id }}">
+                                                                                {{ purchaseItem.size.name }}&nbsp; & &nbsp;BDT. {{ purchaseItem.salesPrice }}
+                                                                            {% endif %}
+                                                                        </td>
+                                                                        <td class="numeric" >
+                                                                            {% if purchaseItem.colors is not empty %}
+                                                                                <select class="td-select" name="color" id="color-{{ purchaseItem.id }}">
+                                                                                    {% for color in purchaseItem.colors   %}
+                                                                                        <option value="{{ color.id }}">{{ color.name }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            {% endif %}
+                                                                        </td>
+                                                                        <td class="numeric" ><input type="number" class="span12 m-wrap" name="quantity" id="quantity-{{ purchaseItem.id }}" value="1" max="{{ purchaseItem.quantity }}" min="1"></td>
+                                                                       <td class="numeric" >
+                                                                            <a href="javascript:" data-url="{{ path('order_cart_to_add',{'shop':globalOption.slug,'id':purchaseItem.id}) }}" id="{{ purchaseItem.id }}" class="btn red mini addCart" ><i class="icon-shopping-cart"></i></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                                </tbody>
+
+                                                            </table>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                         </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .td-select{
+            height: 28px!important;
+            margin: 0!important;
+            border: 1px solid #999;
+            width: 100%;
+        }
+
+    </style>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@EcommerceBundle/Resources/public/js/editable.js'
+    '@EcommerceBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    ApproveProcess();
+
+    $(document).on("click", ".addCart", function() {
+        var id = $(this).attr("id");
+        var url = $(this).attr("data-url");
+        var color = $("#color-"+id).val();
+        var quantity = $("#quantity-"+id).val();
+        $.ajax({
+        url: url,
+        type: 'POST',
+        data:'color='+color+'&quantity='+quantity,
+        success: function (response) {
+            $('.cart span').html(response);
+        },
+        })
+
+    });
+{% endblock %}
+

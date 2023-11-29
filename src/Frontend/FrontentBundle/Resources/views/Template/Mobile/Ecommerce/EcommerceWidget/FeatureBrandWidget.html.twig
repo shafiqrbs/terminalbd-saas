@@ -1,0 +1,12 @@
+{% for brand in  brands  %}
+    <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6 col-sm-cus-6">
+        <div class="thumbnail feature-brand" data-match-height="feature-brand">
+            <div class="product-preview group" >
+                <a  href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'brand':brand.slug }) }}">
+                    <img class="img-responsive" src="{{ image(brand.webPath).resize(250,200, 'white') }}" alt=""></a>
+            </div>
+            <div class="clearfix"></div>
+            <a class="group inner brand-name text-center" href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'subdomain': globalOption.subDomain,'brand':brand.slug }) }}">{{ brand.name }}</a>
+        </div>
+    </div>
+{% endfor %}

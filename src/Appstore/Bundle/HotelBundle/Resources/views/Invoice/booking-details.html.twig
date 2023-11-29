@@ -1,0 +1,105 @@
+<div class="portlet box yellow" id="room-close-{{ particular.id }}">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i> {{ particular.particularCode }} - {{ particular.name }}</div>
+        <div class="actions">
+            <div class="btn-group">
+                <a class="btn red room-close" href="javascript:" data-id="{{ particular.id }}"><i class="icon-remove-circle"></i> Close</a>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        {% if entities is not empty %}
+        <table class="table table-bordered table-striped table-condensed table-fixed">
+            <thead>
+            <tr class="head-blue">
+                <th class="">Si/No</th>
+                <th class="">Created</th>
+                <th class="">Invoice</th>
+                <th class="">Booking Date</th>
+                <th class="">Guest</th>
+                <th class="">Adult</th>
+                <th class="">Child</th>
+                <th class="">Amount</th>
+                <th class="">Sub-Total</th>
+                <th class="">Status</th>
+            </tr>
+            </thead>
+            <tbody id="invoiceParticulars">
+            {% for item in entities %}
+                <tr id="remove-{{ item.id }}">
+                    <td  class="">{{ loop.index }}.</td>
+                    <td  class="">{{ item.hotelInvoice.created|date('d-m-Y') }}</td>
+                    <td  class="">{{ item.hotelInvoice.invoice }}</td>
+                    <td class="">{% for date in item.bookingDate %}{{ date }} {% if not loop.last %},{% endif %}{% endfor %}</td>
+                    <td class="">{{ item.hotelInvoice.customer.name }}/{{ item.hotelInvoice.customer.mobile }}</td>
+                    <td class="">{{ item.adult }}</td>
+                    <td class="">{{ item.child }}</td>
+                    <td class="">{{ item.price }}</td>
+                    <td class="" id="subTotal-{{ item.id }}">{{ item.subTotal|number_format }}</td>
+                    <td>{{ item.process|capitalize }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        <div class="clearfix"></div>
+        <div class="row-fluid" style="background:#464141;">
+            <form class="" id="stockInvoice-{{ particular.id }}" name="stockInvoice-{{ particular.id }}" action="{{ path('hotel_booking_temporary_create',{'id':particular.id}) }}" method="post">
+                <div class="row-fluid particular-info" style="padding-left: 10px; padding-top: 15px; padding-bottom:8px" >
+                    <div class="span3">
+                        <div class="span6">
+                           <input class="m-wrap span12 bookingStartDate" type="date" style="padding-right:0!important" name="startDate" id="bookingStartDate-{{ particular.id }}" value="{% if temp.startDate is defined and temp.startDate is not empty %}{{ temp.startDate|date("Y-m-d") }}{% endif %}"  autocomplete="off" placeholder="" >
+                        </div>
+                        <div class="span6">
+                            <input class="m-wrap span12 bookingEndDate" data-id="{{ particular.id }}" type="date" style="padding-right:0!important;" name="endDate" id="bookingEndDate-{{ particular.id }}" value="{% if temp.endDate is defined and temp.endDate is not empty %}{{ temp.endDate|date("Y-m-d") }}{% endif %}"  autocomplete="off" placeholder="">
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="input-icon left">
+                            <i class="icon-user"></i>
+                            <input class="m-wrap span12 search-input " style="padding-right:0!important" name="guestName" id="guestName-{{ particular.id }}" value="{% if temp.guestName is defined %}{{ temp.guestName }}{% endif %}"  autocomplete="off" placeholder="Enter room member name" >
+                        </div>
+                    </div>
+                    <div class="span2">
+                        <div class="input-icon left">
+                            <i class="icon-phone"></i>
+                            <input type="text" class="m-wrap span12 form-control" id="guestMobile-{{ particular.id }}" name="guestMobile" placeholder="Enter mobile no" value="{% if temp.guestMobile is defined %}{{ temp.guestMobile }}{% endif %}" min="">
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="input-append span12" style="margin-bottom:0!important">
+                            <div class="input-group">
+                                {% set counts =[1,2,3,4,5,6,7,8,9,10] %}
+                                <input type="text" class="m-wrap span3 form-control input-number" id="salesPrice-{{ particular.id }}" name="salesPrice" placeholder="Price" value="{% if temp.price is defined and temp.price is not empty %}{{ temp.price }}{% else %}{{ particular.salesPrice }}{% endif %}" min="">
+                                <select id="adult" name="adult" class="m-wrap span3">
+                                    <option value="">Adult</option>
+                                    {% for count in counts  %}
+                                        <option {% if temp.adult is defined and temp.adult is not empty and temp.adult == count %} selected="selected" {% endif %} value="{{ count }}">{{ count }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select id="child" name="child" class="m-wrap span3">
+                                    <option value="">Child</option>
+                                    {% for count in counts  %}
+                                        <option {% if temp.child is defined and temp.child is not empty and temp.child == count %} selected="selected" {% endif %} value="{{ count }}">{{ count }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="button" id="addRoom-{{ particular.id }}" disabled="disabled" class="btn blue booking-submit"  data-id="{{ particular.id }}" ><i class="icon-save"></i> Add</button>
+                                <button type="button"  class="btn red room-cancel" data-url="{{ path('hotel_booking_temporary_reset',{'id':particular.id}) }}" data-id="{{ particular.id }}" ><i class="icon-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<style>
+    input[class*="span"].m-wrap{
+        background-color: #ffffff!important;
+    }
+</style>
+

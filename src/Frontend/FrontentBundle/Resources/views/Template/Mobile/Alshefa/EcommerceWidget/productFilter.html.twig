@@ -1,0 +1,184 @@
+<div class="row">
+<form class="bs-example" action="{{ path(globalOption.subDomain ~ '_webservice_product_filter') }}"  method="get">
+
+    {% if globalOption.ecommerceConfig.searchCategory == 1 %}
+    <div class="input-group col-xs-12 col-md-12">
+        <select name='category' id='category' class='input-selector item-select col-xs-12 col-md-12' onchange='this.form.submit()'>
+            <option value=''>Filter by Category</option>
+            {{ categoryTree|raw }}
+        </select>
+    </div>
+    {% endif %}
+    {% if globalOption.templateCustomize.showSidebar == 1 %}
+        <div id="productFilter">
+            <div class=" panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top: 1px;">
+                {% if globalOption.ecommerceConfig.sidebarPrice == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Price Range
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-4"><input id="priceStart" name="priceStart" type="text" class="col-md-12 form-control" value="{{ searchForm['priceStart'] is defined ? searchForm['priceStart'] :'' }}" placeholder="Min price" /></div>
+                                    <div class="col-xs-2 col-md-2 text-center" style="line-height:30px; font-weight: bold; color:#222">To</div>
+                                    <div class="col-xs-5 col-md-5"><input id="priceEnd" name="priceEnd" type="text" class="col-md-12 form-control" value="{{ searchForm['priceEnd'] is defined ? searchForm['priceEnd'] :'' }}" placeholder="Max price" /></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if globalOption.ecommerceConfig.sidebarCategory == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingCategory">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCategory" aria-expanded="false" aria-controls="collapseCategory">
+                                    Category
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseCategory" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCategory">
+                            <div class="panel-body">
+                                <div class="treeview">{{ categorySidebar|raw }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if globalOption.ecommerceConfig.sidebarBrand == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Brands
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="row">{{ brandTree|raw }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if globalOption.ecommerceConfig.sidebarSize == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    Size/Weight/Dimension
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body"><div class="row">{{ sizeTree|raw }}</div></div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if globalOption.ecommerceConfig.sidebarColor == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFive">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Colors
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                            <div class="panel-body"><div class="row">{{ colorTree|raw }}</div></div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if globalOption.ecommerceConfig.sidebarDiscount == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingSix">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    Discount
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                            <div class="panel-body"> <div class="row"> {{ discountTree|raw }}</div></div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if globalOption.ecommerceConfig.sidebarPromotion == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingSeven">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                    Promotion
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+                            <div class="panel-body"> <div class="row"> {{ promotionTree|raw }}</div></div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if globalOption.ecommerceConfig.sidebarTag == 1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingEight">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                    Tags
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+                            <div class="panel-body"> <div class="row"> {{ tagTree|raw }}</div></div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="panel-heading">
+                    <div class="sidebar-footer" >
+                        <button type="submit"  class="btn btn-success col-xs-12 col-md-12" id="filter"><span class="glyphicon glyphicon-filter"></span> FILTER</button>
+                    </div>
+                </div>
+            </div><!-- panel-group -->
+        </div>
+    {% endif %}
+
+</form>
+    <div class="clearfix"></div>
+</div>
+
+<style>
+    #accordion .panel-title a{
+        font-weight: normal !important;
+    }
+    .input-group{
+        margin-bottom: 0!important;
+    }
+    #priceStart , #priceEnd{
+        height:30px!important;
+        border-radius:0;
+        border: 1px solid #d2d2d2;
+
+    }
+    #accordion .panel-body{
+        background: #FFFFff!important;
+    }
+    #productFilter , #uploadPrescription{
+        display:none;
+    }
+    .btn-warning{
+        background: #ff6a00;
+        color: #ffffff!important;
+    }
+    .dropzone-upload{
+        border-radius: 0px;
+        background-color: #535b5c!important;
+    }
+    .dropzone-mobile{
+        z-index: 999!important;
+    }
+    .dropzone-mobile span{
+        z-index: 999!important;
+    }
+
+</style>

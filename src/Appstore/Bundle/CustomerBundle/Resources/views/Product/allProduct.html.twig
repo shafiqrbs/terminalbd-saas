@@ -1,0 +1,290 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Wel Come TerminalBD.com
+                </h3>
+                <p>We are servive at lest 200000 live products in our application. Please your choseable with out any doubt. </p>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product Lists</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <i class="icon-cogs"></i>&nbsp;Tools
+                                    <i class="icon-tasks"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="{{ path('inventory_goods_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create</a></li>
+                                    <li><a href="{{ path('inventory_goods') }}"><i class="icon-th-list"></i>&nbsp;Lists</a></li>
+                                </ul>
+                                <a class="dropdown-toggle btn purple cart" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" href="{{ path('order_cart') }}">
+                                    <i class="icon-shopping-cart"></i>&nbsp;BDT. (<span>{{ cart.total|number_format }}</span>)
+                                </a>
+                                <ul class="dropdown-menu extended inbox">
+                                    <li>
+                                        <p>You have 12 new messages</p>
+                                    </li>
+                                    <li>
+                                        <ul class="dropdown-menu-list scroller" style="height:250px">
+                                            {% for product in cart.contents %}
+                                            <li>
+                                                <a href="javascript:">
+                                                    <span class="subject">
+                                                        <span class="from">{{ product.name }}</span>
+                                                    </span>
+                                                    <dl>
+                                                        <dt>{{ product.quantity }} x BDT. {{ product.price }} = BDT. {{ product.quantity * product.price }}</dt>
+                                                        <dt>Size: {{ product.size }}{% if product.color is not empty %}, Color: {{ product.color }}{% endif %}</dt>
+                                                     </dl>
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li class="external">
+                                        <span class="pull-left">
+                                           <a  href="">Views&nbsp;<i class="icon-shopping-cart"></i></a>
+                                        </span>
+                                        <span class="pull-right">
+                                            <a  href="">Checkout&nbsp;<i class="m-icon-swapright"></i></a>
+                                        </span>
+                                    </li>
+                                </ul>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="portlet search-portlet box grey">
+                                <div class="row-fluid" >
+                                    <form class="search-form" action="" method="get" name="itemSearch">
+                                        <div class="span7">
+                                            <div class="controls">
+                                                <input type="text" id="updated" name="updated"  class="span4 search-input m-ctrl-medium date-picker" value="{% if searchForm.updated is defined %}{{ searchForm.updated }}{% endif %}"  autocomplete="off" placeholder="Ptoduct created date">
+                                                <input type="text" id="name" name="name"  class="span8 search-input" value="{% if searchForm.name is defined %}{{ searchForm.name }}{% endif %}"  autocomplete="off" placeholder="Search by product name">
+                                            </div>
+                                        </div>
+                                        <div class="span4 left-margin">
+                                            <input type="text" id="category" name="category"  class="span11 select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}"  autocomplete="off" placeholder="Search by product category">
+                                        </div>
+                                        <div class="span1">
+                                            <div class="btn-group">
+                                                <button class="btn" type="submit" >
+                                                    <i class="icon-search"></i>&nbsp;Go</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-grey">
+                                    <th class="numeric" >Product name</th>
+                                    <th class="numeric" >Category</th>
+                                    <th class="numeric" >Brand</th>
+                                    <th class="numeric" >Stock in</th>
+                                    <th class="numeric" >Price</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="purchaseentity" >
+                                {% for entity in entities %}
+                                    <tr class="remove-vendor-item-{{ entity.id }}">
+                                        <td class="numeric dropdown" >
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                                {% if entity.masterItem %}{{ entity.masterItem.name }}-{% endif %}{{ entity.name }}
+                                            </a>
+                                            <ul class="dropdown-menu extended inbox">
+                                                <li>
+                                                    <p>{% if entity.masterItem %}{{ entity.masterItem.name }}-{% endif %}{{ entity.name }}</p>
+                                                </li>
+                                                <li><img src="" alt="" />
+
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td class="numeric"> {% if entity.masterItem is defined  %}Category{% endif %}</td>
+                                        <td class="numeric"> {% if entity.brand is not empty %}{{ entity.brand.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.subProductQuantity }}&nbsp;</td>
+                                        <td class="numeric" >{% if entity.discount is not empty  %}<strike>{% endif %}{{ entity.salesPrice|number_format() }}{% if entity.discount is not empty  %}</strike>{% endif %}{% if entity.discount is not empty  %}{{ entity.discountPrice|number_format() }}{% endif %}</td>
+                                        <td class="numeric" >
+                                            <a href="" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                            <a href="javascript:" class="btn green mini toggle"  id="{{ entity.id  }}" ><i class="icon-shopping-cart"></i>&nbsp;Preview & Cart</a>
+                                        </td>
+                                    </tr>
+
+                                    <tr id="show-{{ entity.id }}" class="showing-overview remove-vendor-item-{{ entity.id }}">
+                                        <td colspan="11">
+                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                <tr>
+                                                    <td class="numeric span3" >
+                                                        <img src="" alt="" />
+                                                    </td>
+                                                    <td class="numeric span4" >
+                                                        <ul class="dropdown-menu-list" >
+                                                            <li><strong>&nbsp;{{ entity.salesPrice|number_format }}</strong></li>
+                                                            <li><strong>{{ entity.quantity  }}</strong>&nbsp;</li>
+
+                                                            {% if entity.gender is not empty %}<li>{{ entity.gender }}</li>{% endif %}
+                                                            {% if entity.ageGroup is not empty %}<li>
+                                                                {% for value in (entity.ageGroup|serialize) %}
+                                                                    {{ color.ageGroup|join(',') }}
+                                                                {% endfor %}
+                                                           </li>{% endif %}
+                                                            {% if entity.brand is not empty %}<li>{{ entity.brand.name }}</li>{% endif %}
+                                                            {% if entity.country is not empty %}<li>{{ entity.country.name }}</li>{% endif %}
+                                                            <li>{{ entity.content|raw }}</li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="numeric span5" >
+                                                        {% if entity.goodsItems is not empty and entity.goodsItems is defined %}
+                                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                                                <thead class="flip-content ">
+                                                                <tr class="head-grey">
+                                                                    <th class="numeric" >Size & Price</th>
+                                                                    <th class="numeric" >Color</th>
+                                                                    <th class="numeric" >Qnt</th>
+                                                                    <th class="numeric" >&nbsp;</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="purchaseItem" >
+                                                                {% for purchaseItem in  entity.goodsItems %}
+                                                                    <tr id="remove-purchase-item-{{ entity.id }}">
+                                                                        <td class="numeric" >
+                                                                            <input type="hidden" name="item" id="name-{{ purchaseItem.id }}">
+                                                                            {% if purchaseItem.size %}{{ purchaseItem.size.name }}{% endif %}&nbsp; & &nbsp;BDT. {{ purchaseItem.salesPrice }}
+                                                                        </td>
+                                                                        <td class="numeric" >
+                                                                            {% if purchaseItem.colors is not empty %}
+                                                                                <select class="td-select" name="color" id="color-{{ purchaseItem.id }}">
+                                                                                    {% for color in purchaseItem.colors   %}
+                                                                                        <option value="{{ color.id }}">{{ color.name }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            {% endif %}
+                                                                        </td>
+                                                                        <td class="numeric" ><input type="number" class="span12 m-wrap" name="quantity" id="quantity-{{ purchaseItem.id }}" value="{{ purchaseItem.quantity }}" max="{{ purchaseItem.quantity }}" min="1"></td>
+                                                                       <td class="numeric" >
+                                                                            <a href="javascript:" data-url="{{ path('order_cart_to_add',{'id':purchaseItem.id}) }}" id="{{ purchaseItem.id }}" class="btn blue mini addCart" ><i class="icon-shopping-cart"></i></a>
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                                </tbody>
+
+                                                            </table>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                         </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .td-select{
+            height: 28px!important;
+            margin: 0!important;
+            border: 1px solid #999;
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@InventoryBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/editable.js'
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    ApproveProcess();
+
+    $(document).on("click", ".addCart", function() {
+
+        var id = $(this).attr("id");
+        var url = $(this).attr("data-url");
+        var color = $("#color-"+id).val();
+        var quantity = $("#quantity-"+id).val();
+        $.ajax({
+        url: url,
+        type: 'POST',
+        data:'color='+color+'&quantity='+quantity,
+        success: function (response) {
+            $('.cart span').html(response);
+        },
+        })
+
+    });
+    $(document).on("click", ".addCart", function() {
+
+        var id = $(this).attr("id");
+        var url = $(this).attr("data-url");
+        var color = $("#color-"+id).val();
+        var quantity = $("#quantity-"+id).val();
+        $.ajax({
+        url: url,
+        type: 'POST',
+        data:'color='+color+'&quantity='+quantity,
+        success: function (response) {
+        $('.cart span').html(response);
+        },
+        })
+
+    });
+
+{% endblock %}
+

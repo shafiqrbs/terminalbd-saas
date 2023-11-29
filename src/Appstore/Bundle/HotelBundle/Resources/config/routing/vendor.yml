@@ -1,0 +1,37 @@
+hotel_vendor:
+    path:     /
+    defaults: { _controller: "HotelBundle:Vendor:index" }
+
+hotel_vendor_search:
+    path:     /search
+    defaults: { _controller: "HotelBundle:Vendor:autoSearch" }
+    options:
+            expose: true
+
+hotel_vendor_name:
+    path:      /{vendor}/vendor-name
+    defaults: { _controller: "HotelBundle:Vendor:searchVendorName" }
+    options:
+            expose: true
+
+hotel_vendor_create:
+    path:     /create
+    defaults: { _controller: "HotelBundle:Vendor:create" }
+    methods:  POST
+
+hotel_vendor_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:Vendor:edit" }
+
+hotel_vendor_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:Vendor:update" }
+    methods:  [POST, PUT]
+
+hotel_vendor_status:
+    path:     /{id}/status
+    defaults: { _controller: "HotelBundle:Vendor:status" }
+
+hotel_vendor_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:Vendor:delete" }

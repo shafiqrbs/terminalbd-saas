@@ -1,0 +1,158 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN tariffupload HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="tariffupload-title">
+                    Tax Incidence Upload
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('taxtariff') }}">Tax Incidence</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Tax Incidence Upload</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END tariffupload HEADER-->
+        <!-- BEGIN tariffupload CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Tax Incidence Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn black" href="{{ path('taxtariff') }}"><i class="icon-th-list"></i>&nbsp; Tax Incidence</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+                        {{ form_start(form) }}
+                        {{ form_row(form._token) }}
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Tariff Name<span class="required">*</span></label>
+                                    <div class="controls">
+                                        {{ form_widget(form.name) }}
+                                        {{ form_errors(form.name) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">HS Code<span class="required">*</span></label>
+                                    <div class="controls">
+                                        {{ form_widget(form.hsCode) }}
+                                        {{ form_errors(form.hsCode) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Customs Duty(CD)</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.customsDuty) }}
+                                        {{ form_errors(form.customsDuty) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Supplementary Duty(SD)</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.supplementaryDuty) }}
+                                        {{ form_errors(form.supplementaryDuty) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Value Added Tax(VAT)</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.valueAddedTax) }}
+                                        {{ form_errors(form.valueAddedTax) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Advance Income Tax(AIT)</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.advanceIncomeTax) }}
+                                        {{ form_errors(form.advanceIncomeTax) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Recurring Deposit(RD)</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.recurringDeposit) }}
+                                        {{ form_errors(form.recurringDeposit) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="control-group">
+                                    <label class="control-label" for="firstName">Advance Trade Vat(ATV)</label>
+                                    <div class="controls">
+                                        {{ form_widget(form.advanceTradeVat) }}
+                                        {{ form_errors(form.advanceTradeVat) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix"><br/></div>
+                        <!--/span-->
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-center">
+                                <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                <button type="submit" class="btn purple"><i class="icon-refresh"></i> Reset</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                        <!-- END FORM-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,135 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Stock Item Details Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assetsitem') }}">Product</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Stock Item Details Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Stock Item Details lists</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                {#   {% set gpSku = searchForm.gpSku is defined ? searchForm.gpSku :'' %}
+                                   {% set item = searchForm.item is defined ? searchForm.item :'' %}
+                                   {% set category = searchForm.category is defined ? searchForm.category :'' %}
+                                   {% set brand = searchForm.brand is defined ? searchForm.brand :'' %}
+                                   <a  class="btn yellow" target="_blank" href=""><i class="fa fa-download"></i>&nbsp;Export Excel</a>#}
+                                <a class="btn" href="{{ path('assets_stockitem',{'type':"Assets"}) }}"><i class="icon-th-list"></i>&nbsp; Stock</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid">
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span4">
+                                            <input type="text" id="category" name="category"  class="leftMargin span12 select2Category" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}"  autocomplete="off" placeholder="Product category">
+                                        </div>
+                                        <div class="span4">
+                                            <input type="text" id="item" name="item"  class="span12 select2Product" value="{% if searchForm.item is defined %}{{ searchForm.item }}{% endif %}"  autocomplete="off" placeholder="Enter item name ">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="brand" name="brand"  class="leftMargin span12 select2Brand" value="{% if searchForm.brand is defined %}{{ searchForm.brand }}{% endif %}"  autocomplete="off" placeholder="Product brand name">
+                                        </div>
+                                        <div class="span1">
+                                            <div class="controls">
+                                                <div class="input-append span11">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead>
+                                <tr class="head-green">
+                                   <th class="numeric" >Name </th>
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Stock Keeping Unit">Barcode</span></th>
+
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Opening Quantity">Open</span></th>
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Purchase Quantity">
+                                            Purchase </span> </th>
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Purchase Return Quantity">
+                                            P. Return </span> </th>
+
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Issue Quantity">
+                                            Issue </span> </th>
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Issue Return Quantity">
+                                            I. Return </span> </th>
+
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Damage Quantity">
+                                            Damage </span> </th>
+
+                                    <th class="numeric" ><span class="tooltips" data-original-title="Remaining Quantity">Remaining</span></th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="flip-content ">
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.productName }}</td>
+                                        <td class="">{{entity.barcode}}</td>
+                                        <td class="numeric" >{{entity.openingQuantity}}</td>
+                                        <td class="numeric" >{{ entity.purchaseQuantity }}</td>
+                                        <td class="numeric" >{{ entity.purchaseReturnQuantity }}</td>
+                                        <td class="numeric" >{{ entity.salesQuantity }}</td>
+                                        <td class="numeric" >{{ entity.salesReturnQuantity }}</td>
+                                        <td class="numeric" >{{ entity.damageQuantity }}</td>
+                                        <td class="numeric" >{{ entity.remainingQuantity }}</td>
+                                        <td class="numeric" >
+                                            {#<a  href="{{ path('assets_stockitem_show', { 'id': entity.id }) }}" class="btn blue mini" ><i class="icon-pencil"></i></a>#}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .disabled{
+            opacity: 0.5;
+        }
+    </style>
+{% endblock %}
+

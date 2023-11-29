@@ -1,0 +1,195 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN purchase_order HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="purchase_order-title">
+                    Office Notes Information
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assets_officenote') }}">Office Notes</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN purchase_order CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Office Notes Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="{{ path('assets_officenote') }}"><i class="icon-th-list"></i>&nbsp;Office Notes</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="clearfix">&nbsp;</div>
+                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                            <tr>
+                                <th class="span3">Created</th>
+                                <td class="span2">{{ entity.created|date('d-m-Y') }}</td>
+                                <th class="span2" >Created By</th>
+                                <td class="numeric" >{{ entity.createdBy }}</td>
+                            </tr>
+                            <tr>
+                                <th class="span3" >Meeting Date</th>
+                                <td class="span2" >{{ entity.meetingDate|date('d-m-Y') }}</td>
+                                <th class="span2" >Meeting Note No</th>
+                                <td class="numeric" >{{ entity.meetingNoteNo }}</td>
+                            </tr>
+                            <tr>
+                                <th class="span3" >Meeting Note</th>
+                                <td class="numeric" colspan="3" >{{ entity.name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="span3" >Amount</th>
+                                <td class="numeric" colspan="3" >{{ entity.amount|number_format(2) }}</td>
+                            </tr>
+                            <tr>
+                                <th class="span3" >Requested By</th>
+                                <td class="numeric" colspan="3" >{{ entity.requestedBy }}</td>
+                            </tr>
+                            <tr>
+                                <th class="span3" >Description</th>
+                                <td class="numeric" colspan="3" >{{ entity.content|raw }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="span3" >Attachment</th>
+                                <td class="numeric" colspan="3" >
+                                    {% if entity.webPath is not empty %}
+                                    <a target="_blank" href="/{{ entity.webPath }}">Download</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                        </table>
+                        <div class="clearfix">&nbsp;</div>
+                        <table class="table table-bordered table-striped table-condensed flip-content">
+
+                            <thead>
+                            <tr class="head-blue">
+                                <th class="numeric" >Created</th>
+                                <th class="numeric" >Created By</th>
+                                <th class="numeric" >PR No</th>
+                                <th class="numeric" >Club/Department</th>
+                                <th class="numeric" >Ref no</th>
+                                <th class="numeric" >Item/Quantity</th>
+                                <th class="numeric" >Approx. Amount</th>
+                                <th class="numeric" >Approved Date</th>
+                                <th class="numeric" >Approve</th>
+                                <th class="numeric" >Process</th>
+                            </tr>
+                            </thead>
+                            <tbody class="flip-content " id="purchase">
+                            {% set approves = ['created','in-progress'] %}
+                            {% for entity in entities %}
+                                <tr id="delete-{{ entity.id }}">
+                                    <td class="numeric" >{{ entity.receiveDate|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ entity.createdBy }}</td>
+                                    <td class="numeric" >{{ entity.grn }}</td>
+                                    <td class="numeric" >{% if entity.club is not empty %}{{ entity.club.name }}{% endif %}</td>
+                                    <td class="numeric" >{{ entity.memo }}</td>
+                                    <td class="numeric" >{{ entity.totalItem }}/{{ entity.totalQnt }}</td>
+                                    <td class="numeric" >{{ entity.totalAmount|number_format() }}</td>
+                                    <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                    <td class="numeric" >{{ entity.approve|capitalize }}</td>
+                                    <td class="numeric pull-center" ><a title="Approve" href="javascript:" class="btn green disabled mini" >&nbsp;{{ entity.process|capitalize }}</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="12"> <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                            <thead class="flip-content ">
+                                            <tr class="head-gray">
+                                                <th class="numeric" ><i class="icon-reorder"></i></th>
+                                                <th class="numeric" >Item Mode</th>
+                                                <th class="numeric" >Item</th>
+                                                <th class="numeric" >Product</th>
+                                                <th class="numeric" >QTY</th>
+                                                <th class="numeric" >Unit</th>
+                                                <th class="numeric" >Sub-total</th>
+                                                <th class="numeric" ></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% if entity.requisitionItems is not empty %}
+                                                {% for purchaseItem in entity.requisitionItems %}
+                                                    <tr>
+                                                        <td class="numeric" >{{ loop.index }}.</td>
+                                                        <td class="numeric" >{% if purchaseItem.item.productGroup is not empty %}{{ purchaseItem.item.productGroup.name }}{% endif %}</td>
+                                                        <td class="numeric" >{{ purchaseItem.item.name }}</td>
+                                                        <td class="numeric" >{{ purchaseItem.name }}</td>
+                                                        <td class="numeric" >{{ purchaseItem.quantity }}</td>
+                                                        <td class="numeric" >{{purchaseItem.purchasePrice}}</td>
+                                                        <td class="numeric" >{{ purchaseItem.purchaseSubTotal|number_format() }}</td>                         <td class=" numeric" >
+                                             <span class="pull-left">
+                                                {% if entity.approve != 'approved' %}
+                                                    <a title="Are you sure went to delete ?" href="javascript:" rel="{{ path('inventory_purchaseitem_delete', { 'id': purchaseItem.id }) }}" id="{{  purchaseItem.id }}"  class="btn red mini purchaseItemDelete" ><i class="icon-trash"></i></a>
+                                                {% endif %}
+                                             </span>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                            </tbody>
+
+                                        </table></td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-right" id="action-{{ entity.id }}">
+                                {% if entity.process in ['Draft','In-progress','Complete'] %}
+                                    <a href="{{ path('assets_officenote_edit', { 'id': entity.id }) }}" class="btn green" ><i class="icon-edit"></i> Edit</a>
+                                {% endif %}
+                                {% if (entity.process == 'Complete')  %}
+                                    <a class="btn purple approve"  data-id="{{ entity.id }}" data-title="{{ entity.id }}" data-url="{{ path('assets_officenote_approve', { 'id': entity.id,'Rejected':'Rejected'  }) }}" ><i class="icon-refresh"></i>&nbsp;Reject</a>
+                                    <a class="btn blue approve approved-{{ entity.id }}" data-id="{{ entity.id }}" data-title="{{ entity.id }}" data-url="{{ path('assets_officenote_approve', { 'id': entity.id }) }}"><i class="icon-ok"></i>&nbsp;Checked</a>
+                                {% elseif entity.process == 'Checked' %}
+                                    <a class="btn purple approve"  data-id="{{ entity.id }}" data-title="{{ entity.id }}" data-url="{{ path('assets_officenote_approve', { 'id': entity.id,'Rejected':'Rejected'  }) }}" ><i class="icon-refresh"></i>&nbsp;Reject</a>
+                                    <a href="javascript:" data-url="{{ path('assets_officenote_approve', { 'id': entity.id }) }}"  class="btn green approve"><i class="icon-ok"></i>&nbsp;Approve</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    '@InventoryBundle/Resources/public/js/puschase.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    ApproveProcess();
+    InventoryPurchasePage();
+{% endblock %}
+

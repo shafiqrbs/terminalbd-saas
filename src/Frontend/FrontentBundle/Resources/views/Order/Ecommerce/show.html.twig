@@ -1,0 +1,184 @@
+{% extends ':frontend/template:ecommerce-base.html.twig' %}
+{% block body %}
+    <section class="siteBgColor">
+        <div class="clearfix"></div>
+        <div class="container" >
+
+            <div class="row profile">
+                <div class="col-md-2">
+                    {% include ':frontend/template:sidebar.html.twig' %}
+                </div>
+                <div class="col-md-10">
+                    <div class="profile-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><strong>Order summary</strong></h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="invoice-title">
+                                            <h2>Invoice</h2><h3 class="pull-right">Order # {{ entity.invoice }}</h3>
+                                        </div>
+                                        <hr>
+                                        <div class="row" style="background: #f5f5f5; padding-bottom: 15px; padding-top: 15px; margin-bottom: 15px">
+                                            <div class="col-md-4">
+                                                <label><strong>{{ entity.delivery|capitalize }} Address</strong></label>
+                                                <ul class="unstyled" >
+                                                    <li>{{ entity.customerName }}</li>
+                                                    <li>{{ entity.customerMobile }}</li>
+                                                    <li>{{ entity.address|raw }}</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label><strong>Process Details</strong></label>
+                                                <ul class="unstyled" >
+                                                    {% if entity.cashOnDelivery == 1 %}
+                                                        <li><strong>Payment</strong>:&nbsp;Cash On Delivery</li>
+                                                    {% endif %}
+                                                    <li><strong>Shipping</strong>:&nbsp;{{ entity.delivery|capitalize }}</li>
+                                                    <li><strong>Delivery</strong>:&nbsp;{{ entity.deliveryDate|date('d-m-Y') }}</li>
+                                                    <li><strong>Process</strong>:&nbsp;{{ entity.process|capitalize }}</li>
+
+
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label><strong>Payment </strong></label>
+                                                {% if entity.accountMobileBank is not empty %}
+                                                    <ul class="unstyled" >
+                                                        <li><strong>Receive Mob.</strong>:&nbsp;{{ entity.accountMobileBank.mobile }}</li>
+                                                        <li><strong>Service</strong>:&nbsp;{{ entity.accountMobileBank.serviceName }}</li>
+                                                        <li><strong>Sender Mob.</strong>:&nbsp;{{ entity.paymentMobile }}</li>
+                                                        <li><strong>Transaction ID</strong>:&nbsp;{{ entity.transaction }}</li>
+                                                    </ul>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <td><strong>S/N</strong></td>
+                                                    <td><strong>Item</strong></td>
+                                                    <td class="text-center"><strong>Price</strong></td>
+                                                    <td class="text-center"><strong>Quantity</strong></td>
+                                                    <td class="text-right"><strong>Totals</strong></td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                                {% for orderItem in entity.orderItems %}
+                                                    <tr>
+                                                        <td>{{ loop.index }}.</td>
+                                                        <td>{{ orderItem.itemName }}</td>
+                                                        <td class="text-center">{{ orderItem.price|number_format(2) }}</td>
+                                                        <td class="text-center">1</td>
+                                                        <td class="text-right">{{ orderItem.subTotal|number_format(2) }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                <tr>
+                                                    <td class="thick-line"></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                                                    <td class="thick-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.totalAmount|number_format(2) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line text-center"><strong>Shipping</strong></td>
+                                                    <td class="no-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.shippingCharge|number_format(2) }}</td>
+                                                </tr>
+                                                {% if entity.ecommerceConfig.vatEnable == 1 %}
+                                                    <tr>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line text-center"><strong>Vat & Tax</strong></td>
+                                                        <td class="no-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.vat|number_format(2) }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if entity.discountAmount > 0 %}
+                                                    <tr>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line text-center"><strong>Discount</strong></td>
+                                                        <td class="no-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.discountAmount|number_format(2) }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if entity.coupon is not empty %}
+                                                    <tr>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line text-center"><strong>Coupon Code({{ entity.coupon.couponCode }})</strong></td>
+                                                        <td class="no-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.couponAmount|number_format(2) }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                <tr>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line text-center"><strong>Grand Total</strong></td>
+                                                    <td class="no-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.grandTotalAmount|number_format(2) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line text-center"><strong>Paid</strong></td>
+                                                    <td class="no-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.paidAmount|number_format(2) }}</td>
+                                                </tr>
+
+                                                {% if entity.dueAmount  > 0 %}
+                                                    <tr>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line"></td>
+                                                        <td class="no-line text-center"><strong>Due</strong></td>
+                                                        <td class="no-line text-right">{{ entity.ecommerceConfig.currency }} {{ entity.dueAmount|number_format(2) }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                    <tr>
+                                                        <td class="no-line" colspan="5">Remark: {{ entity.comment|raw }}</td>
+                                                    </tr>
+                                                {% if entity.process == "created" %}
+                                                    <tr>
+                                                        <td class="no-line text-right" colspan="5">Would you like to cancel this order? <a href="{{ path(globalOption.subDomain ~ '_webservice_buyer_order_delete',{'invoice':entity.invoice}) }}" class="btn btn-danger"><i class="icon-remove"></i>&nbsp;Cancel Order</a></td>
+                                                    </tr>
+                                                {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <!-- Modal -->
+    </section>
+
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@FrontendBundle/Resources/public/css/shop.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@FrontendBundle/Resources/public/template/desktop/js/ecommerce.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+

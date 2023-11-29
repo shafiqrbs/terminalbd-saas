@@ -1,0 +1,461 @@
+{% extends ':frontend/template:ecommerce-base.html.twig' %}
+{% block body %}
+    <section class="siteBgColor">
+        <div class="clearfix"></div>
+        {% if globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'flat-left'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-6">
+                        <ul class="simple-breadcrumb-left ultra-breadcrumb">
+                            <li class=""><a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}">Home</a></li>
+                            {% if category is defined and category is not empty %}
+                                <li><a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a></li>
+                                <li class="active"><a href="javascript:">{{ category.name }}</a></li>
+                            {% else %}
+                                <li class="active"><a href="javascript:">{{ menu.menu }}</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ category.name }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                    </div>
+                </div>
+            </div>
+        {% elseif globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'flat-right'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-6">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ category.name }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="simple-breadcrumb-right ultra-breadcrumb">
+                            {% if category is defined and category is not empty %}
+                                <li class="active"><a href="javascript:">{{ category.name }}</a></li>
+                                <li><a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a></li>
+                            {% else %}
+                                <li class="active"><a href="javascript:">{{ menu.menu }}</a></li>
+                            {% endif %}
+                            <li class=""><a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}">Home</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% elseif globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'left'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-12 text-left">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ category.name }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                        <p>
+                            <a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}"><span class="glyphicon glyphicon-home"></span> Home</a> &nbsp;&nbsp;<i class="fa fa-angle-right"></i>
+                            {% if category is defined and category is not empty %}
+                                <a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+                                {{ category.name }}
+                            {% else %}
+                                {{ menu.menu }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% elseif globalOption.templateCustomize.breadcrumb == 1 and globalOption.templateCustomize.breadcrumbPosition == 'center'  %}
+            <div class="pageheader">
+                <div class="container">
+                    <div class="col-md-12 text-center">
+                        <h2 class="title">{% if category is defined and category is not empty %}{{ category.name }}{% else %}{{ menu.menu }}{% endif %}</h2>
+                        <p>
+                            <a class="home" href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}"><span class="glyphicon glyphicon-home"></span> Home</a> &nbsp;&nbsp;<i class="fa fa-angle-right"></i>
+                            {% if category is defined and category is not empty %}
+                                <a href="{{ path(globalOption.subDomain ~ '_webservice_module',{'subdomain': globalOption.subDomain,'module': category.module.slug }) }}">{{ menu.menu }}</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+                                {{ category.name }}
+                            {% else %}
+                                {{ menu.menu }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-top')  %}
+            {% render controller("FrontendBundle:EcommerceWidget:featureTemplateWidget",{'globalOption':globalOption.id,'menu': menu.id,'position':'body-top'}) %}
+        {% endif %}
+        {% if menu.featureWidgets is defined and menu.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-top') %}
+            <div class="container" >
+                {% render controller("FrontendBundle:WebsiteWidget:featureWidget",{'globalOption':globalOption.id, 'menu': menu.id,'position':'body-top'}) %}
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
+        <section>
+            <div class="container " >
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'left' %}
+                    <div class="col-md-3 " >
+                        {% if globalOption.ecommerceConfig.titleBar == "top" or  globalOption.ecommerceConfig.titleBar == "both" %}
+                            <div class="row sidebar-top">
+                                <div class="col-md-12 paginate">
+                                    <div class="btn-group pull-left">
+                                        <div class="product-title"><span class="glyphicon glyphicon-filter"></span>&nbsp;REFINE</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if app.request.cookies.has('productList') %}
+                    {% set cookieVal = app.request.cookies.get('productList') %}
+                {% else %}
+                    {% set cookieVal = 'faThLarge' %}
+                {% endif %}
+                <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-md-9 {% else %}col-md-12 {% endif %}">
+                    {% if globalOption.ecommerceConfig.titleBar == "top" or  globalOption.ecommerceConfig.titleBar == "both" %}
+                        <div class="row paginate">
+                            <div class="col-md-2">
+                                <div class="btn-group pull-left">
+                                    <div style="float: right">
+                                        <button type="button" class="btn btn-cookie {% if cookieVal != 'faThLarge' %} btn-pagination {% else %} btn-pagination-active {% endif %}" id="faThLarge"
+                                                data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cookie_base_list') }}">
+                                            <i class="fa fa-th"></i></button>
+
+                                        <button type="button" class="btn btn-cookie {% if cookieVal != 'list-line' %} btn-pagination {% else %} btn-pagination-active {% endif %}" id="list-line"
+                                                data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cookie_base_list') }}">
+                                            <i class="fa fa-th-list"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                {% if searchForm.webName is defined and searchForm.webName is not empty %}
+                                <div class="product-title"> Keyword:  {{ searchForm.webName }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 navbar-right">
+
+                                <form class="form-inline">
+                                    <div class="form-group paginate-form-group">
+                                        <label for="exampleInputName2">Sort By: </label>
+                                        {% set sortBy = app.request.get('sortBy') %}
+                                        <select name="sortBy" id="sortBy" class="input-selector" onchange='this.form.submit()' >
+                                            <option value="">-- Sorting by --</option>
+                                            <option {% if sortBy == 'product.webName=?=ASC'  %} selected="selected" {% endif %} value="product.webName=?=ASC">Name (A - Z)</option>
+                                            <option {% if sortBy == 'product.webName=?=DESC'  %} selected="selected" {% endif %} value="product.webName=?=DESC">Name (Z - A)</option>
+                                            <option {% if sortBy == 'brand.name=?=ASC'  %} selected="selected" {% endif %} value="brand.name=?=ASC">Brand (A - Z)</option>
+                                            <option {% if sortBy == 'brand.name=?=DESC'  %} selected="selected" {% endif %} value="brand.name=?=DESC">Brand (Z - A)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=ASC'  %} selected="selected" {% endif %} value="product.salesPrice=?=ASC">Price (Low &gt; High)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=DESC'  %} selected="selected" {% endif %} value="product.salesPrice=?=DESC">Price (High &gt; Low)</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="paginate-top"></div>
+                    {% endif %}
+                    {% if globalOption.ecommerceConfig.paginationShow == "top" or globalOption.ecommerceConfig.paginationShow == "both"  %}
+                        <div class="row" style="margin-bottom: 15px">
+                            <div class="col-md-12">  <div class="pull-right"> {{ knp_pagination_render(products) }} </div> </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'right' %}
+                    <div class="col-md-3" >
+                        {% if globalOption.ecommerceConfig.titleBar == "top" or  globalOption.ecommerceConfig.titleBar == "both" %}
+                            <div class="row sidebar-top">
+                                <div class="col-md-12 paginate">
+                                    <div class="btn-group pull-left">
+                                        <div class="product-title"><span class="glyphicon glyphicon-filter"></span>&nbsp;REFINE RESULTS</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="products">
+            <div class="container ">
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'left' %}
+                    <div class="col-md-3" data-match-height="body-content" >
+                        {{ include('@Frontend/Template/Desktop/'~globalOption.siteSetting.theme.folderName~'/sidebar.html.twig')}}
+                    </div>
+                {% endif %}
+                <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-md-9 {% else %} col-md-12 {% endif %}" data-match-height="body-content"   >
+
+                    <div class="row row-flex">
+                        {% if cookieVal == 'faThLarge' %}
+                            {% for product in products %}
+                                <div  class="product-item col-xs-{{ globalOption.ecommerceConfig.perColumn }} col-lg-{{ globalOption.ecommerceConfig.perColumn }}">
+                                    <form id="add_buy_cart-{{ product.id }}" class="addCart">
+                                        <div class="product-canvas">
+                                            {% if product.discount is not empty  %}<a class="btn btn-danger product-discount btn-sm"  href="javascript:"><span class="glyphicon glyphicon-tag"></span> {{ product.discount.discountAmount }}{% if product.discount.type !='flat' %}%{% endif %}</a>{% endif %}
+                                            {% if product.discount is not empty  %}<a class="product-discount btn-sm"  href="javascript:"><span class="glyphicon glyphicon-tag"></span> {{ product.discount.discountAmount }}{% if product.discount.type !='flat' %}%{% endif %}</a>{% endif %}
+                                            <a class="img-card product-preview" data-url="{{ path(globalOption.subDomain ~ '_webservice_product_modal',{'item':product.id }) }}" href="javascript:"  >
+                                                {% if  product.webPath is not empty %}
+                                                    <img alt="{{ product.webName }}" src="{{ image(product.webPath).resize(400,400, 'white') }}"/>                      {% else %}
+                                                    <img alt="{{ product.webName }}" src="{{ image(globalOption.ecommerceConfig.webPath).resize(600,600) }}"/>
+                                                {% endif %}
+                                            </a>
+                                            <div class="card-content" data-match-height="item-product">
+                                                {% if product.category is not empty and  globalOption.ecommerceConfig.showCategory == 1 %}
+                                                    <span class="category-name">
+                                            <a class="category-url" href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'category':product.category.slug }) }}">{{ product.category.name }}</a>
+                                        </span>
+                                                {% endif %}
+                                                <a class="product-preview product-url" data-url="{{ path(globalOption.subDomain ~ '_webservice_product_modal',{'item':product.id }) }}" href="javascript:">{{ product.webName }}</a>
+                                                {% if product.brand is not empty and  globalOption.ecommerceConfig.showBrand == 1 %}
+                                                    <span class="brand-name">
+                                        <a class="brand-url" href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'brand':product.brand.slug }) }}">{{ product.brand.name }}</a>
+                                    </span>
+                                                {% endif %}
+                                                <div class="row sub-product" id="inlineLoading-{{ product.id }}">
+                                                    {% if product.itemSubs is not empty  and product.itemSubs|length > 1  %}
+                                                        <div>
+                                                            <select class="col-xs-12 col-lg-12 item-select item-select-bg inlineSizeChange size-{{ product.id }}"  data-id="{{ product.id }}" data-url="{{ path(globalOption.subDomain~'_webservice_product_inline_item_load', {'product' : product.id }) }}" name="size" id="size-{{ product.id }}" >
+                                                                {% for goodsItem in  product.itemSubs  %}
+                                                                    <option  value="{{ goodsItem.id }}" >{% if goodsItem.size is not empty %}{{ goodsItem.size.name }}{% else %} Default {% endif %}{% if goodsItem.productUnit is not empty %} - {{ goodsItem.productUnit.name }}{% endif %} {{ globalOption.ecommerceConfig.currency }} {% if goodsItem.discountPrice is empty %}{{ goodsItem.salesPrice|number_format }} {% else %}{{ goodsItem.discountPrice|number_format }}{% endif %}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if  product.itemColors is not empty and product.itemColors is defined and product.itemColors|length > 1 %}
+                                                        <div>
+                                                            <select class="item-select item-select-bg col-xs-12 col-lg-12" name="color" id="color-{{ product.id }}" >
+                                                                {% for color in  product.itemColors %}
+                                                                    <option value="{{ color.id }}" >{{ color.name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="text-center" >
+                                               <div style="margin-bottom: 10px">
+                                                   <strong class="currency" >{{ globalOption.ecommerceConfig.currency }}</strong>&nbsp;<span id="currency-{{ product.id }}">{% if product.discount is not empty  %}<strike>{% endif %}<span {% if product.discount is empty  %} class="list-price" {% endif %} >{{ product.salesPrice|number_format() }}</span>{% if product.discount is not empty  %}</strike>{% endif %}{% if product.discount is not empty  %}  <strong class="list-price">{{ product.discountPrice|number_format() }}</strong>{% endif %} {% if product.productUnit is not empty %} / {{ product.productUnit.name }}{% endif %}</span>
+                                               </div>
+                                                <div class="input-group col-xs-12 col-md-12">
+    <span class="input-group-btn">
+             <button type="button" class="btn btn-new-cart-item input-group-btn-left btn-minus" id="btn-left-{{ product.id }}" data-id="{{ product.id }}"  data-type="minus" data-field="quant-{{ product.id }}">
+            <i class="fa fa-minus"></i>
+        </button>
+    </span><input type="text" id="quant-{{ product.id }}" name="quant-{{ product.id }}" class="form-control cart-input input-inline-cart" value="{{ product.minQuantity }}" data-id="{{ product.id }}" min="{{ product.minQuantity }}" max="{{ product.maxQuantity }}" data-type="plus" data-field="quant-{{ product.id }}" ><span class="input-group-btn ">
+          <button type="button" data-id="{{ product.id }}" class="btn btn-new-cart-item btn-plus" data-type="plus" data-field="quant-{{ product.id }}" >
+              <span class="fa fa-plus"></span>
+          </button>
+            <input type="hidden" name="productImg"  value="{% if product.webPath is not empty %}{{ product.webPath }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ product.masterItem.webPath }}{% endif %}">
+            <button type="button" id="productBuy-{{ product.id }}" data-id="{{ product.id }}" class="btn  btn-info product-inline-buy btn-action" data-url="{{ path(globalOption.subDomain ~ '_webservice_product_inline_cart',{'product' : product.id }) }}">
+                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> ADD
+            </button>
+    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="productImg-{{ product.id }}" id="productImg-{{ product.id }}" value="{% if product.webPath is not empty  %}{{ product.webPath }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ product.masterItem.webPath }}{% endif %}">
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        {% elseif cookieVal == 'list-line' %}
+                            {% for product in products %}
+                                <div class="col-xs-12 col-lg-12 list-line-item">
+                                    <form id="add_buy_cart-{{ product.id }}" class="addCart">
+                                        <div class="item  list-group-item">
+                                            <div  class="col-xs-2 col-md-2 text-left add-card" data-match-height="item-product" style="margin-left: -15px">
+                                                <a class="product-preview" data-url="{{ path(globalOption.subDomain ~ '_webservice_product_modal',{'item':product.id }) }}" href="javascript:">
+                                                    {% if  product.webPath is not empty %}
+                                                        <img alt="{{ product.webName }}" src="{{ image(product.webPath).resize(120,120, 'white') }}"/>                     {% else %}
+                                                        <img alt="{{ product.webName }}" src="{{ image(globalOption.ecommerceConfig.webPath).resize(120,120) }}"/>
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                            <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-xs-7 col-md-7 {% else %} col-xs-8 col-md-8 {% endif %} text-left" data-match-height="item-product" >
+                                                <div class="caption">
+                                                    {% if product.category is not empty and  globalOption.ecommerceConfig.showCategory == 1 %}
+                                                        <span class="category-name">
+                                            <a class="category-url" href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'category':product.category.slug }) }}">{{ product.category.name }}</a>
+                                        </span>
+                                                    {% endif %}
+                                                    <span class="product-name">
+                                        <a class="product-preview product-url" data-url="{{ path(globalOption.subDomain ~ '_webservice_product_modal',{'item':product.id }) }}" href="javascript:" >{{ product.webName }}</a>
+                                    </span>
+                                                    {% if product.brand is not empty and  globalOption.ecommerceConfig.showBrand == 1 %}
+                                                        <span class="brand-name">
+                                        <a class="brand-url" href="{{ path(globalOption.subDomain ~ '_webservice_product_brand',{'brand':product.brand.slug }) }}">{{ product.brand.name }}</a>
+                                    </span>
+                                                    {% endif %}
+                                                    <p class="product-price">
+                                                        <strong class="currency" >৳</strong>&nbsp;<span id="currency-{{ product.id }}">{% if product.discount is not empty  %}<strike>{% endif %}<span {% if product.discount is empty  %} class="list-price" {% endif %} >{{ product.salesPrice|number_format() }}</span>{% if product.discount is not empty  %}</strike>{% endif %}{% if product.discount is not empty  %} <strong class="list-price">{{ product.discountPrice|number_format() }}</strong>{% endif %} {% if product.productUnit is not empty %} / {{ product.productUnit.name }}{% endif %}</span>
+                                                    </p>
+                                                </div>
+                                                <div class="row col-xs-6 col-lg-6" >
+                                                    <div id="inlineLoading-{{ product.id }}">
+                                                        {% if product.subProduct == 1 and  product.itemSubs is not empty  and product.itemSubs|length > 1  %}
+                                                            <div class="col-xs-12 col-lg-12">
+                                                                <select class="col-xs-12 col-lg-12 item-select item-select-bg inlineSizeChange size-{{ product.id }}"  data-id="{{ product.id }}" data-url="{{ path(globalOption.subDomain~'_webservice_product_inline_item_load', {'product' : product.id }) }}" name="size" id="size-{{ product.id }}" >
+                                                                    {% for goodsItem in  product.itemSubs  %}
+                                                                        <option  value="{{ goodsItem.id }}" >{% if goodsItem.size is not empty %}{{ goodsItem.size.name }}{% else %} Default {% endif %}{% if goodsItem.productUnit is not empty %} - {{ goodsItem.productUnit.name }}{% endif %} {{ globalOption.ecommerceConfig.currency }} {% if goodsItem.discountPrice is empty %}{{ goodsItem.salesPrice|number_format }} {% else %}{{ goodsItem.discountPrice|number_format }}{% endif %}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        {% endif %}
+                                                        {% if product.subProduct == 1 and  product.itemColors is not empty and product.itemColors is defined and product.itemColors|length > 1 %}
+                                                            <div class="col-xs-12 col-lg-12">
+                                                                <select class="item-select item-select-bg col-xs-12 col-lg-12" name="color" id="color-{{ product.id }}" >
+                                                                    {% for color in  product.itemColors %}
+                                                                        <option value="{{ color.id }}" >{{ color.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-xs-3 col-md-3 {% else %} col-xs-2 col-md-2 {% endif %} sub-product-list" data-match-height="item-product">
+                                                <div class="row">
+                                                    <div class="input-group col-xs-12 col-md-12">
+    <span class="input-group-btn">
+             <button type="button" class="btn btn-new-cart-item  btn-minus" id="btn-left-{{ product.id }}" data-id="{{ product.id }}"  data-type="minus" data-field="quant-{{ product.id }}">
+            <i class="fa fa-minus"></i>
+        </button>
+    </span><input type="text" id="quant-{{ product.id }}" name="quant-{{ product.id }}" class="form-control cart-input input-inline-cart" value="{{ product.minQuantity }}" data-id="{{ product.id }}" min="{{ product.minQuantity }}" max="{{ product.maxQuantity }}" data-type="plus" data-field="quant-{{ product.id }}" ><span class="input-group-btn ">
+          <button type="button" data-id="{{ product.id }}" class="btn   btn-new-cart-item btn-plus" data-type="plus" data-field="quant-{{ product.id }}" >
+              <i class="fa fa-plus"></i>
+          </button>
+            <input type="hidden" name="productImg"  value="{% if product.webPath is not empty %}{{ product.webPath }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ product.masterItem.webPath }}{% endif %}">
+            <button type="button" id="productBuy-{{ product.id }}" data-id="{{ product.id }}" class="btn  btn-info product-inline-buy btn-action" data-url="{{ path(globalOption.subDomain ~ '_webservice_product_inline_cart',{'product' : product.id }) }}">
+                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> ADD
+            </button>
+    </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'right' %}
+                    <div class="col-md-3" data-match-height="body-content" >
+                        {{ include('@Frontend/Template/Desktop/'~globalOption.siteSetting.theme.folderName~'/sidebar.html.twig')}}
+                    </div>
+                {% endif %}
+                <div class="clearfix"></div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section>
+            <div class="container " >
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'left' %}
+                    <div class="col-md-3" >&nbsp;</div>
+                {% endif %}
+
+                <div class="{% if globalOption.templateCustomize.showSidebar == 1 %} col-md-9 {% else %}col-md-12 {% endif %}">
+                    {% if globalOption.ecommerceConfig.titleBar == "bottom" or  globalOption.ecommerceConfig.titleBar == "both" %}
+
+                        <div class="row paginate">
+                            <div class="col-md-6">
+                                <div class="btn-group pull-left">
+                                    <div style="float: right">
+                                        <button type="button" class="btn btn-cookie {% if cookieVal != 'faThLarge' %} btn-pagination {% else %} btn-pagination-active {% endif %}" id="faThLarge"
+                                                data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cookie_base_list') }}">
+                                            <i class="fa fa-th"></i></button>
+
+                                        <button type="button" class="btn btn-cookie {% if cookieVal != 'list-line' %} btn-pagination {% else %} btn-pagination-active {% endif %}" id="list-line"
+                                                data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cookie_base_list') }}">
+                                            <i class="fa fa-th-list"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 navbar-right">
+
+                                <form class="form-inline">
+                                    <div class="form-group paginate-form-group">
+                                        <label for="exampleInputName2">Sort By: </label>
+                                        {% set sortBy = app.request.get('sortBy') %}
+                                        <select name="sortBy" id="sortBy" class="input-selector" onchange='this.form.submit()'>
+                                            <option value="">-- Sorting by --</option>
+                                            <option {% if sortBy == 'product.webName=?=ASC'  %} selected="selected" {% endif %} value="product.webName=?=ASC">Name (A - Z)</option>
+                                            <option {% if sortBy == 'product.webName=?=DESC'  %} selected="selected" {% endif %} value="product.webName=?=DESC">Name (Z - A)</option>
+                                            <option {% if sortBy == 'brand.name=?=ASC'  %} selected="selected" {% endif %} value="brand.name=?=ASC">Brand (A - Z)</option>
+                                            <option {% if sortBy == 'brand.name=?=DESC'  %} selected="selected" {% endif %} value="brand.name=?=DESC">Brand (Z - A)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=ASC'  %} selected="selected" {% endif %} value="product.salesPrice=?=ASC">Price (Low &gt; High)</option>
+                                            <option {% if sortBy == 'product.salesPrice=?=DESC'  %} selected="selected" {% endif %} value="product.salesPrice=?=DESC">Price (High &gt; Low)</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if globalOption.templateCustomize.showSidebar == 1 and globalOption.templateCustomize.sidebarPosition == 'right' %}
+                    <div class="col-md-3 sidebar-top" >&nbsp;</div>
+                {% endif %}
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        {% if globalOption.ecommerceConfig.paginationShow == "bottom" or  globalOption.ecommerceConfig.paginationShow == "both" %}
+            <section>
+                <div class="container " >
+                    <div class="col-md-12">
+                        <div class="paginate-footer"></div>
+                        <div class="row" >
+                            {% if app.request.get('page') is not empty %}
+                                {% set page = app.request.get('page') %}
+                            {% else %}
+                                {% set page = 1 %}
+                            {% endif %}
+                            <div class="col-md-3  navbar-left" style="line-height: 35px"><a href="javascript:">Total no of products: {{ products.getTotalItemCount }} out of {{ page * products|length }}</a></div>
+                            <div class="col-md-9">
+                                <div class="pull-right">
+                                    {{ knp_pagination_render(products) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+        <div class="clearfix"></div>
+        {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-bottom')  %}
+            {% render controller("FrontendBundle:EcommerceWidget:featureTemplateWidget",{'globalOption':globalOption.id,'menu': menu.id,'position':'body-bottom'}) %}
+        {% endif %}
+        {% if menu.featureWidgets is defined and menu.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('body-bottom') %}
+            <div class="container">
+                {% render controller("FrontendBundle:WebsiteWidget:featureWidget",{'globalOption':globalOption.id, 'menu': menu.id,'position':'body-bottom'}) %}
+            </div>
+        {% endif %}
+        <div class="clearfix"></div>
+        <!-- Modal -->
+    </section>
+    <style>
+
+
+    </style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@FrontendBundle/Resources/public/template/desktop/css/product.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@FrontendBundle/Resources/public/template/desktop/js/ecommerce.js'
+    '@FrontendBundle/Resources/public/template/desktop/js/owlcarousel.js'
+    '@FrontendBundle/Resources/public/template/desktop/js/cart.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+    {% set  sliderItems = globalOption.ecommerceConfig.owlProductColumn  %}
+    productSliderOwl({{ sliderItems }});
+    $('body').on('click', '.btn-cookie', function(el) {
+    var val = $(this).attr('id');
+    Cookies.set('productList', val);
+    setTimeout(location.reload(), 1000);
+    });
+{% endblock %}

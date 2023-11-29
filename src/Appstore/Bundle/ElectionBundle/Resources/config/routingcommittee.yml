@@ -1,0 +1,97 @@
+committee_particular:
+    resource: "@ElectionBundle/Resources/config/routing/particular.yml"
+    prefix:   /setting-option
+
+committee_report:
+    resource: "@ElectionBundle/Resources/config/routing/report.yml"
+    prefix:   /report
+
+committee_event:
+    resource: "@ElectionBundle/Resources/config/routing/event.yml"
+    prefix:   /campaign
+
+committee_setup:
+    resource: "@ElectionBundle/Resources/config/routing/setup.yml"
+    prefix:   /setup
+
+committee_sms:
+    resource: "@ElectionBundle/Resources/config/routing/sms.yml"
+    prefix:   /sms
+
+committee_campaign:
+    resource: "@ElectionBundle/Resources/config/routing/campaign.yml"
+    prefix:   /campaign-analysis
+
+committee_committee:
+    resource: "@ElectionBundle/Resources/config/routing/committee.yml"
+    prefix:   /committee
+
+committee_location:
+    resource: "@ElectionBundle/Resources/config/routing/location.yml"
+    prefix:   /setting-location
+
+committee_member_import:
+    resource: "@ElectionBundle/Resources/config/routing/import.yml"
+    prefix:   /member-import
+
+committee_member:
+    resource: "@ElectionBundle/Resources/config/routing/member.yml"
+    prefix:   /member
+
+committee_config:
+    resource: "@ElectionBundle/Resources/config/routing/config.yml"
+    prefix:   /config
+
+committee_expenditure:
+    resource: "@ElectionBundle/Resources/config/routing/expenditure.yml"
+    prefix:   /expenditure
+
+committee_expenditure_category:
+    resource: "@ElectionBundle/Resources/config/routing/expensecategory.yml"
+    prefix:   /expenditure-category
+
+committee_homepage:
+    path:     /
+    defaults: { _controller: ElectionBundle:Default:index }
+
+
+committee_homepage_member:
+    path:     /dashboard-member
+    defaults: { _controller: ElectionBundle:Default:memberData }
+    options:
+            expose: true
+
+
+committee_homepage_voter:
+    path:     /dashboard-voter
+    defaults: { _controller: ElectionBundle:Default:voterData }
+    options:
+            expose: true
+
+
+committee_homepage_votecenter:
+    path:     /dashboard-vote-center
+    defaults: { _controller: ElectionBundle:Default:voteCenterData }
+    options:
+            expose: true
+
+
+committee_homepage_committee:
+    path:     /dashboard-committee
+    defaults: { _controller: ElectionBundle:Default:committeeData }
+    options:
+            expose: true
+
+committee_homepage_campaign:
+    path:     /dashboard-campaign
+    defaults: { _controller: ElectionBundle:Default:campaignData }
+    options:
+            expose: true
+
+
+committee_homepage_analysis:
+    path:     /dashboard-analysis
+    defaults: { _controller: ElectionBundle:Default:analysisData }
+    options:
+            expose: true
+

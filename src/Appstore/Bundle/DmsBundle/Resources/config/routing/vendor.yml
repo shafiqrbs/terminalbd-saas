@@ -1,0 +1,37 @@
+dms_vendor:
+    path:     /
+    defaults: { _controller: "DmsBundle:Vendor:index" }
+
+dms_vendor_search:
+    path:     /search
+    defaults: { _controller: "DmsBundle:Vendor:autoSearch" }
+    options:
+            expose: true
+
+dms_vendor_name:
+    path:      /{vendor}/vendor-name
+    defaults: { _controller: "DmsBundle:Vendor:searchVendorName" }
+    options:
+            expose: true
+
+dms_vendor_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Vendor:create" }
+    methods:  POST
+
+dms_vendor_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Vendor:edit" }
+
+dms_vendor_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Vendor:update" }
+    methods:  [POST, PUT]
+
+dms_vendor_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Vendor:status" }
+
+dms_vendor_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Vendor:delete" }

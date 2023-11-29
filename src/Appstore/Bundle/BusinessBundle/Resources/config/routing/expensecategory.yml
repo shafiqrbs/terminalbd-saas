@@ -1,0 +1,37 @@
+business_expensecategory:
+    path:     /
+    defaults: { _controller: "DmsBundle:ExpenseCategory:index" }
+
+business_expensecategory_show:
+    path:     /{id}/show
+    defaults: { _controller: "DmsBundle:ExpenseCategory:show" }
+
+business_expensecategory_new:
+    path:     /new
+    defaults: { _controller: "DmsBundle:ExpenseCategory:new" }
+
+business_expensecategory_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:ExpenseCategory:create" }
+    requirements: { _method: post }
+
+business_expensecategory_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:ExpenseCategory:edit" }
+
+business_expensecategory_sorting:
+    path:     /sorting
+    defaults: { _controller: "DmsBundle:ExpenseCategory:sorting" }
+
+
+business_expensecategory_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:ExpenseCategory:update" }
+    requirements: { _method: post|put }
+
+business_expensecategory_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:ExpenseCategory:delete" }
+    requirements: { _method: post|delete }
+
+

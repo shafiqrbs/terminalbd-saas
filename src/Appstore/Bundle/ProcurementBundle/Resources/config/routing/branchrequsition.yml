@@ -1,0 +1,30 @@
+barnch-requsition:
+    path:     /
+    defaults: { _controller: "ProcurementBundle:BranchRequsition:index" }
+
+barnch-requsition_show:
+    path:     /{id}/show
+    defaults: { _controller: "ProcurementBundle:BranchRequsition:show" }
+
+barnch-requsition_new:
+    path:     /new
+    defaults: { _controller: "ProcurementBundle:BranchRequsition:new" }
+
+barnch-requsition_create:
+    path:     /create
+    defaults: { _controller: "ProcurementBundle:BranchRequsition:create" }
+    methods:  POST
+
+barnch-requsition_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ProcurementBundle:BranchRequsition:edit" }
+
+barnch-requsition_update:
+    path:     /{id}/update
+    defaults: { _controller: "ProcurementBundle:BranchRequsition:update" }
+    methods:  [POST, PUT]
+
+barnch-requsition_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ProcurementBundle:BranchRequsition:delete" }
+    methods:  [POST, DELETE]

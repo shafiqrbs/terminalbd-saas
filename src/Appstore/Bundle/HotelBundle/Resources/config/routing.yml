@@ -1,0 +1,91 @@
+hotel_report:
+    resource: "@HotelBundle/Resources/config/routing/report.yml"
+    prefix:   /report
+
+hotel_purchase:
+    resource: "@HotelBundle/Resources/config/routing/purchase.yml"
+    prefix:   /purchase
+
+hotel_vendor:
+    resource: "@HotelBundle/Resources/config/routing/vendor.yml"
+    prefix:   /vendor
+
+hotel_invoice:
+    resource: "@HotelBundle/Resources/config/routing/invoice.yml"
+    prefix:   /invoice
+
+hotel_restaurantinvoice:
+    resource: "@HotelBundle/Resources/config/routing/restaurantinvoice.yml"
+    prefix:   /restaurant-invoice
+
+hotel_stock:
+    resource: "@HotelBundle/Resources/config/routing/stock.yml"
+    prefix:   /stock
+
+hotel_room:
+    resource: "@HotelBundle/Resources/config/routing/room.yml"
+    prefix:   /room
+
+hotel_product:
+    resource: "@HotelBundle/Resources/config/routing/product.yml"
+    prefix:   /product
+
+hotel_product_production:
+    resource: "@HotelBundle/Resources/config/routing/production.yml"
+    prefix:   /product-production
+
+hotel_damage:
+    resource: "@HotelBundle/Resources/config/routing/damage.yml"
+    prefix:   /damage
+
+hotel_category:
+    resource: "@HotelBundle/Resources/config/routing/category.yml"
+    prefix:   /category
+
+hotel_option:
+    resource: "@HotelBundle/Resources/config/routing/option.yml"
+    prefix:   /option
+
+hotel_config:
+    resource: "@HotelBundle/Resources/config/routing/config.yml"
+    prefix:   /config
+
+hotel_homepage:
+    path:     /dashoard
+    defaults: { _controller: HotelBundle:Default:index }
+
+hotel_booking:
+    path:     /booking-overview
+    defaults: { _controller: HotelBundle:Default:booking }
+    options:
+            expose: true
+
+hotel_booking_temporary_create:
+    path:      /booking-temporary-create
+    defaults: { _controller: HotelBundle:Default:createTemporary }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_booking_temporary_delete:
+    path:     /{id}/booking-room-delete
+    defaults: { _controller: HotelBundle:Default:roomDelete }
+
+hotel_booking_room_details:
+    path:     /{id}/booking-room-details
+    defaults: { _controller: HotelBundle:Default:bookedRoomDetails }
+
+hotel_booking_room_search:
+    path:     /booking-room-search
+    defaults: { _controller: HotelBundle:Default:bookingSearch }
+    options:
+            expose: true
+
+hotel_booking_room:
+    path:     /{id}/booking-room-form
+    defaults: { _controller: HotelBundle:Default:bookingRoomForm }
+
+hotel_booking_invoice_generate:
+    path:     /booking-invoice-generate
+    defaults: { _controller: HotelBundle:Default:bookingInvoiceGenerate }
+

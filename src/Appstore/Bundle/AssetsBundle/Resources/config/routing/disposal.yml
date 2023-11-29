@@ -1,0 +1,40 @@
+assets_disposal:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Disposal:index" }
+
+assets_disposal_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Disposal:show" }
+
+assets_disposal_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Disposal:new" }
+
+assets_disposal_create:
+    path:     /{disposal}/disposal-item/create
+    defaults: { _controller: "AssetsBundle:Disposal:createDisposalItem" }
+    methods:  POST
+
+assets_disposal_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Disposal:edit" }
+
+assets_disposal_approve:
+    path:     /{id}/approve
+    defaults: { _controller: "AssetsBundle:Disposal:approve" }
+
+assets_disposal_item_delete:
+    path:     /{disposal}/{id}/item-delete
+    defaults: { _controller: "AssetsBundle:Disposal:disposalItemDelete" }
+
+assets_disposal_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Disposal:update" }
+    methods:  [POST, PUT]
+
+assets_disposal_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Disposal:delete" }
+
+
+

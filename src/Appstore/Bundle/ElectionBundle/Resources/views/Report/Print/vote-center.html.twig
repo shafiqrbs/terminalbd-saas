@@ -1,0 +1,78 @@
+{% extends '::baseprint.html.twig' %}
+{% block body %}
+<div id="invoice">
+        <div class="toolbar hidden-print">
+            <div class="text-right">
+                <a href="{{ path('election_report_vote_center') }}"  class="btn btn-success"><i class="fa fa-th-list"></i> Vote Center Details</a>
+                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            </div>
+            <hr>
+        </div>
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <main>
+                    <div class="row contacts">
+                        <div class="span4"></div>
+                        <div class="span4 text-center">{{ config.cardText|raw }}<h2><strong>{{ config.candidateName }}</strong></h2></div>
+                        <div class="span4"></div>
+                    </div>
+                    <div class="span12"><h3>Vote Center Information</h3></div>
+                    <hr/>
+                    <table border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #999">
+                        <thead>
+                        <tr class="head-blue">
+                            <th class="numeric" >Vote Center</th>
+                            <th class="numeric" >Union/Purashava</th>
+                            <th class="numeric" >Upazilla</th>
+                            <th class="numeric" >Representative</th>
+                            <th class="numeric" >Mobile</th>
+                            <th class="numeric" >Male Voter</th>
+                            <th class="numeric" >Female Voter</th>
+                            <th class="numeric" >Other Voter</th>
+                            <th class="numeric" >Total Voter</th>
+                        </tr>
+                        </thead>
+                        <tbody id="">
+                        {% set maleVoter = 0 %}
+                        {% set femaleVoter = 0 %}
+                        {% set otherVoter = 0 %}
+                        {% set totalVoter = 0 %}
+                        {% for entity in entities %}
+                            {% set maleVoter = maleVoter + entity.maleVoter %}
+                            {% set femaleVoter = femaleVoter + entity.femaleVoter %}
+                            {% set otherVoter = otherVoter + entity.otherVoter %}
+                            {% set totalVoter = totalVoter + entity.totalVoter %}
+                            <tr>
+                                <td class="numeric" >{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</td>
+                                <td class="numeric" >{{ entity.memberUnion }}</td>
+                                <td class="numeric" >{{ entity.thana }}</td>
+                                <td class="numeric" >{% if entity.representative is not empty %}{{ entity.representative.name }}{% endif %}</td>
+                                <td class="numeric" >{% if entity.representative is not empty %}{{ entity.representative.mobile }}{% endif %}</td>
+
+                                <td class="numeric" >{{ entity.maleVoter }}</td>
+                                <td class="numeric" >{{ entity.femaleVoter }}</td>
+                                <td class="numeric" >{{ entity.otherVoter }}</td>
+                                <td class="numeric" >{{ entity.totalVoter }}</td>
+                            </tr>
+                        {% endfor %}
+                       </tbody>
+                        <tfoot><th colspan="5" class="text-left" >Total Votes</th><th>{{ maleVoter }}</th><th>{{ femaleVoter }}</th><th>{{ otherVoter }}</th><th>{{ totalVoter }}</th></tfoot>
+                    </table>
+                </main>
+                <footer>
+                    <span class="right">Developed by: {{ portal_design_development }}</span>
+                </footer>
+            </div>
+            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+            <div></div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/print.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+

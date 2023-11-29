@@ -1,0 +1,113 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Depreciation Model Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Depreciation Model</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Depreciation Model Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('assets_model_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create New</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="row-fluid">
+
+                            <div class="span6">
+                                <h4>Deprecation:</h4>
+                                <ul class="unstyled">
+                                    <li><strong>Deprecation Policy #:</strong>&nbsp;{{ depreciation.policy|capitalize }}</li>
+                                    <li><strong>Deprecation Year #:</strong>&nbsp;{{ depreciation.depreciationYear }}</li>
+                                    <li><strong>Yearly Rate #:</strong>&nbsp;{{ depreciation.rate }}</li>
+                                </ul>
+                            </div>
+                            <div class="span6">
+                            <h4>Deprecation Outline:</h4>
+                            <ul class="unstyled">
+                                <li><strong>Deprecation Pulse #:</strong>&nbsp;{{ depreciation.depreciationPulse }}</li>
+                                <li><strong>Cost Model #:</strong>&nbsp;{{ depreciation.model }}</li>
+                            </ul>
+                        </div>
+                        </div>
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >Name </th>
+                                    <th class="numeric" >Rate(Yearly)%</th>
+                                    <th class="numeric" >Depreciation Year</th>
+                                    <th class="numeric" >Category</th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >Status</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+
+                                        <td class="numeric" ><a href="{{ path('assets_model_edit',{'id': entity.id })}}">{{ entity.name }}</a></td>
+                                        <td class="numeric" >{{ entity.rate }}</td>
+                                        <td class="numeric" >{{ entity.depreciationYear }}</td>
+                                        <td class="numeric" >{% if entity.category is not empty %}{{ entity.category.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.item %}{{ entity.item.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.status == 1 %}Active {% else %}In-active {% endif %}</td>
+                                        <td class="numeric" >
+                                            {% if entity.isDefault == 1 %}
+                                            <a  href="{{ path('assets_model_depreciation', { 'id': entity.id }) }}" class="btn yellow mini" ><i class="icon-refresh"></i> Setup</a>
+                                            <a  href="{{ path('assets_model_generate', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-retweet"></i> Generate </a>
+                                            {% else %}
+                                                {% if (entity.id not in existDepreciation and entity.isDefault != 1 ) %}
+                                                    <a href="{{ path('assets_model_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                                    <a  href="{{ path('assets_model_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                                {% endif %}
+                                                {% if (entity.item is not empty) or (entity.category is not empty) %}
+                                                    <a  href="{{ path('assets_model_depreciation', { 'id': entity.id }) }}" class="btn yellow mini" ><i class="icon-refresh"></i> Setup</a>
+                                                    <a  href="{{ path('assets_model_generate', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-retweet"></i> Generate </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

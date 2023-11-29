@@ -1,0 +1,28 @@
+{% if entity.stockIssueItems is not empty %}
+    {% for item in entity.stockIssueItems %}
+        <tr id="remove-{{ item.id }}">
+            <td>{{ loop.index }}</td>
+            <td >{{ item.item.name }}</td>
+            <td >{% if item.purchaseItem is not empty %}{{ item.purchaseItem.barcode }}{% endif %}</td>
+            <td >{% if item.purchaseItem is not empty %}{{ item.purchaseItem.name }}{% endif %}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.subTotal|number_format }}</td>
+            <td><a id="{{ item.id }}" data-action="{{ path('assets_stockissue_item_delete',{'entity': entity.id ,'id': item.id }) }}" href="javascript:" class="btn red mini item-delete" ><i class="icon-trash"></i></a></td>
+        </tr>
+    {% endfor %}
+{% endif %}
+<tr>
+    <td colspan="8" class="span12" style="border: 1px double #000"></td>
+</tr>
+<tr>
+    <td colspan="6" class="span9"><span class="pull-right"><strong>Sub-Total TK.</strong> =</span></td>
+    <td class="span2"><strong class="subTotal">{{ entity.subTotal|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>
+
+<tr>
+    <td colspan="6" class="span9"><span class="pull-right"><strong>Grand Total TK.</strong> =</span></td>
+    <td class="span2"><strong class="netTotal">{{ entity.netTotal|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>

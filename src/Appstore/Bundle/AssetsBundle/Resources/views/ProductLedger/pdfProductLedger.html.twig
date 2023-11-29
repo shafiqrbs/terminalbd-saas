@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="{{ asset('assets/css/print.css') }}"/>
+<style>
+    .table{
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        font-family:tahoma, geneva, sans-serif;
+    }
+    .table tr.head th, .table tr.head td{
+        font-size: 15px;
+        background: #333;
+        color: #fff;
+        height: 40px;
+    }
+
+    .table tr.sub-head th, .table tr.sub-head td{
+        font-size: 15px;
+        background: #666;
+        color: #fff;
+        height: 40px;
+    }
+
+    .table th, .table td{
+        border: 1px solid #e5e5e5;
+        text-align: left;
+        padding-left: 20px;
+        height: 30px;
+        line-height: 30px;
+
+    }
+    h3 {
+        font-size: 24px;
+        display: block;
+        padding: 0;
+        margin: 0;
+        line-height: 45px;
+        height: 45px;
+    }
+     h4 {
+        font-size: 18px;
+        display: block;
+        padding: 0;
+        margin: 0;
+        line-height: 45px;
+        height: 45px;
+    }
+    .pull-center{
+        background: #e5e5e5;
+        text-align: center!important;
+
+    }
+    .pull-right{
+        text-align: right!important;
+        display: block;
+        padding-right: 20px;
+    }
+
+</style>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="pull-center" colspan="9"><h3>Jamuna Bank Ltd.</h3></th>
+        <th class="pull-center" colspan="9"><h4>Fixed Asset Product Ledger :{{ product.serialNo }}</h4></th>
+    </tr>
+    <tr>
+        <td colspan="9">
+            <ul>
+                <li>Product Name: {{ product.name }}</li>
+                <li>Item Name: {{ product.item.masterItem.name }}</li>
+                <li>Product Category: {{ product.category.name }}</li>
+                <li>Department Name: {{ product.branch.name }}</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        {% set startDate = searchForm.startDate is defined ? searchForm.startDate :'' %}
+        {% set endDate = searchForm.endDate is defined ? searchForm.endDate :'' %}
+        <th colspan="9">
+            <span class="pull-right">Period&nbsp;&nbsp;{{ startDate }} To {{ endDate }}</span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="head">
+        <th class="numeric" >Created</th>
+        <th class="numeric" >Serial No</th>
+        <th class="numeric" >Product</th>
+        <th class="numeric" >Item</th>
+        <th class="numeric" >Category</th>
+        <th class="numeric" >Branch</th>
+        <th class="numeric" >Debit</th>
+        <th class="numeric" >Credit</th>
+        <th class="numeric" >Balance</th>
+    </tr>
+    {% for entity in entities %}
+        <tr id="remove-{{ entity.id }}">
+            <td class="numeric" >{{ entity.created|date('d-m-Y') }}</td>
+            <td class="numeric" >{{ entity.product.serialNo }}</td>
+            <td class="numeric" >{{ entity.product.name }}</td>
+            <td class="numeric" >{{ entity.product.item.name }}</td>
+            <td class="numeric" >{{ entity.product.category.name }}</td>
+            <td class="numeric" >{{ entity.product.branch.name }}</td>
+            <td class="numeric" >{{ entity.debit|number_format }}</td>
+            <td class="numeric" >{{ entity.credit|number_format }}</td>
+            <td class="numeric" >{{ entity.balance|number_format }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

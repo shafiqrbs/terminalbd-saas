@@ -1,0 +1,120 @@
+assetsitem:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Item:index" }
+
+assetsitem_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Item:show" }
+
+assetsitem_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Item:new" }
+
+assetsitem_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:Item:create" }
+    methods:  POST
+
+assetsitem_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Item:edit" }
+
+assetsitem_inline_modify:
+    path:     /item-inline-update
+    defaults: { _controller: "AssetsBundle:Item:updateSalesPrice" }
+    methods:  POST
+    options:
+            expose: true
+
+assetsitem_gallery:
+    path:     /{item}/upload
+    defaults: { _controller: "AssetsBundle:Item:uploadItemImage" }
+    options:
+           expose: true
+
+assetsitem_status:
+    path:     /{id}/status
+    defaults: { _controller: "AssetsBundle:Item:status" }
+
+assetsitem_is_web:
+    path:     /{id}/is-web
+    defaults: { _controller: "AssetsBundle:Item:isWeb" }
+
+assetsitem_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Item:update" }
+    methods:  [POST, PUT]
+
+assetsitem_edit_web:
+    path:     /{id}/edit-assets
+    defaults: { _controller: "AssetsBundle:Item:editAssets" }
+
+assetsitem_web_status:
+    path:     /{id}/item-web-status
+    defaults: { _controller: "AssetsBundle:Item:webStatus" }
+
+
+assetsitem_web_update:
+    path:     /{id}/web-update
+    defaults: { _controller: "AssetsBundle:Item:updateAssets" }
+    methods:  [POST, PUT]
+
+assetsitem_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Item:delete" }
+
+assetsitem_search:
+    path:     /search
+    defaults: { _controller: "AssetsBundle:Item:autoSearch" }
+    options:
+           expose: true
+
+assetsitem_search_name:
+    path:     /search-name
+    defaults: { _controller: "AssetsBundle:Item:autoSearch" }
+    options:
+           expose: true
+
+assetsitem_search_all:
+    path:     /all-search
+    defaults: { _controller: "AssetsBundle:Item:autoSearchItemAll" }
+    options:
+           expose: true
+
+assets_assetsitem_inline_update:
+    path:     /{vendor}/vendor-item
+    defaults: { _controller: "AssetsBundle:Item:vendorItem" }
+    options:
+           expose: true
+
+assetsitem_price:
+    path:      /price
+    defaults: { _controller: "AssetsBundle:Item:price" }
+    methods:  [POST]
+
+assetsitem_inline_discount_search:
+    path:     /inline-discount-search
+    defaults: { _controller: "AssetsBundle:Item:discountSelect" }
+    options:
+           expose: true
+
+assetsitem_inline_tag_search:
+    path:     /inline-tag-search
+    defaults: { _controller: "AssetsBundle:Item:tagSelect" }
+    options:
+           expose: true
+
+assetsitem_inline_update:
+    path:     /inline-item-update
+    defaults: { _controller: "AssetsBundle:Item:inlineItemUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+
+assets_assetsitem_gallery:
+    path:     /{item}/item-upload
+    defaults: { _controller: "AssetsBundle:Item:uploadItemImage" }
+    methods:  POST
+    options:
+           expose: true

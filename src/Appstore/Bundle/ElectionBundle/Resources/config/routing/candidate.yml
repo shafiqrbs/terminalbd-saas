@@ -1,0 +1,66 @@
+election_candidate:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Candidate:index" }
+
+election_candidate_new:
+    path:     /new
+    defaults: { _controller: "ElectionBundle:Candidate:new" }
+
+election_candidate_show:
+    path:     /{id}/show
+    defaults: { _controller: "ElectionBundle:Candidate:show" }
+    options:
+            expose: true
+
+election_candidate_search:
+    path:     /search
+    defaults: { _controller: "ElectionBundle:Candidate:autoSearch" }
+    options:
+            expose: true
+
+election_candidate_name:
+    path:      /{particular}/particular-name
+    defaults: { _controller: "ElectionBundle:Candidate:searchCandidateName" }
+    options:
+            expose: true
+
+election_candidate_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Candidate:create" }
+    methods:  POST
+
+election_candidate_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:Candidate:edit" }
+
+election_candidate_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:Candidate:update" }
+    methods:  [POST, PUT]
+
+election_candidate_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:Candidate:status" }
+
+election_candidate_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Candidate:delete" }
+
+election_candidate_member_new:
+    path:     /{id}/member-new
+    defaults: { _controller: "ElectionBundle:Candidate:newMember" }
+    options:
+            expose: true
+
+election_candidate_member_create:
+    path:     /{id}/member-create
+    defaults: { _controller: "ElectionBundle:Candidate:createMember" }
+    methods:  POST
+    options:
+            expose: true
+
+election_candidate_member_delete:
+    path:     /{id}/member-delete
+    defaults: { _controller: "ElectionBundle:Candidate:memberDelete" }
+
+

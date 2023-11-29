@@ -1,0 +1,34 @@
+assets_model:
+    path:     /
+    defaults: { _controller: "AssetsBundle:DepreciationModel:index" }
+
+assets_model_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:DepreciationModel:new" }
+
+assets_model_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:DepreciationModel:create" }
+    methods:  POST
+
+assets_model_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:DepreciationModel:edit" }
+
+assets_model_depreciation:
+    path:     /{id}/depreciation
+    defaults: { _controller: "AssetsBundle:DepreciationModel:depreciation" }
+
+assets_model_generate:
+    path:     /{id}/generate
+    defaults: { _controller: "AssetsBundle:DepreciationModel:generate" }
+
+assets_model_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:DepreciationModel:update" }
+    methods:  [POST, PUT]
+
+assets_model_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:DepreciationModel:delete" }
+

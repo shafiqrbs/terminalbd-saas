@@ -1,0 +1,47 @@
+assets_stockissue:
+    path:     /
+    defaults: { _controller: "AssetsBundle:StockIssue:index" }
+
+assets_stockissue_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:StockIssue:new" }
+
+assets_stockissue_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:StockIssue:edit" }
+
+assets_stockissue_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:StockIssue:show" }
+
+assets_stockissue_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:StockIssue:delete" }
+
+assets_stockissue_item_delete:
+    path:     /{entity}/{id}/item-delete
+    defaults: { _controller: "AssetsBundle:StockIssue:itemDelete" }
+
+assets_stockissue_approved:
+    path:     /{id}/approved
+    defaults: { _controller: "AssetsBundle:StockIssue:approved" }
+
+assets_stockissue_inline_update:
+    path:     /{id}/inline-update
+    defaults: { _controller: "AssetsBundle:StockIssue:inlineUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+assets_stockissue_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:StockIssue:update" }
+    methods:  [POST, PUT]
+
+assets_stockissue_particular_add:
+    path:     /{id}/particular-add
+    defaults: { _controller: "AssetsBundle:StockIssue:addParticular" }
+    methods:  POST
+    options:
+        expose: true
+

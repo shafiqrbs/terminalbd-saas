@@ -1,0 +1,29 @@
+services:
+#    appstore_dms.example:
+#        class: Appstore\Bundle\DmsBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    
+    appstore.dms.setting.event.listener:
+        class: Appstore\Bundle\DmsBundle\EventListener\SettingListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.dms.particular.event.listener:
+        class: Appstore\Bundle\DmsBundle\EventListener\DmsParticularListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.dms.invoice.event.listener:
+        class: Appstore\Bundle\DmsBundle\EventListener\DmsInvoiceListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.dms.purchase.event.listener:
+        class: Appstore\Bundle\DmsBundle\EventListener\DmsPurchaseListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.dms.doctor.invoice.event.listener:
+        class: Appstore\Bundle\DmsBundle\EventListener\DmsDoctorInvoiceListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }

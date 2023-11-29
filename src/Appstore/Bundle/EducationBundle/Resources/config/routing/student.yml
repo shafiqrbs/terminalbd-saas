@@ -1,0 +1,61 @@
+education_student:
+    path:     /
+    defaults: { _controller: "EducationBundle:Student:index" }
+
+education_student_search:
+    path:     /search
+    defaults: { _controller: "EducationBundle:Student:autoSearch" }
+    options:
+            expose: true
+
+education_student_name:
+    path:      /{name}/name
+    defaults: { _controller: "EducationBundle:Student:searchName" }
+    options:
+            expose: true
+
+education_student_new:
+    path:     /new
+    defaults: { _controller: "EducationBundle:Student:new" }
+
+education_student_create:
+    path:     /create
+    defaults: { _controller: "EducationBundle:Student:create" }
+    methods:  POST
+
+education_student_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EducationBundle:Student:edit" }
+
+education_student_show:
+    path:     /{id}/show
+    defaults: { _controller: "EducationBundle:Student:show" }
+
+education_student_update:
+    path:     /{id}/update
+    defaults: { _controller: "EducationBundle:Student:update" }
+    methods:  [POST, PUT]
+
+education_student_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EducationBundle:Student:delete" }
+
+education_student_family:
+    path:     /{id}/add-family
+    defaults: { _controller: "EducationBundle:Student:family" }
+
+education_student_export_csv:
+    path:     /Student-export-csv
+    defaults: { _controller: "EducationBundle:Student:StudentExportToCsv" }
+
+education_student_family_delete:
+    path:     /{id}/family-Student-delete
+    defaults: { _controller: "EducationBundle:Student:familyStudentDelete" }
+
+education_student_family_create:
+    path:     /{id}/family-Student-create
+    defaults: { _controller: "EducationBundle:Student:addFamilyStudent" }
+    methods:  POST
+    options:
+            expose: true
+

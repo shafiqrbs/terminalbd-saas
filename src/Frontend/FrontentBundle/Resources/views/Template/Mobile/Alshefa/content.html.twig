@@ -1,0 +1,63 @@
+{% extends ':frontend/template/mobile:ecommerce-base.html.twig' %}
+{% block body %}
+    <div class="container-section">
+        <div class="container" id="product-section">
+            {% render controller("FrontendBundle:EcommerceWidget:sidebarTemplateProductFilter",{'globalOption':globalOption.id,'searchForm':searchForm}) %}
+        </div>
+        <div class="clearfix"></div>
+        {% if page.photoGallery is not empty %}
+            <div class="carousel-container">
+                <div id="carousel" class="carousel slide carousel-fade">
+                    <div class="carousel-inner">
+                        <a href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}" id="mobile-logo">
+                            {% if globalOption.templateCustomize.webPath('logo') is not empty %} <img src="{{ image(globalOption.templateCustomize.webPath('logo')).resize(120) }}" alt=" ">{% endif %}
+                        </a>
+                        {% if page.webPath is not empty %}
+                            <div class="carousel-cover item active" data-slide-no="0" style="background-image: url('{{ image(page.webPath) }}')!important;"></div>
+                        {% endif %}
+                        {% for slide in page.photoGallery.galleryImages %}
+                            <div  class="carousel-cover item {% if loop.index-1 == 0 and page.webPath is empty %} active  {% endif %}" style="background-image: url('{{ image(slide.getAbsolutePath(page.globalOption.id,page.photoGallery.id)) }}')!important;"  {% if loop.index-1 == 0 and page.webPath is empty %} data-slide-no="{{ loop.index-1 }}"  {% endif %} ></div>
+                        {% endfor %}
+                    </div>
+                    <!-- Navigation -->
+                    <a class="carousel-post-control left" href="#carousel" data-slide="prev">‹</a>
+                    <a class="carousel-post-control right" href="#carousel" data-slide="next">›</a>
+                </div>
+            </div>
+            <hr>
+        {% endif %}
+        <section class="page-content">
+            <div class="col-md-12">
+                <h3 class="w3ls-title">{{ page.name }}</h3>
+                <div class="clearfix"></div>
+                <p>{{ page.content|raw }}</p>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty %}
+            <section>
+                {% render controller("FrontendBundle:EcommerceWidget:featureTemplateMobileWidget",{'globalOption':globalOption.id,'menu': menu.id,'position':'mobile'}) %}
+            </section>
+        {% endif %}
+        <div class="clearfix"></div>
+    </div>
+
+    <!--//welcome-->
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@FrontendBundle/Resources/public/template/mobile/css/product.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@FrontendBundle/Resources/public/template/desktop/js/owlcarousel.js'
+    '@FrontendBundle/Resources/public/template/desktop/js/ecommerce.js'
+    '@FrontendBundle/Resources/public/template/desktop/js/cart.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

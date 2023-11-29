@@ -1,0 +1,26 @@
+assets_ledger:
+    path:     /
+    defaults: { _controller: "AssetsBundle:ProductLedger:index" }
+
+assets_ledger_product:
+    path:     /product
+    defaults: { _controller: "AssetsBundle:ProductLedger:item" }
+
+assets_ledger_product_pdf:
+    path:     /product-pdf
+    defaults: { _controller: "AssetsBundle:ProductLedger:pdfProductLedger" }
+
+assets_ledger_item:
+    path:     /item
+    defaults: { _controller: "AssetsBundle:ProductLedger:item" }
+
+assets_ledger_category:
+    path:     /category
+    defaults: { _controller: "AssetsBundle:ProductLedger:category" }
+
+assets_ledger_branch:
+    path:     /branch
+    defaults: { _controller: "AssetsBundle:ProductLedger:branch" }
+
+
+

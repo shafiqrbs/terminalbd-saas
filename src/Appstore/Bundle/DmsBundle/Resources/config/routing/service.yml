@@ -1,0 +1,30 @@
+dms_service:
+    path:     /
+    defaults: { _controller: "DmsBundle:Service:index" }
+
+dms_service_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Service:create" }
+    methods:  POST
+
+dms_service_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Service:edit" }
+
+dms_service_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Service:update" }
+    methods:  [POST, PUT]
+
+dms_service_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Service:delete" }
+
+dms_service_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Service:status" }
+
+dms_service_sorted:
+    path:     /{fieldName}/service-sorted
+    defaults: { _controller: "DmsBundle:Service:sorted" }
+

@@ -1,0 +1,154 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    View Requisition Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('pro_purchaserequisition') }}">Requisition</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Requisition Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Requisition Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('pro_purchaserequisition_new') }}"><i class="icon-plus-sign"></i>&nbsp; Create New</a>
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        <input type="text" id="grn" name="grn"  class="span12 m-wrap" value="{% if searchForm.grn is defined %}{{ searchForm.grn }}{% endif %}"  autocomplete="off" placeholder="PR no">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="receiveDate" name="receiveDate"  class="span12 m-wrap date-picker" value="{% if searchForm.receiveDate is defined %}{{ searchForm.receiveDate }}{% endif %}"  autocomplete="off" placeholder="received date ">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="branch" name="branch"  class="span12 m-wrap select2Branch" value="{% if searchForm.branch is defined %}{{ searchForm.branch }}{% endif %}"  autocomplete="off" placeholder="Enter branch name ">
+                                    </div>
+                                    <div class="span3">
+                                        <div class="input-append span10">
+                                            <div class="controls">
+                                                <input type="text" id="memo" name="memo"  class="span12 m-wrap" value="{% if searchForm.memo is defined %}{{ searchForm.memo }}{% endif %}"  autocomplete="off" placeholder="memo no">
+                                                <div class="btn-group">
+                                                <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <table class="table table-bordered table-striped table-condensed flip-content">
+
+                                <thead>
+                                <tr class="head-blue">
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Created By</th>
+                                    <th class="numeric" >PR No</th>
+                                    <th class="numeric" >Client</th>
+                                    <th class="numeric" >Ref no</th>
+                                    <th class="numeric" >Item/Quantity</th>
+                                    <th class="numeric" >Approx. Amount</th>
+                                    <th class="numeric" >Approved Date</th>
+                                    <th class="numeric" >File</th>
+                                    <th class="numeric" >Approve</th>
+                                    <th class="numeric" >Process</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="flip-content " id="purchase">
+                                {% set approves = ['created','in-progress'] %}
+                                {% for entity in entities %}
+                                    <tr id="delete-{{ entity.id }}">
+                                        <td class="numeric" >{{ entity.receiveDate|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.createdBy }}</td>
+                                        <td class="numeric" >{{ entity.grn }}</td>
+                                        <td class="numeric" >{% if entity.customer is not empty %}{{ entity.customer.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.memo }}</td>
+                                        <td class="numeric" >{{ entity.totalItem }}/{{ entity.totalQnt }}</td>
+                                        <td class="numeric" >{{ entity.totalAmount|number_format() }}</td>
+                                        <td class="numeric" >{{ entity.updated|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{% if  entity.webPath is not empty %}<a target="_blank" href="/{{ entity.webPath }}">Download</a>{% endif %}</td>
+                                        <td class="numeric" >{{ entity.approve|capitalize }}</td>
+                                        <td class="numeric pull-center" ><a title="Approve" href="javascript:" class="btn green disabled mini" >&nbsp;{{ entity.process|capitalize }}</a></td>
+                                        <td class="numeric" id="action-{{ entity.id }}"  >
+                                            {% if entity.approve in approves  %}
+                                                <a href="{{ path('pro_purchaserequisition_show', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                                <a href="{{ path('pro_purchaserequisition_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                                <a  title="Are you sure went to delete ?" href="javascript:" data-id="{{ entity.id }}" data-url="{{ path('pro_purchaserequisition_delete', { 'id': entity.id }) }}" class="btn red mini delete" ><i class="icon-trash"></i></a>
+                                            {% endif %}
+                                            {% if ( app.user.granted("ROLE_DOMAIN")  and entity.approve == 'checked' )  %}
+                                                <a href="{{ path('pro_purchaserequisition_show', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                                <a title="Approve" href="javascript:" data-url="{{ path('pro_purchaserequisition_approve', { 'id': entity.id,'approve':'approved' }) }}" class="btn blue mini approve approved-{{ entity.id }}" data-title="{{ entity.id }}" id="" ><i class="icon-ok"></i>&nbsp;Approve</a>
+                                                {% if entity.purchaseItems is empty %}
+                                                    <a href="{{ path('pro_purchaserequisition_edit', { 'id': entity.id }) }}" class="btn green mini " ><i class="icon-edit"></i></a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if entity.approve == 'approved' %}
+                                                <a href="{{ path('pro_purchaserequisition_show', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/editable.js'
+    '@InventoryBundle/Resources/public/js/puschase.js'
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    InventoryPurchasePage();
+    ApproveProcess();
+{% endblock %}
+

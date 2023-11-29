@@ -1,0 +1,63 @@
+{% extends '::baseprint.html.twig' %}
+{% block body %}
+<div id="invoice">
+        <div class="toolbar hidden-print">
+            <div class="text-right">
+                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            </div>
+            <hr>
+        </div>
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <main>
+                    <div class="row contacts">
+                        <div class="col invoice-to">
+                            <h2 class="to">Committee Name: {{ entity.name }}</h2>
+                            <div class="address">Committee For: {{ entity.electionSetup.electionName }}</div>
+                            <div class="address">Location: {% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</div>
+                            <div class="address">Location Type: {% if entity.location is not empty %}{{ entity.location.locationType.name }}{% endif %}</div>
+                            <div class="address">Duration of committee: {{ entity.startDate|date('d-m-Y') }} To {{ entity.endDate|date('d-m-Y') }}</div>
+                        </div>
+
+                    </div>
+                    <table border="0" cellspacing="0" cellpadding="0" style="border: 2px solid #999">
+                        <thead>
+                        <tr>
+                            <th> S/N</th>
+                            <th class="text-left">Name</th>
+                            <th class="text-left">Designation</th>
+                            <th class="text-left">Mobile no</th>
+                            <th class="text-left">Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for index,committe in entity.members %}
+                            <tr>
+                                <td class="no">0{{ loop.index }}</td>
+                                <td class="numeric">{{ committe.member.name }}</td>
+                                <td class="numeric">{{ committe.designation.name }}</td>
+                                <td class="numeric"><a href="tel:+88 {{ committe.member.mobile }}"> {{ committe.member.mobile }}</a></td>
+                                <td class="numeric">{{ committe.member.villageName }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div style="clear: both; display: flex"></div>
+                </main>
+                <footer>
+                    <span class="right">Developed by: {{ portal_design_development }}</span>
+                </footer>
+            </div>
+            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+            <div></div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/print.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+

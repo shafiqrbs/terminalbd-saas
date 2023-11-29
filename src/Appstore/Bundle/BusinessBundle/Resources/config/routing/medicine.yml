@@ -1,0 +1,29 @@
+business_medicine:
+    path:     /
+    defaults: { _controller: "DmsBundle:Medicine:index" }
+
+business_medicine_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Medicine:create" }
+    methods:  POST
+
+business_medicine_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Medicine:edit" }
+
+business_medicine_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Medicine:update" }
+    methods:  [POST, PUT]
+
+business_medicine_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Medicine:delete" }
+
+business_medicine_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Medicine:status" }
+
+business_medicine_inline:
+    path:     /inline-update
+    defaults: { _controller: "DmsBundle:Medicine:inlineUpdate" }

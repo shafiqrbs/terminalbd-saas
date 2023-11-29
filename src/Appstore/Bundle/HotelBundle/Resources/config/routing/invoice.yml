@@ -1,0 +1,138 @@
+hotel_invoice:
+    path:     /
+    defaults: { _controller: "HotelBundle:Invoice:index" }
+
+hotel_invoice_show:
+    path:     /{id}/show
+    defaults: { _controller: "HotelBundle:Invoice:show" }
+
+hotel_invoice_new:
+    path:     /new
+    defaults: { _controller: "HotelBundle:Invoice:new" }
+
+hotel_invoice_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:Invoice:edit" }
+
+hotel_particular_search:
+    path:     /{id}/particular-search
+    defaults: { _controller: "HotelBundle:Invoice:particularSearch" }
+    options:
+            expose: true
+
+hotel_available_room_search:
+    path:     /available-room-search
+    defaults: { _controller: "HotelBundle:Invoice:availableRoom" }
+    options:
+            expose: true
+
+hotel_invoice_particular_search:
+    path:     /invoice-particular-search
+    defaults: { _controller: "HotelBundle:Invoice:autoParticularSearch" }
+    options:
+            expose: true
+
+hotel_invoice_particular_add:
+    path:     /{invoice}/particular-add
+    defaults: { _controller: "HotelBundle:Invoice:addParticular" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_invoice_discount_update:
+    path:     /dicount-update
+    defaults: { _controller: "HotelBundle:Invoice:invoiceDiscountUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_invoice_banner_sign:
+    path:     /{invoice}/stock-banner-sign
+    defaults: { _controller: "HotelBundle:Invoice:bannerSign" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_invoice_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:Invoice:update" }
+    methods:  [POST, PUT]
+
+hotel_invoice_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:Invoice:delete" }
+
+hotel_invoice_reverse_show:
+    path:     /{id}/invoice-reverse-show
+    defaults: { _controller: "HotelBundle:Invoice:InvoiceReverseShow" }
+
+
+hotel_invoice_particular_delete:
+    path:     /{invoice}/{id}/room-delete
+    defaults: { _controller: "HotelBundle:Invoice:invoiceParticularDelete" }
+
+hotel_invoice_print:
+    path:     /{id}/print
+    defaults: { _controller: "HotelBundle:Invoice:invoicePrint" }
+
+hotel_invoice_chalan:
+    path:     /{id}/chalan
+    defaults: { _controller: "HotelBundle:Invoice:invoiceChalan" }
+
+
+
+hotel_invoice_empty_delete:
+    path:     /delete/empty-invoice
+    defaults: { _controller: "HotelBundle:Invoice:deleteEmptyInvoice" }
+
+
+hotel_invoice_item_update:
+    path:     /sales-item-update
+    defaults: { _controller: "HotelBundle:Invoice:invoiceItemUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+hotel_invoice_payment:
+    path:     /{id}/payment
+    defaults: { _controller: "HotelBundle:Invoice:payment" }
+
+
+hotel_invoice_payment_receive:
+    path:     /{id}/payment-receive
+    defaults: { _controller: "HotelBundle:Invoice:paymentReceive" }
+    methods:  [POST, PUT]
+    options:
+            expose: true
+
+hotel_invoice_payment_delete:
+    path:     /{id}/payment-delete
+    defaults: { _controller: "HotelBundle:Invoice:paymentDelete" }
+
+hotel_invoice_payment_print:
+    path:     /{id}/payment-print
+    defaults: { _controller: "HotelBundle:Invoice:paymentPrint" }
+
+hotel_invoice_checkout:
+    path:     /{id}/check-out
+    defaults: { _controller: "HotelBundle:Invoice:checkout" }
+
+
+hotel_invoice_payment_approve:
+    path:     /{id}/payment-approved
+    defaults: { _controller: "HotelBundle:Invoice:paymentApprove" }
+    options:
+            expose: true
+
+hotel_invoice_inline_process_search:
+    path:     /inline-process-search
+    defaults: { _controller: "HotelBundle:Invoice:processSelect" }
+    options:
+           expose: true
+
+hotel_invoice_inline_update:
+    path:     /inline-process-update
+    defaults: { _controller: "HotelBundle:Invoice:processUdate" }
+    methods:  POST
+    options:
+            expose: true

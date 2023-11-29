@@ -1,0 +1,138 @@
+<div class="portlet box green">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Vote Center Information</div>
+        <div class="actions">
+            <div class="btn-group">
+                <a class="btn yellow" target="_blank" href="{{ path('election_votecenter_print',{'id':entity.id}) }}"><i class="icon-print"></i>&nbsp;Print</a>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="loader loader-double" ></div>
+        <div id="memberLoad">
+        <div class="clearfix">&nbsp;</div>
+            <div class="row-fluid">
+                <div class="span3">
+                    <h4>About:</h4>
+                    <ul class="unstyled">
+                        <li><strong>Vote Center:</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</li>
+                        <li><strong>Representative:</strong>&nbsp;{{ entity.representative.name }}</li>
+                        <li><strong>Mobile:</strong>&nbsp;{{ entity.representativeMobile }}</li>
+                        <li><strong>Address:</strong>&nbsp;{{ entity.address|raw }}</li>
+
+                    </ul>
+                </div>
+                <div class="span3">
+                    <h4>Presiding:</h4>
+                    <ul class="unstyled">
+                        <li><strong>Name:</strong>&nbsp;{{ entity.presiding }}</li>
+                        <li><strong>Designation:</strong>&nbsp;{{ entity.presidingDesignation }}</li>
+                        <li><strong>Mobile:</strong>&nbsp;{{ entity.presidingMobile }}</li>
+                        <li><strong>Address:</strong>&nbsp;{{ entity.presidingAddress|raw }}</li>
+
+                    </ul>
+                </div>
+                <div class="span3">
+                    <h4>Election Information</h4>
+                    <ul class="unstyled">
+                        <li><strong>Created Date:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                        <li><strong>Election Type:</strong>&nbsp;{{ entity.electionSetup.electionName }}</li>
+                        <li><strong>Election Date:</strong>&nbsp;{{ entity.electionDate|date('d-m-y') }}</li>
+                    </ul>
+                </div>
+
+                <div class="span3">
+                    <h4>Voter Information</h4>
+                    <ul class="unstyled">
+                        <li><strong>Total Voter:</strong>&nbsp;{{ entity.totalVoter }}</li>
+                        <li><strong>Male Voter:</strong>&nbsp;{{ entity.maleVoter }}</li>
+                        <li><strong>Female Voter:</strong>&nbsp;{{ entity.femaleVoter }}</li>
+                        <li><strong>Other Voter:</strong>&nbsp;{{ entity.otherVoter }}</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="clearfix">&nbsp;</div>
+            <div class="form-actions portlet box green">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>Agent Information</div>
+                </div>
+            </div>
+            <div class="clearfix"><br/></div>
+            <div class="portlet-body flip-scroll">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                    <thead class="flip-content ">
+                    <tr class="head-blue">
+                        <td class="span2">&nbsp;&nbsp;<i class="icon-list"></i> Booth No</td>
+                        <th class="numeric">NID</th>
+                        <th class="numeric">Name</th>
+                        <th class="numeric">Mobile</th>
+                        <th class="numeric">Village</th>
+                        <th class="numeric">Vote Center</th>
+                        <th class="numeric">Ward</th>
+                        <th class="numeric">Union/Pourasava</th>
+                        <th class="numeric">Thana/Upazila</th>
+                        <th class="numeric" >Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="memberCommittees">
+                    {% for committe in entity.centerMembers %}
+                        {% if committe.personType == 'agent' %}
+                            <tr id="remove-{{ committe.id }}">
+                                <td class="numeric">{{ committe.boothNo }}</td>
+                                <td class="numeric">{{ committe.member.nid }}</td>
+                                <td class="numeric">{{ committe.member.name }}</td>
+                                <td class="numeric"><a href="tel:+88 {% if  committe.agentMobile is empty %} {{ committe.member.mobile }}{% else %}{{ committe.agentMobile }}{% endif %}">{% if  committe.agentMobile is empty %} {{ committe.member.mobile }}{% else %}{{ committe.agentMobile }}{% endif %}</a></td>
+                                <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.name }}{% endif %}</td>
+                                <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.voteCenter.name }}{% endif %}</td>
+                                <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.wardName }}{% endif %}</td>
+                                <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.unionName }}{% endif %}</td>
+                                <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.thanaName }}{% endif %}</td>
+                                <td>
+                                    {% if committe.isMaster == 1 %}
+                                        <a class="btn mini blue" href="javascript:" >&nbsp;<i class="icon-user"></i> Lead</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">&nbsp;</div>
+            <div class="form-actions portlet box yellow">
+                <div class="portlet-title">
+                    <div class="caption"><i class="icon-reorder"></i>Center Pooling Officer Information</div>
+                </div>
+            </div>
+            <div class="clearfix"><br/></div>
+
+            <div class="portlet-body flip-scroll">
+            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                <thead class="flip-content ">
+                <tr class="head-blue">
+                    <td class="span2">&nbsp;&nbsp;<i class="icon-list"></i> Booth No</td>
+                    <th class="numeric">Pooling Officer</th>
+                    <th class="numeric">Mobile</th>
+                </tr>
+                </thead>
+                <tbody id="memberPoolings">
+                {% for committe in entity.centerMembers %}
+                    {% if committe.personType == 'pooling' %}
+                        <tr id="remove-{{ committe.id }}">
+                            <td class="numeric">{{ committe.boothNo }}</td>
+                            <td class="numeric">{{ committe.poolingOfficer }}</td>
+                            <td class="numeric">{{ committe.poolingMobile }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+            <div class="clearfix">&nbsp;</div>
+        </div>
+    </div>
+</div>
+

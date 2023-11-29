@@ -1,0 +1,29 @@
+assets_club:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Club:index" }
+
+assets_club_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Club:show" }
+
+assets_club_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Club:new" }
+
+assets_club_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:Club:create" }
+    methods:  POST
+
+assets_club_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Club:edit" }
+
+assets_club_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Club:update" }
+    methods:  [POST, PUT]
+
+assets_club_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Club:delete" }

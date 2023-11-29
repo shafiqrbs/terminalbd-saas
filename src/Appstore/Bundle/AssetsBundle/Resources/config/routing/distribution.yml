@@ -1,0 +1,27 @@
+assets_distribution:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Distribution:index" }
+
+assets_distribution_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Distribution:new" }
+
+assets_distribution_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:Distribution:create" }
+    methods:  POST
+
+assets_distribution_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Distribution:edit" }
+
+
+assets_distribution_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Distribution:update" }
+    methods:  [POST, PUT]
+
+assets_distribution_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Distribution:delete" }
+    methods:  [POST, DELETE]

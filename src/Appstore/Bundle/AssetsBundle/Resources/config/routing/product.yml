@@ -1,0 +1,44 @@
+assets_product:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Product:index" }
+
+assets_product_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Product:show" }
+
+assets_product_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Product:new" }
+
+assets_product_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:Product:create" }
+    methods:  POST
+
+assets_product_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Product:edit" }
+
+assets_product_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Product:update" }
+    methods:  [POST, PUT]
+
+assets_product_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Product:delete" }
+
+assets_product_depreciation_status:
+    path:     /inline-depreciation-status
+    defaults: { _controller: "AssetsBundle:Product:depreciationSelect" }
+    options:
+           expose: true
+
+assets_product_inline_update:
+    path:     /inline-item-update
+    defaults: { _controller: "AssetsBundle:Product:inlineUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+

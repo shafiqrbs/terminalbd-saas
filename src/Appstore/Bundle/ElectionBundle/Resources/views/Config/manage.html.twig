@@ -1,0 +1,202 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN inventory_warehouse HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="inventory_warehouse-title">
+                    Configuration
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+
+                    <li><a href="#">Configuration </a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END inventory_warehouse HEADER-->
+        <!-- BEGIN inventory_warehouse CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green">
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Configuration Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('election_restore_master') }}"><i class="icon-plus-sign"></i>&nbsp;Restore Master</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <div class="clearfix"><br/></div>
+                        {{ form_start(form) }}
+                        {{ form_row(form._token) }}
+                        <div class="row-fluid box green">
+                        </div>
+                        <div class="row-fluid">
+
+                            <div class="span3">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label " for="">Candidate Name</label>
+                                            <div class="control">
+                                                {{ form_widget(form.candidateName) }}
+                                                {{ form_errors(form.candidateName) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label " for="vatPercentage">District</label>
+                                            <div class="control">
+                                                {{ form_widget(form.district) }}
+                                                {{ form_errors(form.district) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"><br/></div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label " for="">Set Dashboard Election/Committee</label>
+                                            <div class="control">
+                                                {{ form_widget(form.setup) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label " for="">{{ form_widget(form.smsNotification) }} SMS Notification</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span4">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label " >Address</label>
+                                            <div class="control">
+                                                {{ form_widget(form.address) }}
+                                                {{ form_errors(form.address) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label " >ID Card Text</label>
+                                            <div class="control">
+                                                {{ form_widget(form.cardText) }}
+                                                {{ form_errors(form.cardText) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span3">
+                                <div class="row-fluid">
+                                    <div class="control-group">
+                                        <label class="control-label" >Candidate Photo</label>
+                                        <div class="controls">
+                                            <div data-provides="fileupload" class="fileupload fileupload-new">
+                                                <div  class="fileupload-new thumbnail">
+                                                    {% if(entity.webPath('path') is not empty) %}
+                                                        <img class="fileupload-preview fileupload-exists" alt="" src="{{ image(entity.webPath('path')).resize(250,150) }}">
+                                                    {% else %}
+                                                        <img alt="" src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image">
+                                                    {% endif %}
+                                                </div>
+                                                <div  class="fileupload-preview fileupload-exists thumbnail"></div>
+                                                <div>
+                                                        <span class="btn btn-file">
+                                                            <span class="fileupload-new blue btn">Select Candidate Photo</span>
+                                                            <span class="fileupload-exists">Change</span>
+                                                            {{ form_widget(form.file) }}
+                                                            {{ form_errors(form.file) }}
+                                                        </span>
+                                                        <a data-dismiss="fileupload" class="btn fileupload-exists" href="#">Remove</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="control-group">
+                                            <label class="control-label" ></label>
+                                            <div class="controls">
+                                                <div class="input-icon left">
+                                                    Remove Image {{ form_widget(form.removeImage) }}
+                                                    {{ form_errors(form.removeImage) }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span2">
+                                <div class="control-group">
+                                    <label class="control-label" >Candidate Marka</label>
+                                    <div class="controls">
+                                        <div data-provides="fileupload" class="fileupload fileupload-new">
+                                            <div style="width:120px; height: 100px;" class="fileupload-new thumbnail">
+                                                {% if(entity.webPath('logo') is defined ) %}
+                                                    <img class="fileupload-preview fileupload-exists" style="width: 120px; height: 100px" alt="" src="/{{ entity.webPath('logo') }}">
+                                                {% else %}
+                                                    <img alt="" src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image">
+                                                {% endif %}
+                                            </div>
+                                            <div  class="fileupload-preview fileupload-exists thumbnail"></div>
+                                            <div>
+													<span class="btn btn-file">
+                                                        <span class="fileupload-new">Select Marka</span>
+													    <span class="fileupload-exists">Change</span>
+                                                        <input type="file" name="logoFile" id="logoFile">
+                                                    </span>
+                                                <a data-dismiss="fileupload" class="btn fileupload-exists" href="#">Remove</a>
+                                            </div>
+                                        </div>
+                                        <span class="label label-important">NOTE!</span>
+                                        <span> Logo size  50px x 50px and extension .png. Please follow this link <a href="http://resizeyourimage.com" target="_blank">Image Resizer</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <!--/span-->
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-right">
+                                <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                        <!-- END FORM-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

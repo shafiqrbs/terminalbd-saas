@@ -1,0 +1,29 @@
+election_accessories:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Accessories:index" }
+
+election_accessories_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Accessories:create" }
+    methods:  POST
+
+election_accessories_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:Accessories:edit" }
+
+election_accessories_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:Accessories:update" }
+    methods:  [POST, PUT]
+
+election_accessories_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Accessories:delete" }
+
+election_accessories_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:Accessories:status" }
+
+election_accessories_inline:
+    path:     /inline-update
+    defaults: { _controller: "ElectionBundle:Accessories:inlineUpdate" }

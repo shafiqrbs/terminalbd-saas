@@ -1,0 +1,29 @@
+dms_account_expenditure:
+    path:     /
+    defaults: { _controller: "DmsBundle:Expenditure:index" }
+
+dms_account_expenditure_new:
+    path:     /new
+    defaults: { _controller: "DmsBundle:Expenditure:new" }
+
+dms_account_expenditure_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Expenditure:create" }
+    methods:  POST
+
+dms_account_expenditure_approve:
+    path:     /{id}/payment-approve
+    defaults: { _controller: "DmsBundle:Expenditure:approve" }
+    options:
+           expose: true
+
+dms_account_expenditure_inline:
+    path:     /inline-update
+    defaults: { _controller: "DmsBundle:Expenditure:inlineUpdate" }
+
+
+dms_account_expenditure_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Expenditure:delete" }
+    options:
+           expose: true

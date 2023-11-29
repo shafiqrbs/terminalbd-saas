@@ -1,0 +1,25 @@
+dms_treatment:
+    path:     /
+    defaults: { _controller: "DmsBundle:Treatment:index" }
+
+dms_treatment_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Treatment:create" }
+    methods:  POST
+
+dms_treatment_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Treatment:edit" }
+
+dms_treatment_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Treatment:update" }
+    methods:  [POST, PUT]
+
+dms_treatment_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Treatment:delete" }
+
+dms_treatment_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Treatment:status" }

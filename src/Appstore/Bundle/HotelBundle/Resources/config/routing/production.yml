@@ -1,0 +1,30 @@
+hotel_production_hotel:
+    path:     /{id}/
+    defaults: { _controller: "HotelBundle:Production:productionHotel" }
+
+hotel_production_food:
+    path:     /{id}/
+    defaults: { _controller: "HotelBundle:Production:productionFood" }
+
+hotel_production_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:Production:productionUpdate" }
+    methods:  [POST, PUT]
+
+
+hotel_production_delete:
+    path:     /{particular}/{id}/delete
+    defaults: { _controller: "HotelBundle:Production:delete" }
+
+hotel_production_particular_search:
+    path:     /{id}/particular-search
+    defaults: { _controller: "HotelBundle:Production:particularSearch" }
+
+
+hotel_production_particular_add:
+    path:     /{id}/particular-add
+    defaults: { _controller: "HotelBundle:Production:addParticular" }
+    methods:  POST
+    options:
+            expose: true
+

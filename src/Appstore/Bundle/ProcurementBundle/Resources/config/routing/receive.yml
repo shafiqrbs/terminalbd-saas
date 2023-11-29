@@ -1,0 +1,64 @@
+pro_receive:
+    path:     /
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:index" }
+
+pro_receive_poissue:
+    path:     /po-issue-item
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:poIssue" }
+
+pro_receive_itemprocess:
+    path:     /{process}/po-issue-item
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:prItemProcess" }
+
+pro_receive_show:
+    path:     /{id}/show
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:show" }
+
+pro_receive_new:
+    path:     /new
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:new" }
+
+pro_receive_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:edit" }
+
+
+pro_receive_update:
+    path:     /{id}/update
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:update" }
+    methods:  [POST, PUT]
+
+pro_receive_create:
+    path:     /create
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:createPurchaseOrderItem" }
+    methods:  POST
+
+pro_receive_approve:
+    path:     /{id}/approve
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:approve" }
+
+pro_receive_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:delete" }
+
+
+pro_receive_item_update:
+    path:     /{purchase}/{id}/purchase-order-item-update
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:purchaseItemUpdate" }
+
+pro_receive_item_delete:
+    path:     /{purchase}/{id}/purchase-simple-item-delete
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:purchaseItemDelete" }
+
+
+pro_grn_search:
+    path:     /pro_receive-auto-search
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:autoSearch" }
+    options:
+           expose: true
+
+pro_grn_name:
+    path:     /{grn}/pro_receive-search-name
+    defaults: { _controller: "ProcurementBundle:PurchaseOrder:searchName" }
+    options:
+           expose: true

@@ -1,0 +1,164 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Member list
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('domain') }}">Member list</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Member list</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('election_member_new') }}"><i class="icon-th-list"></i>&nbsp;New Member</a>
+                                {% if importCount > 0 %}
+                                <a class="btn yellow" href="{{ path('election_member_import_updated') }}"><i class="icon-th-list"></i>&nbsp;Import Updated</a>
+                                {% endif %}
+                                {% set thana = searchForm.thana is defined ? searchForm.thana :'' %}
+                                {% set union = searchForm.union is defined ? searchForm.union :'' %}
+                                {% set ward = searchForm.ward is defined ? searchForm.ward :'' %}
+                                {% set village = searchForm.village is defined ? searchForm.village :'' %}
+                                {% set voteCenter = searchForm.voteCenter is defined ? searchForm.voteCenter :'' %}
+                                {% set member = searchForm.member is defined ? searchForm.member :'' %}
+                                {% set keyword = searchForm.keyword is defined ? searchForm.keyword :'' %}
+                                <a class="btn blue" href="{{ path('election_member_export_csv',{'thana':thana,'union':union,'ward':ward,'village':village,'voteCenter':voteCenter,'member':member,'keyword':keyword}) }}"><i class="icon-download"></i>&nbsp;Export</a>
+                                <a class="btn purple" href="{{ path('election_member_generate_idcard') }}">ID Cards</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        <input type="text" id="thana" name="thana"  class="span12 m-wrap select2Thana" value="{% if searchForm.thana is defined %}{{ searchForm.thana }}{% endif %}"  autocomplete="off" placeholder="Search Thana/Upazila name">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="union" name="union"  class="span12 m-wrap select2Union" value="{% if searchForm.union is defined %}{{ searchForm.union }}{% endif %}"  autocomplete="off" placeholder="Search Union/Purashava name">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="ward" name="ward"  class="span12 m-wrap select2Ward" value="{% if searchForm.ward is defined %}{{ searchForm.ward }}{% endif %}"  autocomplete="off" placeholder="Search ward name">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="village" name="village"  class="span12 m-wrap select2Village" value="{% if searchForm.village is defined %}{{ searchForm.village }}{% endif %}"  autocomplete="off" placeholder="Search Village/Unit">
+                                    </div>
+                                </div>
+                                <div class="clearfix"><br/></div>
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        <input type="text" id="voteCenter" name="voteCenter"  class="span12 m-wrap select2VoteCenter" value="{% if searchForm.voteCenter is defined %}{{ searchForm.voteCenter }}{% endif %}"  autocomplete="off" placeholder="Search Vote Center">
+                                    </div>
+                                    <div class="span6">
+                                        <input type="text" id="member" name="member"  class="span12 m-wrap select2Member" value="{% if searchForm.member is defined %}{{ searchForm.member }}{% endif %}"  autocomplete="off" placeholder="Search Member mobile/name">
+                                    </div>
+                                    <div class="span3">
+                                        <div class="controls">
+                                            <div class="input-append span10">
+                                                <input type="text" id="keyword" name="keyword"  class="m-wrap span12 search-input" value="{% if searchForm.name is defined %}{{ searchForm.name }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.keyword is defined %}{{ searchForm.keyword }}{% else %}Enter any keywords{% endif %} ">
+                                                <div class="btn-group">
+                                                    <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    {%  set sort = app.request.query.get('sort') %}
+                                    {%  set direction = app.request.query.get('direction') %}
+                                    <td><i class="icon-list"></i></td>
+                                    <td>Member ID</td>
+                                    <th {% if entities.isSorted('e.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Name', 'e.name') }}{% if( direction == 'desc' and sort == 'e.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric">Mobile</th>
+                                    <th {% if entities.isSorted('e.village') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Village/Unit', 'e.village') }}{% if( direction == 'desc' and sort == 'e.village') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.voteCenter') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Vote Center', 'e.voteCenter') }}{% if( direction == 'desc' and sort == 'e.voteCenter') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.ward') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Ward', 'e.ward') }}{% if( direction == 'desc' and sort == 'e.ward') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.memberUnion') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Union/Pourasava', 'e.memberUnion') }}{% if( direction == 'desc' and sort == 'e.memberUnion') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.thana') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Thana/Upazila', 'e.thana') }}{% if( direction == 'desc' and sort == 'e.thana') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td><input {% if entity.id in selected %} checked="checked" {% endif %} id="action-{{ entity.id }}" data-id="{{ entity.id }}" type="checkbox" name="item[]" value="{{ entity.id }}" class="check tooltips memberId" data-trigger="hover" data-original-title="Batch Generate"></td>
+                                        <td>{{ entity.memberId }}</td>
+                                        <td>{{ entity.name }}</td>
+                                        <td class="numeric"><a href="tel:+88 {{ entity.mobile }}"> {{ entity.mobile }}</a></td>
+                                        <td class="numeric">{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</td>
+                                        <td class="numeric">{% if entity.voteCenter is not empty %}{{ entity.voteCenter.name }}{% endif %}</td>
+                                        <td class="numeric">{% if entity.location is not empty %}{{ entity.location.wardName }}{% endif %}</td>
+                                        <td class="numeric">{% if entity.location is not empty %}{{ entity.location.unionName }}{% endif %}</td>
+                                        <td class="numeric">{% if entity.location is not empty %}{{ entity.location.thanaName }}{% endif %}</td>
+                                        <td class="numeric">
+                                            <div class="btn-group">
+                                             {% if (app.user.granted("ROLE_DOMAIN")) or (app.user.granted("ROLE_ELECTION_MANAGER"))  %}
+                                                <a class="btn mini green" href="{{ path('election_member_edit', { 'id': entity.id }) }}"><i class="icon-pencil"></i></a>
+                                                <a class="btn mini delete red" href="javascript:" data-url="{{ path('election_member_delete', { 'id': entity.id }) }}" >&nbsp;<i class="icon-trash"></i> </a>
+                                                <a class="btn mini yellow" href="{{ path('election_member_family', { 'id': entity.id }) }}" >&nbsp;<i class="icon-plus"></i> Family</a>
+                                             {% endif %}
+                                            <a data-title="{{ entity.name }}" class="btn mini view blue" href="javascript:" data-url="{{ path('election_member_show', { 'id': entity.id }) }}" >&nbsp;<i class="icon-eye-open"></i> </a>
+                                            <a data-title="{{ entity.name }}" id="" class="btn mini sms purple" href="javascript:" data-url="{{ path('election_member_sms', { 'id': entity.id }) }}" >SMS</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/style.css'
+    '@ElectionBundle/Resources/public/css/messagebox.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/messagebox.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}

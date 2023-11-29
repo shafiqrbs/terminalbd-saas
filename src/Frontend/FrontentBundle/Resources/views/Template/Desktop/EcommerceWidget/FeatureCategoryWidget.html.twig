@@ -1,0 +1,31 @@
+{% if widget.featureCategoryShow == 'slider' %}
+<div class="feature-category-slider" >
+{% for category in  categories  %}
+    <div class="col-xs-12 col-lg-12">
+        <div class="thumbnail feature-category" data-match-height="feature-category">
+            <div class="product-preview group" >
+                <a class="category-img"  href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'subdomain': globalOption.subDomain,'category':category.slug }) }}">
+                    <img class="img-responsive" src="{{ image(category.webPath).resize(250,200, 'white') }}" alt=""></a>
+            </div>
+        </div>
+        <div class="caption">
+            <a class="group inner category-name text-center" href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'subdomain': globalOption.subDomain,'category':category.slug }) }}">{{ category.name }}</a>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% elseif widget.featureCategoryShow == 'grid' %}
+    {% for category in  categories  %}
+    <div class="col-xs-3 col-lg-3">
+        <div class="thumbnail feature-category" data-match-height="feature-category">
+            <div class="product-preview group" >
+                <a class="category-img"  href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'subdomain': globalOption.subDomain,'category':category.slug }) }}">
+                    <img class="img-responsive" src="{{ image(category.webPath).resize(250,200, 'white') }}" alt=""></a>
+            </div>
+        </div>
+        <div class="caption">
+            <a class="group inner category-name text-center" href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'subdomain': globalOption.subDomain,'category':category.slug }) }}">{{ category.name }}</a>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}

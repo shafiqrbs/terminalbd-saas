@@ -1,0 +1,49 @@
+education_fees:
+    path:     /
+    defaults: { _controller: "EducationBundle:Fees:index" }
+
+education_fees_new:
+    path:     /new
+    defaults: { _controller: "EducationBundle:Fees:new" }
+
+education_fees_create:
+    path:     /create
+    defaults: { _controller: "EducationBundle:Fees:create" }
+    methods:  POST
+
+education_fees_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EducationBundle:Fees:edit" }
+
+education_fees_update:
+    path:     /{id}/update
+    defaults: { _controller: "EducationBundle:Fees:update" }
+    methods:  [POST, PUT]
+
+education_fees_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EducationBundle:Fees:delete" }
+
+education_fees_transfer:
+    path:     /{id}/transfer
+    defaults: { _controller: "EducationBundle:Fees:transfer" }
+
+education_fees_status:
+    path:     /{id}/status
+    defaults: { _controller: "EducationBundle:Fees:status" }
+
+education_fees_inline:
+    path:     /inline-update
+    defaults: { _controller: "EducationBundle:Fees:inlineUpdate" }
+
+education_fees_search:
+    path:     /search
+    defaults: { _controller: "EducationBundle:Fees:autoSearch" }
+    options:
+            expose: true
+
+education_fees_name_search:
+    path:     /{Fees}/search-name
+    defaults: { _controller: "EducationBundle:Fees:searchName" }
+    options:
+            expose: true

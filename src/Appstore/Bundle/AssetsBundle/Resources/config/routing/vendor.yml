@@ -1,0 +1,47 @@
+assets_vendor:
+    path:     /
+    defaults: { _controller: "AccountingBundle:Vendor:index" }
+
+assets_vendor_new:
+    path:     /new
+    defaults: { _controller: "AccountingBundle:Vendor:new" }
+
+assets_vendor_create:
+    path:     /create
+    defaults: { _controller: "AccountingBundle:Vendor:create" }
+    methods:  POST
+
+assets_vendor_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AccountingBundle:Vendor:edit" }
+
+assets_vendor_update:
+    path:     /{id}/update
+    defaults: { _controller: "AccountingBundle:Vendor:update" }
+    methods:  [POST, PUT]
+
+assets_single_vendor_ledger:
+    path:      /vendor-ledger
+    defaults: { _controller: "AccountingBundle:Vendor:ledger" }
+    options:
+            expose: true
+
+assets_vendor_status:
+    path:     /{id}/status
+    defaults: { _controller: "AccountingBundle:Vendor:status" }
+
+assets_vendor_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AccountingBundle:Vendor:delete" }
+
+assets_vendor_search:
+    path:     /search
+    defaults: { _controller: "AccountingBundle:Vendor:autoSearch" }
+    options:
+            expose: true
+
+assets_vendor_name:
+    path:      /{name}/vendor-name
+    defaults: { _controller: "AccountingBundle:Vendor:searchVendorName" }
+    options:
+            expose: true

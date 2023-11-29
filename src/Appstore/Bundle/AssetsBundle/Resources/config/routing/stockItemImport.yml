@@ -1,0 +1,34 @@
+itemstock_import:
+    path:     /
+    defaults: { _controller: "AssetsBundle:ItemImport:index" }
+
+itemstock_import_migration:
+    path:     /{id}/data-migration
+    defaults: { _controller: "AssetsBundle:ItemImport:excelDataImport" }
+
+itemstock_import_stock_migration:
+    path:     /{id}/data-stock-migration
+    defaults: { _controller: "AssetsBundle:ItemImport:excelDataImportStock" }
+
+itemstock_import_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:ItemImport:new" }
+
+itemstock_import_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:ItemImport:create" }
+    methods:  POST
+
+itemstock_import_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:ItemImport:delete" }
+
+
+itemstock_file_upload:
+    path:     /medicine/upload
+    defaults: { _controller: "AssetsBundle:ItemImport:upload" }
+
+itemstock_upload_create:
+    path:     /medicine/upload/create
+    defaults: { _controller: "AssetsBundle:ItemImport:uploadCreate" }
+

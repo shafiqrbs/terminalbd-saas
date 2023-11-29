@@ -1,0 +1,256 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Wel Come {{ globalOption.name }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green ">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>{% if product.masterItem is not empty and globalOption.ecommerceConfig.showMasterName == 1 %}{{ product.masterItem.name }}&nbsp;-&nbsp;{% endif %}{{ product.webName }}</a></div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <i class="icon-shopping-cart"></i>&nbsp;View Shopping
+                                    <i class="icon-tasks"></i>
+                                </a>
+
+                                <a class="dropdown-toggle btn purple cart" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" href="{{ path('order_cart',{'shop':globalOption.slug}) }}">
+                                    BDT. (<span>{{ cart.total|number_format }}</span>)
+                                </a>
+                                <ul class="dropdown-menu extended inbox">
+                                    <li>
+                                        <p>You have BDT: {{ cart.total|number_format }}({{ cart.total_items }}) </p>
+                                    </li>
+                                    <li>
+                                        <ul class="dropdown-menu-list scroller" style="height:250px">
+                                            {% for product in cart.contents %}
+                                            <li>
+                                                <a href="javascript:">
+                                                    <span class="subject">
+                                                        <span class="from">{{ product.name }}</span>
+                                                    </span>
+                                                    <dl>
+                                                        <dt>{{ product.quantity }} x BDT. {{ product.price }} = BDT. {{ product.quantity * product.price }}</dt>
+                                                        <dt>Size: {{ product.size }}{% if product.color is not empty %}, Color: {{ product.color }}{% endif %}</dt>
+                                                     </dl>
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li class="external">
+                                        <span class="pull-right">
+                                            <a class="btn green"  href="{{ path('shoppingbag_to_order',{'shop':globalOption.slug}) }}">Order Place&nbsp;<i class="m-icon-swapright"></i></a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="span12" >
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+                                    <div class='carousel-outer'>
+                                        <!-- me art lab slider -->
+                                        <div class='carousel-inner '>
+                                            <div data-match-height="image-carousel" class='item active'>
+                                                <img  id="zoom" src="{% if product.webPath is not empty  %}{{ image(product.webPath).resize(400,400) }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ image(product.masterItem.webPath).resize() }}{% endif %}"  data-zoom-image="{% if product.webPath is not empty  %}{{ image(product.webPath).resize() }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ image(product.masterItem.webPath).resize() }}{% endif %}"/>
+                                            </div>
+                                            {% if(product.itemGalleries) %}
+                                                {% for photo in product.itemGalleries|slice(0,5) %}
+                                                    <div data-match-height="image-carousel" class='item'>
+                                                        <img class="img-responsive" src='{{ image(photo.getAbsolutePath(product.inventoryConfig.globalOption.id,product.id)).resize(400,400) }}' alt=''  data-zoom-image="{{ image(photo.getAbsolutePath(product.inventoryConfig.globalOption.id,product.id)).resize() }}"/>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <!-- sag sol -->
+                                        <a class='left custom-carousel-control' href='#carousel-custom' data-slide='prev'>
+                                            <span class='glyphicon glyphicon-chevron-left'></span>
+                                        </a>
+                                        <a class='right custom-carousel-control' href='#carousel-custom' data-slide='next'>
+                                            <span class='glyphicon glyphicon-chevron-right'></span>
+                                        </a>
+                                    </div>
+
+                                    <!-- thumb -->
+                                    <ol class='carousel-indicators mCustomScrollbar meartlab'>
+                                        <li data-target='#carousel-custom' data-slide-to='0' class='active'><img src='{% if product.webPath is not empty  %}{{ image(product.webPath).resize() }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ image(product.masterItem.webPath).resize() }}{% endif %}' alt='' /></li>
+                                        {% if(product.itemGalleries) %}
+                                            {% for photo in product.itemGalleries|slice(0,5) %}
+                                                <li data-target='#carousel-custom' data-slide-to='{{ loop.index }}' class=''><img src='{{ image(photo.getAbsolutePath(product.inventoryConfig.globalOption.id,product.id)).resize(70,70) }}' alt='' /></li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <table class="list-table">
+                                    <tr><td><h4>Current Price</h4></td><td class="left-text"><h4>{{ globalOption.ecommerceConfig.currency }}&nbsp;{{ product.salesPrice|number_format }}</h4></td></tr>
+                                    {% if product.brand is not empty %}<tr><td>Brand</td><td class="left-text">&nbsp;:&nbsp;{{ product.brand.name }}</td></tr>{% endif %}
+                                    {% if product.masterItem.category is defined and product.masterItem.category is not empty %}<tr><td>Category</td><td class="left-text">&nbsp;:&nbsp;{{ product.masterItem.category.name }}</td></tr>{% endif %}
+                                    {% if product.gender is not empty %}<tr><td>Gender</td><td class="left-text">&nbsp;:&nbsp;{{ product.gender }}</td></tr>{% endif %}
+                                    {% if product.ageGroup is not empty %}<tr><td>Age Group</td><td class="left-text">&nbsp;:&nbsp;{{ product.ageGroup }}</td></tr>{% endif %}
+                                    {% if product.country is not empty %}<tr><td>Made in</td><td class="left-text">&nbsp;:&nbsp;{{ product.country.name }}</td></tr>{% endif %}
+                                    {% if product.masterItem is not empty and product.masterItem.content is not empty %}
+                                        <tr><td colspan="2"><hr/></td></tr>
+                                        <tr><td colspan="2"><p>{{ product.masterItem.content|raw }}</p></td></tr>
+                                    {% endif %}
+                                    <tr><td colspan="2"><hr/></td></tr>
+                                    {% if product.sku   %}
+                                        <tr><td><strong>SKU</strong></td><td class="left-text">&nbsp;:&nbsp;<strong>{{ product.sku  }}</strong></td></tr>
+                                    {% endif %}
+                                    <tr><td><strong>Stock in</strong></td><td class="left-text">&nbsp;:&nbsp;<strong>{{ product.masterQuantity  }}</strong>&nbsp;{% if product.masterItem is not empty and product.masterItem.productUnit is not empty %}{{ product.masterItem.productUnit.name }}{% endif %}</td></tr>
+                                    <tr><td colspan="2"><hr/></td></tr>
+                                    <tr>
+                                        <td colspan="2" class="right-text">
+                                            <form class="addCart">
+                                                <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn red btn-number" data-type="minus" data-field="quantity">
+                                                       <span class="add-on"><i class="icon-minus"></i></span>
+                                                    </button>
+                                                </span>
+                                                <input readonly="readonly" type="text" name="quantity" id="quantiy" class="form-control m-wrap  span4 input-number" style="width: 80px; text-align: center; font-weight: bold" value="1" min="1" max="{{ product.masterQuantity }}">
+                                                    <span class="input-group-btn">
+                                                          <button type="button" class="btn blue btn-number" data-type="plus" data-field="quantity">
+                                                             <span class="add-on"><i class="icon-plus"></i></span>
+                                                           </button>
+                                                            {% if  globalOption.ecommerceConfig.cart == 1 %}
+                                                            <input type="hidden" name="productImg"  value="{% if product.webPath is not empty %}{{ product.webPath }}{% elseif product.masterItem.webPath is defined and product.masterItem.webPath is not empty %}{{ product.masterItem.webPath }}{% endif %}">
+                                                            <button type="button" class="btn green addCartSingle" data-url="{{ path('order_cart_to_add',{'shop':globalOption.slug,'id':subitem.id}) }}">
+                                                                <i class="icon-shopping-cart"></i> Add to Buy
+                                                            </button>
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr><td colspan="2"><br/></td></tr>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="portlet box blue tabbable">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="icon-reorder"></i><strong>Product</strong></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="tabbable portlet-tabs">
+                                    <ul class="nav nav-tabs">
+                                        <li class=""><a href="#portlet_tab2" data-toggle="tab">Comment</a></li>
+                                        <li class="active"><a href="#portlet_tab1" data-toggle="tab">Description</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="portlet_tab1">
+                                            <h3>Product information</h3>
+                                            <hr/>
+                                            <p>
+                                                {% if product.content is not empty %}
+                                                    {{ product.content|raw }}
+                                                {% elseif product.masterItem is not empty %}
+                                                    {{ product.masterItem.content|raw }}
+                                                {% endif %}
+                                            </p>
+                                            <table class="list-table">
+                                                {% if product.itemMetaAttributes is not empty or product.itemKeyValues is not empty %}<tr><td colspan="2" ><h4>Specification</h4></td></tr>{% endif %}
+                                                {% if  product.itemMetaAttributes is defined and  product.itemMetaAttributes is not empty %}
+                                                    {%  for attribute in product.itemMetaAttributes %}
+                                                        {% if attribute.value is not empty %}
+                                                            <tr><td>{{ attribute.itemAttribute.name }}</td><td class="left-text">&nbsp;:&nbsp;{{ attribute.value }}</td></tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                {% if  product.itemKeyValues is defined and product.itemKeyValues is not empty %}
+                                                    {% for meta in product.itemKeyValues %}
+                                                        <tr><td>{{ meta.metaKey }}</td><td class="left-text">&nbsp;:&nbsp;{{ meta.metaValue  }}</td></tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </table>
+                                        </div>
+                                        <div class="tab-pane " id="portlet_tab2">
+                                            {% set paymentID = globalOption.id~'-ecommerce-product-'~product.id %}
+                                            {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': paymentID } %}
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .td-select{
+            height: 28px!important;
+            margin: 0!important;
+            border: 1px solid #999;
+            width: 100%;
+        }
+        .carousel-indicators li{
+            background-color: red!important;
+        }
+        .carousel-indicators li.active{
+            background-color: black!important;
+        }
+        .carousel-inner{
+            height: 380px;
+        }
+    </style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@EcommerceBundle/Resources/public/css/style.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    $(document).on("click", ".addCartSingle", function(e) {
+
+        e.stopPropagation();
+        var id = $(this).attr("id");
+        var url = $(this).attr("data-url");
+        var quantity = $("#quantity").val();
+        $.ajax({
+        url: url,
+        type: 'POST',
+        data:'quantity='+quantity,
+        success: function (response) {
+            $('.cart span').html(response);
+        },
+        })
+
+    });
+
+{% endblock %}
+

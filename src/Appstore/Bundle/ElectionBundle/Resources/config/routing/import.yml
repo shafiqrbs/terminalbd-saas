@@ -1,0 +1,20 @@
+election_member_import:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Import:index" }
+
+election_member_import_migration:
+    path:     /{id}/data-migration
+    defaults: { _controller: "ElectionBundle:Import:excelDataImport" }
+
+election_member_import_new:
+    path:     /new
+    defaults: { _controller: "ElectionBundle:Import:new" }
+
+election_member_import_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Import:create" }
+    methods:  POST
+
+election_member_import_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Import:delete" }

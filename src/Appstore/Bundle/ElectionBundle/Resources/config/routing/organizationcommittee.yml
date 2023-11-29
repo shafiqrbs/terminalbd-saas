@@ -1,0 +1,32 @@
+committee_organizationcommittee:
+    path:     /
+    defaults: { _controller: "ElectionBundle:OrganizationCommittee:index" }
+
+committee_organizationcommittee_search:
+    path:     /search
+    defaults: { _controller: "ElectionBundle:OrganizationCommittee:autoSearch" }
+    options:
+            expose: true
+
+committee_organizationcommittee_name:
+    path:     /{particular}/particular-name
+    defaults: { _controller: "ElectionBundle:OrganizationCommittee:searchCommitteeName" }
+    options:
+            expose: true
+
+committee_organizationcommittee_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:OrganizationCommittee:edit" }
+
+committee_organizationcommittee_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:OrganizationCommittee:update" }
+    methods:  [POST, PUT]
+
+committee_organizationcommittee_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:OrganizationCommittee:status" }
+
+committee_organizationcommittee_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:OrganizationCommittee:delete" }

@@ -1,0 +1,30 @@
+hotel_damage:
+    path:     /
+    defaults: { _controller: "HotelBundle:HotelDamage:index" }
+
+hotel_damage_new:
+    path:     /new
+    defaults: { _controller: "HotelBundle:HotelDamage:new" }
+
+
+hotel_damage_create:
+    path:     /create
+    defaults: { _controller: "HotelBundle:HotelDamage:create" }
+    methods:  POST
+
+hotel_damage_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HotelBundle:HotelDamage:edit" }
+
+hotel_damage_update:
+    path:     /{id}/update
+    defaults: { _controller: "HotelBundle:HotelDamage:update" }
+    methods:  [POST, PUT]
+
+hotel_damage_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HotelBundle:HotelDamage:delete" }
+
+hotel_damage_approved:
+    path:     /{id}/approved
+    defaults: { _controller: "HotelBundle:HotelDamage:approved" }

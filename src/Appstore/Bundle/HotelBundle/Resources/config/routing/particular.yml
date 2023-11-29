@@ -1,0 +1,25 @@
+hotel_particular:
+    path:     /
+    defaults: { _controller: "DmsBundle:Particular:index" }
+
+hotel_particular_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Particular:create" }
+    methods:  POST
+
+hotel_particular_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Particular:edit" }
+
+hotel_particular_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Particular:update" }
+    methods:  [POST, PUT]
+
+hotel_particular_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Particular:delete" }
+
+hotel_particular_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Particular:status" }

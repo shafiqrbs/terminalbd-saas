@@ -1,0 +1,144 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Disposal Requisition Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assets_disposal') }}">Disposal Requisition</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Disposal Requisition Information</div>
+                        <div class="actions" >
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('assets_disposal_new') }}"><i class="icon-th-list"></i>&nbsp;Disposal Requisition New</a>
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        <input type="text" id="invoice" name="invoice"  class="span12 m-wrap" value="{% if searchForm.invoice is defined %}{{ searchForm.invoice }}{% endif %}"  autocomplete="off" placeholder="goods receive no">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="receiveDate" name="receiveDate"  class="span12 m-wrap date-picker" value="{% if searchForm.receiveDate is defined %}{{ searchForm.receiveDate }}{% endif %}"  autocomplete="off" placeholder="received date ">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="vendor" name="vendor"  class="span12 m-wrap select2Vendor" value="{% if searchForm.vendor is defined %}{{ searchForm.vendor }}{% endif %}"  autocomplete="off" placeholder="Enter vendor name ">
+                                    </div>
+                                    <div class="span3">
+                                        <div class="input-append span10">
+                                            <div class="controls">
+                                                <input type="text" id="memo" name="memo"  class="span12 m-wrap" value="{% if searchForm.memo is defined %}{{ searchForm.memo }}{% endif %}"  autocomplete="off" placeholder="memo no">
+                                                <div class="btn-group">
+                                                <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <table class="table table-bordered table-striped table-condensed flip-content">
+
+                                <thead>
+                                <tr class="head-green">
+                                    <th class="numeric" >Entry Date</th>
+                                    <th class="numeric" >invoice</th>
+                                    <th class="numeric" >Ref No.</th>
+                                    <th class="numeric" >Item/Quantity</th>
+                                    <th class="numeric" >Total</th>
+                                    <th class="numeric" >Process</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="flip-content " id="purchase">
+                                {% set processes = ['Created','In-progress'] %}
+                                {% for entity in entities %}
+                                    <tr id="delete-{{ entity.id }}">
+                                        <td class="numeric" >{{ entity.created|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.invoice }}</td>
+                                        <td class="numeric" >{{ entity.refNo }}</td>
+                                        <td class="numeric" >{{ entity.totalQuantity|number_format() }}</td>
+                                        <td class="numeric" >{{ entity.subTotal|number_format() }}</td>
+                                        <td class="numeric pull-center" ><a title="Approve" href="javascript:" class="btn green disabled mini" >&nbsp;{{ entity.process|capitalize }}</a></td>
+                                        <td class="numeric" id="action-{{ entity.id }}"  >
+                                            {% if entity.process in processes  %}
+                                                <a href="{{ path('assets_disposal_show', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                                <a href="{{ path('assets_disposal_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                                <a  title="Are you sure went to delete ?" href="javascript:" data-id="{{ entity.id }}" data-url="{{ path('assets_disposal_delete', { 'id': entity.id }) }}" class="btn red mini delete" ><i class="icon-trash"></i></a>
+                                            {% endif %}
+                                            {% if ( app.user.granted("ROLE_DOMAIN")  and entity.process == 'Checked' )  %}
+                                                <a href="{{ path('assets_disposal_show', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                                <a title="Approve" href="javascript:" data-url="{{ path('assets_disposal_approve', { 'id': entity.id,'approve':'approved' }) }}" class="btn blue mini approve approved-{{ entity.id }}" data-title="{{ entity.id }}" id="" ><i class="icon-ok"></i>&nbsp;Approve</a>
+                                                {% if entity.disposalItems is empty %}
+                                                    <a href="{{ path('assets_disposal_edit', { 'id': entity.id }) }}" class="btn green mini " ><i class="icon-edit"></i></a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if entity.process == 'Approved' %}
+                                                <a href="{{ path('assets_disposal_show', { 'id': entity.id }) }}" class="btn purple mini" ><i class="icon-eye-open"></i></a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/editable.js'
+    '@InventoryBundle/Resources/public/js/puschase.js'
+    '@InventoryBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+    InventoryPurchasePage();
+    ApproveProcess();
+{% endblock %}
+

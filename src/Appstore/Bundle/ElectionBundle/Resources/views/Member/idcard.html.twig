@@ -1,0 +1,252 @@
+{#{% extends '::print.html.twig' %}#}
+{% extends '::print.html.twig' %}
+{% block body %}
+
+    <div class="row-fluid" id="card-content" style="margin: 0 auto">
+        {% for entity in entities %}
+            <div data-match-height="item-product" style="width: 350px" class="col-xs-4 col-lg-4 card-box">
+                <div class="row-fluid header">
+                    <div class="span4 text-center">
+                        <img class="img" src="{{ image(config.webPath('path')).forceResize(105,80) }}">
+                    </div>
+                    <div class="span8 right" >
+                        <div class="row-fluid text-center">
+                            {{ config.cardText|raw }}
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row-fluid">
+                    <div class="candidate">{{ config.candidateName }} - কে</h3>
+                    </div>
+                    <div class="row-fluid body">
+                        <div class="span4 text-center" data-match-height="item-body">
+                            <span><img class="img" src="{{ image(config.webPath('logo')).forceResize(105,80) }}"></span>
+                            <h4>নৌকা মার্কায় <br/> ভোট দিন</h4>
+                        </div>
+                        <div class="span8 right" data-match-height="item-body" >
+                            <div class="row-fluid">
+                                <div class="span12 inner">
+                                    <p><label class="label-line">Name</label><strong>: {{ entity.name }}</strong></p>
+                                    <p><label class="label-line">NID </label>: {{ entity.nid }}</p>
+                                    <p><label class="label-line">Mobile </label>: {{ entity.mobile }}</p>
+                                    <p><label class="label-line">Center</label>: {% if entity.voteCenter is not empty %}{{ entity.voteCenter.name }}{% endif %}</p>
+                                    {% if entity.location is not empty %}
+                                    <p>{{ entity.location.name }}, {{ entity.location.wardName }}, {{ entity.location.unionName }}, {{ entity.location.thanaName }}</p>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+<style>
+
+    .clearfix{
+        clear: both;
+    }
+    .row-fluid {
+        width: 100%;
+        *zoom: 1;
+    }
+    .row-fluid .span12 , .row-fluid .span8 , .row-fluid .span6 , .row-fluid .span4 , .row-fluid .span3 , .row-fluid .span2{
+        float: left;
+    }
+    .span12{
+        width: 100%
+    }
+    .span9{
+        width:75%
+    }
+    .span8{
+        width:66.1%
+    }
+    .span6{
+        width: 50%
+    }
+    .span4{
+        width: 33.33333333%
+    }
+    .span3{
+        width: 25%
+    }
+    .span2{
+        width: 12.50%
+    }
+    .span1{
+        width: 8.33333333%
+    }
+
+
+    .label-line{
+        width: 45px;
+        float: left;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .row-fluid .span8{
+        padding-left: 0!important;
+        margin-left: 0!important;
+    }
+
+    .card-box{
+        border: 2px solid #000;
+        background: #ffffff;
+        width: 30.33333333%;
+        float: left;
+        position: relative;
+        min-height: 1px;
+        margin-right: 15px;
+        margin-left: 15px;
+        margin-bottom: 30px;
+        margin-top: 45px;
+    }
+    .card-box .header{
+        border-bottom: 2px solid #000101;
+        display: inline-block;
+    }
+    .card-box .header .img , .card-box .body .img{
+        height: 80px;padding: 5px;
+        width: 105px;
+    }
+    .card-box .header .right{
+        border-left:2px solid #000101;
+        min-height: 85px;
+        padding-top: 8px;
+    }
+    .card-box .body .right{
+        border-left:2px solid #000101;
+    }
+    .card-box .body .right .inner{
+        padding-left: 10px;
+        min-height: 125px;
+        padding-top:5px;
+        width: 215px;
+    }
+    .card-box .candidate{
+        background: #000;
+        color: #fff;
+        font-weight: bold;
+        font-size: 20px;
+        padding-top: 8px!important;
+        padding-bottom: 13px!important;
+        line-height: 10px!important;
+        text-align: center;
+    }
+
+    h1, h2, h3, h4, h5, h6{
+        padding: 0!important;
+        margin: 0!important;
+    }
+
+    h1{
+        font-size: 24px;
+    }
+    h2{
+        font-size: 22px;
+    }
+    h3{
+        font-size: 20px;
+    }
+    h4{
+        font-size: 18px;
+    }
+    h5{
+        font-size: 16px;
+    }
+
+    p{
+        margin: 0!important;
+        padding: 0!important;
+        padding-bottom: 5px!important;
+        height: 15px;
+        display: flex;
+        font-size: 13px;
+
+    }
+
+    .fileupload .btn {
+        padding: 4px 15px !important;
+    }
+
+    .barcode-block {
+        text-align: center!important;
+        white-space: nowrap;
+        width: 350px;
+        float: left;
+        height: 80px;
+        border: 1px solid #ccc;
+        border-right: none;
+        border-top: none;
+    }
+
+    /* The ghost, nudged to maintain perfect centering */
+    .barcode-block:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -0.25em; /* Adjusts for spacing */
+    }
+
+    /* The element to be centered, can also be of any width and height */
+    .centered {
+        display: inline-block;
+        vertical-align: middle;
+        width: 113px;
+    }
+    .centered p{
+        padding: 0!important;
+        margin: 0!important;
+        display: block;
+        height: 14px;
+        font-size: 11px;
+        line-height: 13px;
+        font-weight: bold;
+    }
+
+    .centered .left{
+        text-align: left;
+        float: left;
+        display: inline-block;
+        height: 14px;
+        font-size: 9px;
+    }
+    .centered .center{
+        text-align: center;
+        display: inline-block;
+        height: 14px;
+    }
+    .centered .right{
+        text-align: right;
+        float: right;
+        display: inline-block;
+        height: 14px;
+        font-size: 9px;
+    }
+
+</style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/print.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,102 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Asset Distribution Lists
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assets_distribution') }}">Asset Distribution</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Asset Distribution Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Asset Distribution Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('assets_distribution_new') }}"><i class="icon-th-list"></i>&nbsp;New Distribution</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric" >Created</th>
+                                    <th class="numeric" >Department/Branch</th>
+                                    <th class="numeric" >Assign Employee</th>
+                                    {#<th class="numeric" >Branch</th>#}
+                                    <th class="numeric" >Product Name </th>
+                                    <th class="numeric" >Item</th>
+                                    <th class="numeric" >Category</th>
+                                    <th class="numeric" >PR</th>
+                                    <th class="numeric" >Serial No</th>
+                                  {#  <th class="numeric" >Branch Code</th>#}
+                                    <th class="numeric" >Assign Date</th>
+                                    <th class="numeric" >Release Date</th>
+                                    <th class="numeric" >Process</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.created|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{{ entity.department.name }}</td>
+                                        <td class="numeric" >{{ entity.employee.name }}</td>
+                                   {#     <td class="numeric" >{{ entity.branch.name }}</td>#}
+                                        <td class="numeric" >{{ entity.product.name }}</td>
+                                        <td class="numeric" >{{ entity.product.item.name }}</td>
+                                        <td class="numeric" >{{ entity.product.category.name }}</td>
+                                        <td class="numeric" >{{ entity.requisition }}</td>
+                                        <td class="numeric" >{{ entity.product.serialNo }}</td>
+                                       {# <td class="numeric" >{{ entity.product.branchSerialNo }}</td>#}
+                                        <td class="numeric" >{{ entity.assignDate|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{% if entity.endDate is not empty %}{{ entity.endDate|date('d-m-Y') }}{% endif %}</td>
+                                        <td class="numeric" ><span class="btn red mini">{{ entity.process }}</span></td>
+                                        <td class="numeric" >
+                                        <div class="btn-group">
+                                            <a href="{{ path('assets_distribution_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

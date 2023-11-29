@@ -1,0 +1,28 @@
+body{
+    font-size: 13px;
+}
+.grid h3 , .grid h4{
+    padding-left: 25px;
+}
+.invoice .contacts {
+    margin-bottom: 75px;
+}
+.invoice table.table {
+   border: 2px solid #8a8a8a;
+    border-collapse: collapse;
+}
+.invoice table th {
+    white-space: nowrap;
+    font-size: 11px;
+    background: #000;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffffff;
+    height: 32px;
+    line-height: 32px;
+}
+.invoice table td{
+    background: none;
+}
+tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: #FFF}

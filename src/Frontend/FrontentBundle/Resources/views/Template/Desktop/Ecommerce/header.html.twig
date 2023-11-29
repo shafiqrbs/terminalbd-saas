@@ -1,0 +1,389 @@
+<nav class="navbar navbar-inverse ">
+    {% if globalOption.templateCustomize.topBar is not empty %}
+        <section id="top-bar" class="header-position">
+            <div class="container" >
+                <div class="row">
+                    <div class="col-md-4 text-left">
+                        <div class="box">
+                            {% if globalOption.templateCustomize.topTextPosition == "text-left" and globalOption.templateCustomize.topBarContent is not empty %}
+                                {{  globalOption.templateCustomize.topBarContent|raw }}
+                            {% endif %}
+                            {% if globalOption.templateCustomize.socialIconPosition == "top-left" %}
+                                <ul class="{% if globalOption.templateCustomize.socialIconType == 'icon-square' %}square-social-links{% else %}circle-social-links{% endif %}">
+                                    {% if globalOption.facebookPageUrl is not empty %}
+                                        <li><a class="facebook" target="_blank" href="{{ globalOption.facebookPageUrl }}"><i class="fa fa-facebook"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.twitterUrl is not empty %}
+                                        <li><a class="twitter" target="_blank" href="{{ globalOption.twitterUrl }}"><i class="fa fa-twitter"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.youtube is not empty %}
+                                        <li><a class="youtube" target="_blank" href="{{ globalOption.youtube }}"><i class="fa fa-youtube"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.instagramPageUrl is not empty %}
+                                        <li><a class="instagram" target="_blank" href="{{ globalOption.instagramPageUrl }}"><i class="fa fa-instagram"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.linkedin is not empty %}
+                                        <li><a class="linkedin" target="_blank" href="{{ globalOption.linkedin }}"><i class="fa fa-linkedin"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.googlePlus is not empty %}
+                                        <li><a class="google-plus" target="_blank" href="{{ globalOption.googlePlus }}"><i class="fa fa-google-plus"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.skype is not empty %}
+                                        <li><a class="skype" target="_blank" href="{{ globalOption.skype }}"><i class="fa fa-skype"></i></a></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                            {% if globalOption.templateCustomize.topIconPosition == "text-left" %}
+                                <ul class="info-links">
+                                    {% if globalOption.templateCustomize.showCalendar == 1 %}
+                                        <li><i class="fa fa-calendar"></i> {{ "now"|date("j M, Y") }}</li>
+                                    {% endif %}
+                                    {% if globalOption.templateCustomize.showEmail == 1 and globalOption.email is not empty %}
+                                        <li><i class="fa fa-envelope"></i> {{ globalOption.email }}</li>
+                                    {% endif %}
+                                    {% if globalOption.templateCustomize.showMobile == 1 %}
+                                        <li><i class="fa fa-mobile"></i> {{ globalOption.mobile }}</li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 text-center">
+                        <div class="box">
+                            {% if globalOption.templateCustomize.topTextPosition == "text-center" and globalOption.templateCustomize.topBarContent is not empty %}
+                                {{  globalOption.templateCustomize.topBarContent|raw }}
+                            {% endif %}
+                            {% if globalOption.templateCustomize.socialIconPosition == "top-center" %}
+                                <ul class="{% if globalOption.templateCustomize.socialIconType == 'icon-square' %}square-social-links{% else %}circle-social-links{% endif %}">
+                                    {% if globalOption.facebookPageUrl is not empty %}
+                                        <li><a class="facebook" target="_blank" href="{{ globalOption.facebookPageUrl }}"><i class="fa fa-facebook"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.twitterUrl is not empty %}
+                                        <li><a class="twitter" target="_blank" href="{{ globalOption.twitterUrl }}"><i class="fa fa-twitter"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.youtube is not empty %}
+                                        <li><a class="youtube" target="_blank" href="{{ globalOption.youtube }}"><i class="fa fa-youtube"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.instagramPageUrl is not empty %}
+                                        <li><a class="instagram" target="_blank" href="{{ globalOption.instagramPageUrl }}"><i class="fa fa-instagram"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.linkedin is not empty %}
+                                        <li><a class="linkedin" target="_blank" href="{{ globalOption.linkedin }}"><i class="fa fa-linkedin"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.googlePlus is not empty %}
+                                        <li><a class="google-plus" target="_blank" href="{{ globalOption.googlePlus }}"><i class="fa fa-google-plus"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.skype is not empty %}
+                                        <li><a class="skype" target="_blank" href="{{ globalOption.skype }}"><i class="fa fa-skype"></i></a></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                            {% if globalOption.templateCustomize.topIconPosition == "text-center" %}
+                                <ul class="info-links">
+                                    {% if globalOption.templateCustomize.showCalendar == 1 %}
+                                        <li><i class="fa fa-calendar"></i> {{ "now"|date("j M, Y") }}</li>
+                                    {% endif %}
+                                    {% if globalOption.templateCustomize.showEmail == 1 and globalOption.email is not empty %}
+                                        <li><i class="fa fa-envelope"></i> {{ globalOption.email }}</li>
+                                    {% endif %}
+                                    {% if globalOption.templateCustomize.showMobile == 1 %}
+                                        <li><i class="fa fa-mobile"></i> {{ globalOption.hotline }}</li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class=" col-md-4 text-right">
+                        <div class="box">
+                            {% if globalOption.templateCustomize.topTextPosition == "text-right" and globalOption.templateCustomize.topBarContent is not empty %}
+                                {{  globalOption.templateCustomize.topBarContent|raw }}
+                            {% endif %}
+                            {% if globalOption.templateCustomize.socialIconPosition == "top-right" %}
+                                <ul class="{% if globalOption.templateCustomize.socialIconType == 'icon-square' %}square-social-links{% else %}circle-social-links{% endif %}">
+                                    {% if globalOption.facebookPageUrl is not empty %}
+                                        <li><a class="facebook" target="_blank" href="{{ globalOption.facebookPageUrl }}"><i class="fa fa-facebook"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.twitterUrl is not empty %}
+                                        <li><a class="twitter" target="_blank" href="{{ globalOption.twitterUrl }}"><i class="fa fa-twitter"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.youtube is not empty %}
+                                        <li><a class="youtube" target="_blank" href="{{ globalOption.youtube }}"><i class="fa fa-youtube"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.instagramPageUrl is not empty %}
+                                        <li><a class="instagram" target="_blank" href="{{ globalOption.instagramPageUrl }}"><i class="fa fa-instagram"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.linkedin is not empty %}
+                                        <li><a class="linkedin" target="_blank" href="{{ globalOption.linkedin }}"><i class="fa fa-linkedin"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.googlePlus is not empty %}
+                                        <li><a class="google-plus" target="_blank" href="{{ globalOption.googlePlus }}"><i class="fa fa-google-plus"></i></a></li>
+                                    {% endif %}
+                                    {% if globalOption.skype is not empty %}
+                                        <li><a class="skype" target="_blank" href="{{ globalOption.skype }}"><i class="fa fa-skype"></i></a></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+
+                            {% if globalOption.templateCustomize.topIconPosition == "text-right" %}
+                                <ul class="info-links">
+                                    {% if globalOption.templateCustomize.showCalendar == 1 %}
+                                        <li><i class="fa fa-calendar"></i> {{ "now"|date("j M, Y") }}</li>
+                                    {% endif %}
+                                    {% if globalOption.templateCustomize.showEmail == 1 and globalOption.email is not empty %}
+                                        <li><i class="fa fa-envelope"></i> {{ globalOption.email }}</li>
+                                    {% endif %}
+                                    {% if globalOption.templateCustomize.showMobile == 1 %}
+                                        <li><i class="fa fa-mobile"></i> {{ globalOption.hotline }}</li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {% if globalOption.ecommerceConfig.menuType == 'Sidebar' %}
+        {{ include('FrontendBundle:Template/Desktop/Menu:sidebar.html.twig')}}
+    {% endif %}
+    <section id="header" class="sticky" style="margin-bottom: 8px">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="col-md-2" id="logo-area">
+                    {% if globalOption.ecommerceConfig.menuType == 'Sidebar' %}
+                        <button id="showLeft" class="btn btn-primary side-menu-bar"><i class="fa fa-bars"></i> </button>
+                    {% endif %}
+                    <a class="img-logo"
+                       href="{{ path(globalOption.subDomain ~ '_ecommercesubdomain') }}">{% if globalOption.templateCustomize.webPath('logo') is not empty %}
+                            <img src="{{ image(globalOption.templateCustomize.webPath('logo')).resize() }}"
+                                 alt="{{ globalOption.name }}" />{% else %}{{ globalOption.name }}{% endif %}</a>
+                </div>
+                <div class="bs-example-form text-left {% if globalOption.templateCustomize.topTextPosition == "menu-right" %} col-md-7 {% else %} col-md-7 {% endif %}" style="padding-right: 0!important;">
+                    {% if globalOption.templateCustomize.showSearch == 1 %}
+                        <form class="action bs-example" action="{{ path(globalOption.subDomain ~ '_webservice_product') }}"  method="get" >
+                            {% if globalOption.ecommerceConfig.searchCategory == 1 %}
+                            <div class="col-md-4 col-lg-4" >
+                                        <select class="input-selector col-md-12 col-lg-12 search-category" name="category" id="category" >
+                                            <option value="">-- Select Category --</option>
+                                            {{ categoryTree|raw }}
+                                        </select>
+                            </div>
+                            {% endif %}
+                            <div class="input-group search-box {% if globalOption.ecommerceConfig.searchCategory == 1 %} col-md-8 col-lg-8 {% else %} col-md-12 col-lg-12 {% endif %}"  >
+                                <div class="input-group col-md-12 col-lg-12">
+
+                                    <input  type="text" id="webName" name="webName"  class="form-control serarch-keyword search-field col-md-12 col-lg-12" placeholder="Product name,category,brand etc" value="{{ app.request.get('webName') }}" >
+                                    <span class="input-group-btn">
+
+                                               <button class="btn btn-group btn-group-search search-box-bg" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                    <span style="position: relative;display: inline-block">
+                                          {% if globalOption.ecommerceConfig.uploadFile == 1 %}
+                                          <span id="item-qnt" class="totalItem">{{ cart.contents|length }}</span>
+                              <a  href="javascript:" id="btnUploadFile" data-toggle="tooltip" data-original-title="View Shopping Items"  class="btn btn-upload cartUpload"> <span  class="fa fa-upload"></span> Upload</a></span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+
+                {% if globalOption.templateCustomize.topTextPosition == "menu-right" %}
+                    <div class="col-md-3 bs-example-form" >
+                        {% if app.user %}
+                            <div style="float: left;">
+                                <ul class="nav navbar-nav" style="background: #009b3a">
+                                    <li class="dropdown">
+                                        <a href="#" id="myaccount" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ app.user }} </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{ path(globalOption.subDomain ~ '_webservice_buyer_order') }}">Order</a></li>
+                                            <li><a href="{{ path(globalOption.subDomain ~ '_webservice_buyer_preorder') }}">Pre-order</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="javascript:" data-action="{{ path(globalOption.subDomain ~ '_webservice_logout') }}"  data-toggle="tooltip" title="System Logout" class="logout btn-logout" >Sign Out <span class="fa fa-sign-out pull-right" style="margin-top: 4px"></span></a></li>
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <div class="attr-nav">
+                            {% if globalOption.templateCustomize.socialIconPosition == "menu-right" %}
+                                {% if globalOption.templateCustomize.socialIconType == 'icon-fadein' %}
+                                    <ul class="icon-circle-fadein">
+                                        {% if globalOption.facebookPageUrl is not empty %}
+                                            <li>
+                                                <a target="_blank" href="{{ globalOption.facebookPageUrl }}" class="icon-button facebook"><i class="fa fa-facebook"></i><span></span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% if globalOption.twitterUrl is not empty %}
+                                            <li>
+                                                <a target="_blank" href="{{ globalOption.twitterUrl }}" class="icon-button twitter"><i class="fa fa-twitter"></i><span></span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% if globalOption.youtube is not empty %}
+                                            <li>
+                                                <a target="_blank" href="{{ globalOption.youtube }}" class="icon-button youtube"><i class="fa fa-youtube"></i><span></span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% if globalOption.linkedin is not empty %}
+                                            <li>
+                                                <a target="_blank" href="{{ globalOption.linkedin }}" class="icon-button linkedin"><i class="fa fa-linkedin"></i><span></span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% if globalOption.instagramPageUrl is not empty %}
+                                            <li>
+                                                <a target="_blank" href="{{ globalOption.instagramPageUrl }}" class="icon-button instagram"><i class="fa fa-instagram"></i><span></span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% if globalOption.googlePlus is not empty %}
+                                            <li>
+                                                <a target="_blank" href="{{ globalOption.googlePlus }}" class="icon-button google-plus"><i class="fa fa-google-plus"></i><span></span></a>
+                                            </li>
+                                        {% endif %}
+                                        {% if globalOption.skype is not empty %}
+                                            <li>
+                                                <a target="_blank" href="{{ globalOption.skype }}" class="icon-button skype"><i class="fa fa-skype"></i><span></span></a>
+                                            </li>
+                                        {% endif %}
+
+
+                                    </ul>
+                                {% elseif  globalOption.templateCustomize.socialIconType == 'icon-loop' %}
+                                    <ul class="icon-circle-fancy" id="fancy-circle">
+                                        {% if globalOption.facebookPageUrl is not empty %}
+                                            <li><div class="facebook"><a target="_blank" href="{{ globalOption.facebookPageUrl }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></div></li>
+                                        {% endif %}
+                                        {% if globalOption.twitterUrl is not empty %}
+                                            <li><div class="twitter"><a target="_blank" href="{{ globalOption.twitterUrl }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></div></li>
+                                        {% endif %}
+                                        {% if globalOption.youtube is not empty %}
+                                            <li><div class="youtube"><a target="_blank" href="{{ globalOption.youtube }}"><i class="fa fa-youtube" aria-hidden="true"></i></a></div></li>
+                                        {% endif %}
+                                        {% if globalOption.linkedin is not empty %}
+                                            <li><div class="linkedin"><a target="_blank" href="{{ globalOption.linkedin }}"><i class="fa fa-linkedin" aria-hidden="true"></i></a></div></li>
+                                        {% endif %}
+                                        {% if globalOption.instagramPageUrl is not empty %}
+                                            <li><div class="instagram"><a target="_blank" href="{{ globalOption.instagramPageUrl }}"><i class="fa fa-instagram" aria-hidden="true"></i></a></div></li>
+                                        {% endif %}
+                                        {% if globalOption.googlePlus is not empty %}
+                                            <li><div class="google-plus"><a target="_blank" href="{{ globalOption.googlePlus }}"><i class="fa fa-google-plus" aria-hidden="true"></i></a></div></li>
+                                        {% endif %}
+                                        {% if globalOption.skype is not empty %}
+                                            <li><div class="skype"><a target="_blank" href="{{ globalOption.skype }}"><i class="fa fa-skype" aria-hidden="true"></i></a></div></li>
+                                        {% endif %}
+
+                                    </ul>
+                                {% elseif  globalOption.templateCustomize.socialIconType == 'icon-square' %}
+                                    <ul class="icon-square">
+                                        {% if globalOption.facebookPageUrl is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.facebookPageUrl }}" class="btn-social btn-facebook"><i class="fa fa-facebook"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.twitterUrl is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.facebookPageUrl }}" class="btn-social btn-twitter"><i class="fa fa-twitter"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.youtube is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.youtube }}" class="btn-social btn-youtube"><i class="fa fa-youtube"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.linkedin is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.linkedin }}" class="btn-social btn-linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.instagramPageUrl is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.instagramPageUrl }}" class="btn-social btn-instagram"><i class="fa fa-instagram"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.googlePlus is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.googlePlus }}" class="btn-social btn-google-plus"><i class="fa fa-google-plus"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.skype is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.skype }}" class="btn-social btn-skype"><i class="fa fa-skype"></i></a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                {% elseif  globalOption.templateCustomize.socialIconType == 'icon-circle' %}
+                                    <ul class="icon-circle">
+                                        {% if globalOption.facebookPageUrl is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.facebookPageUrl }}" class="btn-social btn-facebook"><i class="fa fa-facebook"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.twitterUrl is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.facebookPageUrl }}" class="btn-social btn-twitter"><i class="fa fa-twitter"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.youtube is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.youtube }}" class="btn-social btn-youtube"><i class="fa fa-youtube"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.linkedin is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.linkedin }}" class="btn-social btn-linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.instagramPageUrl is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.instagramPageUrl }}" class="btn-social btn-instagram"><i class="fa fa-instagram"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.googlePlus is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.googlePlus }}" class="btn-social btn-google-plus"><i class="fa fa-google-plus"></i></a></li>
+                                        {% endif %}
+                                        {% if globalOption.skype is not empty %}
+                                            <li><a target="_blank" href="{{ globalOption.skype }}" class="btn-social btn-skype"><i class="fa fa-skype"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                {% endif %}
+                            {% endif %}
+                            {% if  globalOption.templateCustomize.topBarContent is not empty %}
+                                {{  globalOption.templateCustomize.topBarContent|raw }}
+                            {% endif %}
+                            {% if globalOption.templateCustomize.showMobile == 1  %}
+                                <div class="support-box">
+                                    <div class="support">For Support Call <span class="icon fa fa-headphones"></span></div>
+                                    <div class="support-number">{{ globalOption.hotline }}</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% elseif app.user is not empty and globalOption.templateCustomize.topTextPosition != "menu-right" %}
+                    <div class="col-md-3 bs-example-form" >
+                        <div style="float: left;">
+                            <ul class="nav navbar-nav" style="background: #009b3a">
+                                <li class="dropdown">
+                                    <a href="#" style="width: 120px" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ app.user }} </a>
+                                    <ul class="dropdown-menu">
+                                        <li>  <a href="{{ path(globalOption.subDomain ~ '_domain_authentication') }}" data-toggle="tooltip" title="Go To Your Order Panel"  > Dashboard</a>
+                                        </li>
+                                        <li><a href="#">Messages</a></li>
+                                        <li><a href="#">Favourites Snippets</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="javascript:" data-action="{{ path(globalOption.subDomain ~ '_webservice_logout') }}"  data-toggle="tooltip" title="System Logout" class="logout btn-logout" >Sign Out <span class="fa fa-sign-out pull-right" style="margin-top: 4px"></span></a></li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% if globalOption.ecommerceConfig.menuType == 'Mega' or globalOption.ecommerceConfig.menuType == 'Dropdown' %}
+        <div class="clearfix"></div>
+        <section id="menu-bar" >
+            <div class="container">{{ include('FrontendBundle:Template/Desktop/Menu:menu.html.twig')}}</div>
+        </section>
+        <div class="clearfix"></div>
+    {% endif %}
+
+    <div class="clearfix"></div>
+    {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('header')  %}
+        {% render controller("FrontendBundle:EcommerceWidget:featureTemplateWidget",{'globalOption':globalOption.id,'menu': menu.id,'position':'header'}) %}
+    {% endif %}
+    {% if globalOption.featureWidgets is defined and globalOption.featureWidgets is not empty and menu.getFeatureWidgetPositionExist('header')  %}
+        {% render controller("FrontendBundle:WebsiteWidget:featureWidget",{'globalOption':globalOption.id, 'menu': menu.id,'position':'header'}) %}
+    {% endif %}
+</nav>
+<style>
+    .dropdown #myaccount{
+        min-width: 120px;
+        padding: 0px!important;
+        line-height: 34px!important;
+        height: 34px!important;
+        text-align: center;
+    }
+</style>
+

@@ -1,0 +1,52 @@
+assets_purchase:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Purchase:index" }
+
+assets_purchase_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Purchase:new" }
+
+assets_purchase_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Purchase:edit" }
+
+assets_purchase_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Purchase:show" }
+
+assets_purchase_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Purchase:update" }
+    methods:  [POST, PUT]
+
+assets_purchase_particular_add:
+    path:     /{id}/particular-add
+    defaults: { _controller: "AssetsBundle:Purchase:addParticular" }
+    methods:  POST
+    options:
+            expose: true
+
+assets_purchase_status:
+    path:     /{id}/status
+    defaults: { _controller: "AssetsBundle:Purchase:status" }
+
+assets_purchase_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Purchase:delete" }
+
+
+assets_purchase_approved:
+    path:     /{id}/invoice-approved
+    defaults: { _controller: "AssetsBundle:Purchase:approved" }
+
+assets_purchase_particular_delete:
+    path:     /{invoice}/{id}/item-delete
+    defaults: { _controller: "AssetsBundle:Purchase:invoiceParticularDelete" }
+
+assets_purchase_discount_update:
+    path:     /dicount-update
+    defaults: { _controller: "AssetsBundle:Purchase:invoiceDiscountUpdate" }
+    methods:  POST
+    options:
+            expose: true
+

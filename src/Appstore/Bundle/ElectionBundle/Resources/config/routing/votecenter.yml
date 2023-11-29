@@ -1,0 +1,81 @@
+election_votecenter:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Votecenter:index" }
+
+election_votecenter_new:
+    path:     /new
+    defaults: { _controller: "ElectionBundle:Votecenter:new" }
+
+election_votecenter_show:
+    path:     /{id}/show
+    defaults: { _controller: "ElectionBundle:Votecenter:show" }
+    options:
+            expose: true
+
+election_votecenter_search:
+    path:     /search
+    defaults: { _controller: "ElectionBundle:Votecenter:autoSearch" }
+    options:
+            expose: true
+
+election_votecenter_name:
+    path:      /{particular}/particular-name
+    defaults: { _controller: "ElectionBundle:Votecenter:searchVotecenterName" }
+    options:
+            expose: true
+
+election_votecenter_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Votecenter:create" }
+    methods:  POST
+
+election_votecenter_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:Votecenter:edit" }
+
+election_votecenter_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:Votecenter:update" }
+    methods:  [POST, PUT]
+
+election_votecenter_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:Votecenter:status" }
+
+election_votecenter_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Votecenter:delete" }
+
+election_votecenter_print:
+    path:     /{id}/print
+    defaults: { _controller: "ElectionBundle:Votecenter:print" }
+
+election_votecenter_list_print:
+    path:     /print-list
+    defaults: { _controller: "ElectionBundle:Votecenter:printList" }
+
+election_votecenter_member_new:
+    path:     /{id}/member-new
+    defaults: { _controller: "ElectionBundle:Votecenter:newMember" }
+    options:
+            expose: true
+
+election_votecenter_member_create:
+    path:     /{id}/member-create
+    defaults: { _controller: "ElectionBundle:Votecenter:createMember" }
+    methods:  POST
+    options:
+            expose: true
+
+election_votecenter_pooling_create:
+    path:     /{id}/pooling-create
+    defaults: { _controller: "ElectionBundle:Votecenter:createPooling" }
+    methods:  POST
+    options:
+            expose: true
+
+election_votecenter_member_delete:
+    path:     /{id}/member-delete
+    defaults: { _controller: "ElectionBundle:Votecenter:memberDelete" }
+
+

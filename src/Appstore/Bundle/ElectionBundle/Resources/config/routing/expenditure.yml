@@ -1,0 +1,34 @@
+election_account_expenditure:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Expenditure:index" }
+
+election_account_expenditure_new:
+    path:     /new
+    defaults: { _controller: "ElectionBundle:Expenditure:new" }
+
+election_account_expenditure_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Expenditure:create" }
+    methods:  POST
+
+election_account_expenditure_approve:
+    path:     /{id}/payment-approve
+    defaults: { _controller: "ElectionBundle:Expenditure:approve" }
+    options:
+           expose: true
+
+election_account_expenditure_inline:
+    path:     /inline-update
+    defaults: { _controller: "ElectionBundle:Expenditure:inlineUpdate" }
+
+election_account_expenditure_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Expenditure:delete" }
+    options:
+           expose: true
+
+election_account_expenditure_report:
+    path:     /category-report
+    defaults: { _controller: "ElectionBundle:Expenditure:categoryReport" }
+
+

@@ -1,0 +1,61 @@
+{#{% macro recursiveCategory(category) %}
+    {% import _self as self %}
+    <li>
+        <a href="">{{ category.name }}</a>
+        {% if category.children|length %}
+            <ul class="sub-child">
+                {% for child in category.children %}
+                    {{ self.recursiveCategory(child) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+{% from _self import recursiveCategory %}
+{% if categories %}
+    <div id="categories">
+        <ul class="footer-category">
+            {% for category in categories %}
+                {{ recursiveCategory(category) }}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}#}
+{% if categories %}
+    <div id="categories">
+        <ul class="footer-parent-category ">
+            {% for category in categories %}
+                {% if category.children is not empty %}
+                    <li><a class="parent" href="{{ path(globalOption.subDomain ~ '_webservice_product_category',{'category':category.slug}) }}"><strong>{{ category.name }} :</strong></a> <span>
+                      {% render controller("FrontendBundle:EcommerceWidget:footerProductChildCategory",{'globalOption':globalOption.id , 'category':category.id}) %}
+                    </span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{#{{ categorySidebar|raw }}#}
+<style>
+    #categories {
+
+    }
+    .footer-parent-category {
+        font-size: 11px;
+    }
+    .footer-parent-category li a.parent{
+        font-size: 12px;
+        display: inline-block;
+    }
+
+    a.footer-category{
+        font-size: 11px;
+        border-right: 1px solid #030303;
+        padding-right: 10px;
+        margin-right: 10px;
+        font-weight: normal;
+    }
+    .footer-category:last-child{
+        border-right: none;
+    }
+</style>

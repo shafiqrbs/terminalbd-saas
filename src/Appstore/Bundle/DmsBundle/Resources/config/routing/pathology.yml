@@ -1,0 +1,33 @@
+hms_pathology:
+    path:     /
+    defaults: { _controller: "HospitalBundle:Pathology:index" }
+
+hms_pathology_show:
+    path:     /{id}/show
+    defaults: { _controller: "HospitalBundle:Pathology:show" }
+
+hms_pathology_new:
+    path:     /new
+    defaults: { _controller: "HospitalBundle:Pathology:new" }
+
+hms_pathology_create:
+    path:     /create
+    defaults: { _controller: "HospitalBundle:Pathology:create" }
+    methods:  POST
+
+hms_pathology_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "HospitalBundle:Pathology:edit" }
+
+hms_pathology_update:
+    path:     /{id}/update
+    defaults: { _controller: "HospitalBundle:Pathology:update" }
+    methods:  [POST, PUT]
+
+hms_pathology_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "HospitalBundle:Pathology:delete" }
+
+hms_pathology_status:
+    path:     /{id}/status
+    defaults: { _controller: "HospitalBundle:Pathology:status" }

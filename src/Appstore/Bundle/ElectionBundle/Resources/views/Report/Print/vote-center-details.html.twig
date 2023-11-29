@@ -1,0 +1,137 @@
+{% extends '::baseprint.html.twig' %}
+{% block body %}
+<div id="invoice">
+        <div class="toolbar hidden-print">
+            <div class="text-right">
+                <a href="{{ path('election_report_voter_cenetr_details') }}"  class="btn btn-success"><i class="fa fa-th-list"></i> Vote Center Details</a>
+                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            </div>
+            <hr>
+        </div>
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <main>
+                    <div class="row contacts">
+                        <div class="span4"></div>
+                        <div class="span4 text-center">{{ config.cardText|raw }}<h2><strong>{{ config.candidateName }}</strong></h2></div>
+                        <div class="span4"></div>
+                    </div>
+                    <div class="grid span12"><h3>Vote Center Information : <strong>{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</strong></h3></div>
+                    <hr/>
+                    <div class="row contacts">
+                        <div class="grid span3">
+                            <h4>About</h4>
+                            <ul class="unstyled">
+                                <li><strong>Vote Center:</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</li>
+                                <li><strong>Representative:</strong>&nbsp;{{ entity.representative.name }}</li>
+                                <li><strong>Mobile:</strong>&nbsp;{{ entity.representativeMobile }}</li>
+                                <li><strong>Address:</strong>&nbsp;{{ entity.address|raw }}</li>
+
+                            </ul>
+                        </div>
+                        <div class="grid span3">
+                            <h4>Presiding</h4>
+                            <ul class="unstyled">
+                                <li><strong>Name:</strong>&nbsp;{{ entity.presiding }}</li>
+                                <li><strong>Designation:</strong>&nbsp;{{ entity.presidingDesignation }}</li>
+                                <li><strong>Mobile:</strong>&nbsp;{{ entity.presidingMobile }}</li>
+                                <li><strong>Address:</strong>&nbsp;{{ entity.presidingAddress|raw }}</li>
+
+                            </ul>
+                        </div>
+                        <div class="grid span3">
+                            <h4>Election Information</h4>
+                            <ul class="unstyled">
+                                <li><strong>Created Date:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                                <li><strong>Election Type:</strong>&nbsp;{{ entity.electionSetup.electionName }}</li>
+                                <li><strong>Election Date:</strong>&nbsp;{{ entity.electionDate|date('d-m-y') }}</li>
+                            </ul>
+                        </div>
+                        <div class="grid span3">
+                            <h4>Voter Information</h4>
+                            <ul class="unstyled">
+                                <li><strong>Total Voter:</strong>&nbsp;{{ entity.totalVoter }}</li>
+                                <li><strong>Male Voter:</strong>&nbsp;{{ entity.maleVoter }}</li>
+                                <li><strong>Female Voter:</strong>&nbsp;{{ entity.femaleVoter }}</li>
+                                <li><strong>Other Voter:</strong>&nbsp;{{ entity.otherVoter }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h4>Center Agent Information</h4>
+                    <hr/>
+                    <table border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #999">
+                        <thead>
+                        <tr class="head-blue">
+                            <th style="text-align: center">Booth No</th>
+                            <th >NID</th>
+                            <th >Name</th>
+                            <th >Mobile</th>
+                            <th >Village</th>
+                            <th >Vote Center</th>
+                            <th >Ward</th>
+                            <th >Union/Pourasava</th>
+                            <th >Thana/Upazila</th>
+                            <th  ></th>
+                        </tr>
+                        </thead>
+                        <tbody id="">
+                       {% for committe in entity.centerMembers %}
+                           {% if committe.personType == 'agent' %}
+                               <tr id="remove-{{ committe.id }}">
+                                   <td style="text-align: center">{{ committe.boothNo }}</td>
+                                   <td >{{ committe.member.nid }}</td>
+                                   <td >{{ committe.member.name }}</td>
+                                   <td >{% if  committe.agentMobile is empty %} {{ committe.member.mobile }}{% else %}{{ committe.agentMobile }}{% endif %}</td>
+                                   <td >{% if committe.member.location is not empty %}{{ committe.member.location.name }}{% endif %}</td>
+                                   <td >{% if committe.member.location is not empty %}{{ committe.member.voteCenter.name }}{% endif %}</td>
+                                   <td >{% if committe.member.location is not empty %}{{ committe.member.location.wardName }}{% endif %}</td>
+                                   <td >{% if committe.member.location is not empty %}{{ committe.member.location.unionName }}{% endif %}</td>
+                                   <td >{% if committe.member.location is not empty %}{{ committe.member.location.thanaName }}{% endif %}</td>
+                                   <td>{% if committe.isMaster == 1 %}Lead{% endif %}</td>
+                               </tr>
+                           {% endif %}
+                       {% endfor %}
+                       </tbody>
+                    </table>
+                    <br/><br/>
+                    <h4>Center Pooling Officer Information</h4>
+                    <hr/>
+                    <table border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #999">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">Booth No</th>
+                            <th >Pooling Officer</th>
+                            <th >Mobile</th>
+                        </tr>
+                        </thead>
+                        <tbody id="">
+                        {% for committe in entity.centerMembers %}
+                            {% if committe.personType == 'pooling' %}
+                                <tr>
+                                    <td style="text-align: center">{{ committe.boothNo }}</td>
+                                    <td >{{ committe.poolingOfficer }}</td>
+                                    <td >{{ committe.poolingMobile }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                       </tbody>
+                    </table>
+                    <div style="clear: both; display: flex"></div>
+                </main>
+                <footer>
+                    <span class="right">Developed by: {{ portal_design_development }}</span>
+                </footer>
+            </div>
+            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+            <div></div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/print.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+

@@ -1,0 +1,263 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Election Vote Center
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="{{ path('election_votecenter') }}">Manage Election Vote Center</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Election Vote Center Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('election_committee') }}"><i class="icon-th-list"></i>&nbsp; Vote Center</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <h4>About:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Location:</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</li>
+                                        <li><strong>Representative:</strong>&nbsp;{{ entity.representative.name }}</li>
+                                        <li><strong>Mobile:</strong>&nbsp;{{ entity.representativeMobile }}</li>
+                                        <li><strong>Address:</strong>&nbsp;{{ entity.address|raw }}</li>
+
+                                    </ul>
+                                </div>
+                                <div class="span3">
+                                    <h4>Presiding:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Name:</strong>&nbsp;{{ entity.presiding }}</li>
+                                        <li><strong>Designation:</strong>&nbsp;{{ entity.presidingDesignation }}</li>
+                                        <li><strong>Mobile:</strong>&nbsp;{{ entity.presidingMobile }}</li>
+                                        <li><strong>Address:</strong>&nbsp;{{ entity.presidingAddress|raw }}</li>
+
+                                    </ul>
+                                </div>
+                                <div class="span3">
+                                    <h4>Election Information</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Created Date:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                                        <li><strong>Election Type:</strong>&nbsp;{{ entity.electionSetup.electionName }}</li>
+                                        <li><strong>Election Date:</strong>&nbsp;{{ entity.electionDate|date('d-m-y') }}</li>
+                                    </ul>
+                                </div>
+
+                                <div class="span3">
+                                    <h4>Voter Information</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Total Voter:</strong>&nbsp;{{ entity.totalVoter }}</li>
+                                        <li><strong>Male Voter:</strong>&nbsp;{{ entity.maleVoter }}</li>
+                                        <li><strong>Female Voter:</strong>&nbsp;{{ entity.femaleVoter }}</li>
+                                        <li><strong>Other Voter:</strong>&nbsp;{{ entity.otherVoter }}</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"><br/></div>
+
+                            <div class="clearfix"><br/></div>
+                            <div class="form-actions portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Add Agent Member</div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="portlet-body flip-scroll">
+                                <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                    <thead class="flip-content ">
+                                    <tr class="head-blue">
+                                        <td>&nbsp;&nbsp;<i class="icon-list"></i> Booth No</td>
+                                        <th class="numeric">NID</th>
+                                        <th class="numeric">Name</th>
+                                        <th class="numeric">Mobile</th>
+                                        <th class="numeric">Village</th>
+                                        <th class="numeric">Vote Center</th>
+                                        <th class="numeric">Ward</th>
+                                        <th class="numeric">Union/Pourasava</th>
+                                        <th class="numeric">Thana/Upazila</th>
+                                        <th class="numeric" >Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="memberCommittees">
+                                    {% for committe in entity.centerMembers %}
+                                        {% if committe.personType == 'agent' %}
+                                        <tr id="remove-{{ committe.id }}">
+                                            <td class="numeric">{{ committe.boothNo }}</td>
+                                            <td class="numeric">{{ committe.member.nid }}</td>
+                                            <td class="numeric">{{ committe.member.name }}</td>
+                                            <td class="numeric"><a href="tel:+88 {% if  committe.agentMobile is empty %} {{ committe.member.mobile }}{% else %}{{ committe.agentMobile }}{% endif %}">{% if  committe.agentMobile is empty %} {{ committe.member.mobile }}{% else %}{{ committe.agentMobile }}{% endif %}</a></td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.name }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.voteCenter.name }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.wardName }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.unionName }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.thanaName }}{% endif %}</td>
+                                            <td>
+                                                <a data-id="{{ committe.id }}" class="btn mini delete red" href="javascript:" data-url="{{ path('election_votecenter_member_delete', { 'id': committe.id }) }}" >&nbsp;<i class="icon-trash"></i> </a>
+                                                {% if committe.isMaster == 1 %}
+                                                    <a class="btn mini blue" href="javascript:" >&nbsp;<i class="icon-user"></i> Lead</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
+                            <div class="clearfix"><br/></div>
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Select Agent Member</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.member) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span2">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Agent Mobile</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.agentMobile) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span1">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Is Lead</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.isMaster) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <label class="control-label" for="firstName">Booth No</label>
+                                    <div class="input-append span12" style="margin-bottom:0!important">
+                                        <div class="input-group">
+                                            {{ form_widget(form.boothNo) }}
+                                            <button type="submit" class="btn blue" id="addRoom" ><i class="icon-save"></i> Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <div class="clearfix"><br/></div>
+                            <div class="form-actions portlet box yellow">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Add Center Pooling Officer</div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="portlet-body flip-scroll">
+                                <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                    <thead class="flip-content ">
+                                    <tr class="head-blue">
+                                        <td>&nbsp;&nbsp;<i class="icon-list"></i> Booth No</td>
+                                        <th class="numeric">Pooling Officer</th>
+                                        <th class="numeric">Mobile</th>
+                                        <th class="numeric" >Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="memberPoolings">
+                                    {% for committe in entity.centerMembers %}
+                                        {% if committe.personType == 'pooling' %}
+                                            <tr id="remove-{{ committe.id }}">
+                                                <td class="numeric">{{ committe.boothNo }}</td>
+                                                <td class="numeric">{{ committe.poolingOfficer }}</td>
+                                                <td class="numeric">{{ committe.poolingMobile }}</td>
+                                                 <td><a data-id="{{ committe.id }}" class="btn mini delete red" href="javascript:" data-url="{{ path('election_votecenter_member_delete', { 'id': committe.id }) }}" >&nbsp;<i class="icon-trash"></i> </a></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
+                            {{ form_start(pooling) }}
+                            {{ form_row(pooling._token) }}
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Pooling Name</label>
+                                        <div class="controls">
+                                            {{ form_widget(pooling.poolingOfficer) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span2">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Pooling Mobile</label>
+                                        <div class="controls">
+                                            {{ form_widget(pooling.poolingMobile) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <label class="control-label" for="firstName">Booth No</label>
+                                    <div class="input-append span12" style="margin-bottom:0!important">
+                                        <div class="input-group">
+                                            {{ form_widget(pooling.boothNo) }}
+                                            <button type="submit" class="btn blue" id="addRoom" ><i class="icon-save"></i> Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(pooling) }}
+                            <div class="clearfix"><br/></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+
+

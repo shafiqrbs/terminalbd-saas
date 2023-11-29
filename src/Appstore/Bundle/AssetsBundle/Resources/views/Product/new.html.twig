@@ -1,0 +1,103 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN itembrand HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="itembrand-title">
+                    Depreciation Model Components
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assets_model') }}">Depreciation Model</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Depreciation Model Form</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END itembrand HEADER-->
+        <!-- BEGIN itembrand CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Depreciation Model Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('assets_model') }}"><i class="icon-th-list"></i>&nbsp;Depreciation Model</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+
+                            <div class="row-fluid">
+
+                                <div class="span3">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Salvage Value</label>
+                                        <div class="controls">
+                                            <div class="input-icon left">
+                                                <i class="icon-font"></i>
+                                                {{ form_widget(form.salvageValue) }}
+                                                {{ form_errors(form.salvageValue) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Depreciation Model</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.depreciation) }}
+                                            {{ form_errors(form.depreciation) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Depreciation Status</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.depreciationStatus) }}
+                                            {{ form_errors(form.depreciationStatus) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <!--/span-->
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <!-- END FORM-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

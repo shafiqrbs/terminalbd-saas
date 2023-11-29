@@ -1,0 +1,17 @@
+dms_treatment_accessories:
+    path:     /
+    defaults: { _controller: "DmsBundle:TreatmentAccessories:index" }
+
+dms_treatment_accessories_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:TreatmentAccessories:create" }
+    methods:  POST
+
+dms_treatment_accessories_delete:
+    path:     /{id}/treatment-accessories-delete
+    defaults: { _controller: "DmsBundle:TreatmentAccessories:deleteAccessories" }
+
+dms_treatment_accessories_approved:
+    path:     /{id}/treatment-accessories-approved
+    defaults: { _controller: "DmsBundle:TreatmentAccessories:approvedAccessories" }
+

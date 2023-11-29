@@ -1,0 +1,69 @@
+election_event:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Event:index" }
+
+election_event_search:
+    path:     /search
+    defaults: { _controller: "ElectionBundle:Event:autoSearch" }
+    options:
+            expose: true
+
+election_event_name:
+    path:      /{particular}/particular-name
+    defaults: { _controller: "ElectionBundle:Event:searchEventName" }
+    options:
+            expose: true
+
+election_event_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Event:create" }
+    methods:  POST
+
+election_event_show:
+    path:     /{id}/show
+    defaults: { _controller: "ElectionBundle:Event:show" }
+
+election_event_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:Event:edit" }
+
+election_event_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:Event:update" }
+    methods:  [POST, PUT]
+
+election_event_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:Event:status" }
+
+election_event_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Event:delete" }
+
+election_event_member_new:
+    path:     /{id}/member-new
+    defaults: { _controller: "ElectionBundle:Event:newMember" }
+    options:
+            expose: true
+
+election_event_member_create:
+    path:     /{id}/member-create
+    defaults: { _controller: "ElectionBundle:Event:createMember" }
+    methods:  POST
+    options:
+            expose: true
+
+
+election_event_member_delete:
+    path:     /{id}/member-delete
+    defaults: { _controller: "ElectionBundle:Event:memberDelete" }
+
+
+election_event_list_print:
+    path:     /list-print
+    defaults: { _controller: "ElectionBundle:Event:listPrint" }
+
+election_event_print:
+    path:     /{id}/print
+    defaults: { _controller: "ElectionBundle:Event:print" }
+

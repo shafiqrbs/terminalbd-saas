@@ -1,0 +1,14 @@
+election_config_manage:
+    path:     /manage
+    defaults: { _controller: "ElectionBundle:Config:manage" }
+
+election_config_update:
+    path:     /update
+    defaults: { _controller: "ElectionBundle:Config:update" }
+    methods:  [POST, PUT]
+
+election_restore_master:
+    path:     /restore-master-data
+    defaults: { _controller: "ElectionBundle:Config:restoreMasterParticular" }
+
+

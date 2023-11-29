@@ -1,0 +1,54 @@
+education_stock:
+    path:     /
+    defaults: { _controller: "EducationBundle:Stock:index" }
+
+education_stock_new:
+    path:     /new
+    defaults: { _controller: "EducationBundle:Stock:new" }
+
+education_stock_create:
+    path:     /create
+    defaults: { _controller: "EducationBundle:Stock:create" }
+    methods:  POST
+
+education_stock_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EducationBundle:Stock:edit" }
+
+education_stock_update:
+    path:     /{id}/update
+    defaults: { _controller: "EducationBundle:Stock:update" }
+    methods:  [POST, PUT]
+
+education_stock_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EducationBundle:Stock:delete" }
+
+education_stock_transfer:
+    path:     /{id}/transfer
+    defaults: { _controller: "EducationBundle:Stock:transfer" }
+
+education_stock_status:
+    path:     /{id}/status
+    defaults: { _controller: "EducationBundle:Stock:status" }
+
+education_stock_inline:
+    path:     /inline-update
+    defaults: { _controller: "EducationBundle:Stock:inlineUpdate" }
+
+education_stock_production:
+    path:     /{id}/production
+    defaults: { _controller: "EducationBundle:Stock:production" }
+
+
+education_stock_search:
+    path:     /search
+    defaults: { _controller: "EducationBundle:Stock:autoSearch" }
+    options:
+            expose: true
+
+education_stock_name_search:
+    path:     /{stock}/search-name
+    defaults: { _controller: "EducationBundle:Stock:searchName" }
+    options:
+            expose: true

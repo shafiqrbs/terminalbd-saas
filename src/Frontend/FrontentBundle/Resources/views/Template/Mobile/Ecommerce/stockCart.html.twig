@@ -1,0 +1,48 @@
+{% for product in cart.contents %}
+    <dl class="entity-list" id="item-remove-{{ product.rowid }}">
+        <dt>
+            {% if product.productImg is not empty %}
+                <img src="{{ image(product.productImg).scaleResize(80,80) }}" alt=""/>
+            {% else %}
+                <img style="height: 80px; width: 80px" src="{{ asset('assets/img/product-icon.png') }}">
+            {% endif %}
+            <span class="dd-span-name">
+                            {{ product.name }}
+                <br/>  ৳ {{ product.price }} {% if product.productUnit is not empty %}/ {{ product.productUnit }} {% endif %}</span>
+            <span class="dd-span-remove">
+                             <button id="{{ product.rowid }}"
+                                     data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_remove',{'cartid':product.rowid}) }}"
+                                     class="btn btn-transparent btn-sm hunger-remove-cart">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                        </span>
+        </dt>
+
+        <dd>
+            <div class="col-xs-6 col-md-6">
+                <div class="input-group cart-input-group" >
+                                                                              <span class="input-group-btn input-group-btn-custom">
+                                                                                  <button type="button" class="btn btn-sm btn-transparent btn-number-cart"
+                                                                                          data-type="minus" data-field="quantity" data-id="{{ product.rowid }}"
+                                                                                          id="btn-left-{{ product.rowid }}"
+                                                                                          data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_update',{'cartid': product.rowid}) }}" data-text="{{ product.id }}" data-title="{{ product.price }}">  <span class="fa fa-minus"></span>
+                                                                                  </button>
+                                                                              </span>
+                    <input  type="text" readonly="readonly" name="quantity" id="quantity-{{ product.rowid }}"  class="btn-number-cart cart-quantity" value="{{ product.quantity }}" min="1" max="100" >
+                    <span class="input-group-btn">
+                                            <button type="button" class="btn btn-transparent btn-sm btn-number-cart"
+                                                    data-type="plus" data-field="quantity"
+                                                    data-id="{{ product.rowid }}"
+                                                    data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_update',{'cartid': product.rowid}) }}"
+                                                    data-text="{{ product.id }}" data-title="{{ product.price }}">
+                                                              <span class="fa fa-plus"></span>
+                                                      </button>
+                      </span>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-6 text-right">
+                {{ globalOption.ecommerceConfig.currency }} <strong id="btn-total-{{ product.rowid }}">{{ product.price * product.quantity }}</strong>
+            </div>
+        </dd>
+    </dl>
+{% endfor %}

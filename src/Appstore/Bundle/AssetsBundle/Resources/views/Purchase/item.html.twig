@@ -1,0 +1,33 @@
+{% if entity.PurchaseItems is not empty %}
+    {% for item in entity.PurchaseItems %}
+        <tr id="remove-{{ item.id }}">
+            <td>{{ loop.index }}</td>
+            <td >{{ item.barcode }}</td>
+            <td >{{ item.item.name }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.subTotal|number_format }}</td>
+            <td>{{ (item.subTotal + item.totalTaxIncidence - item.rebate)|number_format }}</td>
+            <td><a id="{{ item.id }}" data-url="{{ path('assets_purchase_particular_delete',{'invoice': entity.id ,'id': item.id }) }}" href="javascript:" class="btn red mini item-delete" ><i class="icon-trash"></i></a></td>
+        </tr>
+    {% endfor %}
+{% endif %}
+<tr>
+    <td colspan="15" class="span12" style="border: 1px double #000"></td>
+</tr>
+<tr>
+    <td colspan="7" class="span9"><span class="pull-right"><strong>Sub-Total TK.</strong> =</span></td>
+    <td class="span2"><strong class="subTotal">{{ entity.subTotal|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>
+<tr>
+    <td colspan="7" class="span9"><span class="pull-right"><strong>Discount TK.</strong> =</span></td>
+    <td class="span2"><strong class="discount">{{ entity.discount|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>
+<tr>
+    <td colspan="7" class="span9"><span class="pull-right"><strong>Grand Total TK.</strong> =</span></td>
+    <td class="span2"><strong class="netTotal">{{ entity.netTotal|number_format }}</strong></td>
+    <td class="span1"></td>
+</tr>

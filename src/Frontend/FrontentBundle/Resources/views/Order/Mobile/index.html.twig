@@ -1,0 +1,87 @@
+{% extends ':frontend/template/mobile:ecommerce-base.html.twig' %}
+{% block body %}
+    <div class="container-section">
+        <div class="container" id="product-section">
+            {% render controller("FrontendBundle:EcommerceWidget:sidebarTemplateProductFilter",{'globalOption':globalOption.id,'searchForm':searchForm}) %}
+            <div class="row" id="showCartItem"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-xs-12 col-md-12 col-sm-12 title-head" >ORDERS</div>
+        <div class="clearfix"></div>
+        <div>
+                {% for entity in entities %}
+                    <div class="order-list">
+                        <div class="col-xs-3 col-md-3 col-sm-3">
+                            <ul class="unstyled" >
+                                <li>Invoice</li>
+                                <li>Created</li>
+                                <li>Amount</li>
+                                <li>Delivery</li>
+                                <li><strong>Process</strong></li>
+                                <li>Courier</li>
+                                <li>Tracking no</li>
+                                <li></li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-6 col-md-6 col-sm-6">
+                            <ul class="unstyled" >
+                                <li>{{ entity.invoice }}</li>
+                                <li>{{ entity.created|date('d-m-Y') }}</li>
+                                <li><span class="order-price">{{ entity.total|number_format(2) }}</span></li>
+                                <li>{{ entity.deliveryDate|date('d-m-Y') }}</li>
+                                <li>{{ entity.process|capitalize }}</li>
+                                <li>{% if entity.courier is not empty %}{{ entity.courier.name }}{% endif %}</li>
+                                <li>{% if entity.courier is not empty %}{{ entity.trackingNo }}{% endif %}</li>
+                                <li>{% if entity.path is not empty %}<a href="{{ path(globalOption.subDomain ~ '_webservice_buyer_order_download',{'invoice':entity.invoice}) }}" > <i class="fa fa-download"></i> <strong>Download</strong></a>{% endif %}</li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-3 col-md-3 col-sm-3">
+                            {% set preCondition = {'wfc': 'wfc' ,'confirm':'confirm'} %}
+                            {% set postCondition = {'delivered': 'delivered' ,'confirm':'confirm'} %}
+                            <a href="{{ path(globalOption.subDomain ~'_webservice_buyer_oder_details', { 'invoice': entity.invoice }) }}" class="btn btn-success btn-sm col-md-12 col-xs-12 col-sm-12" >View</a>
+                            <a href="{{ path('order_print_invoice', {'shop':entity.globalOption.slug, 'invoice': entity.invoice }) }} " target="_blank" class="btn btn-warning btn-sm col-md-12 col-xs-12 col-sm-12" >Print</a>
+                            <a href="{{ path(globalOption.subDomain ~ '_webservice_buyer_order_delete',{'invoice':entity.invoice}) }}"  class="btn btn-danger btn-sm col-md-12 col-xs-12 col-sm-12" >Remove</a>
+                            </div>
+                    </div>
+                {% endfor %}
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <style>
+        .order-list{
+            padding-top: 7px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #DDDDDD;
+            display:flex
+        }
+        .unstyled li{
+            list-style: none;
+            padding-left: 0;
+            font-size: 12px;
+        }
+        .order-price{
+            color: red;
+            font-weight: bold;
+            font-size: 13px;
+        }
+    </style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    'bundles/frontend/template/desktop/css/basket.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@FrontendBundle/Resources/public/template/desktop/js/cart.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}

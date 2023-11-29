@@ -1,0 +1,61 @@
+services:
+#    appstore_inventory.example:
+#        class: Appstore\Bundle\InventoryBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+
+    appstore.product.asset.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\ProductListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.disposal.asset.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\DisposalListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.assets.item.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\ItemListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.assets.officenote.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\OfficeNoteListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.assets.stockIssue.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\StockIssueListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.assets.receive.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\ReceiveListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.assets.purchase.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\PurchaseListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.assets.sales.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\SalesListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+
+    appstore.assets.purchase.item.event.listener:
+        class: Appstore\Bundle\AssetsBundle\EventListener\PurchaseItemListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    assest_item_stock_update_importer_excel:
+        class: Appstore\Bundle\AssetsBundle\Importer\StockImport
+        calls:
+            - [ setContainer, [ @service_container ] ]
+
+    assest_item_stock.importer.excel_data_reader:
+        class: Appstore\Bundle\AssetsBundle\Importer\StockDataReader
+        arguments: [ @phpexcel ]
+

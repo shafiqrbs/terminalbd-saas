@@ -1,0 +1,56 @@
+{% if  cart.contents is not empty %}
+    <div class="top">Recent Buy Item's <span class="pull-right" style="margin-right:10px; margin-top:-2px" ><span class="btn btn-warning "><strong class="totalItem">{{ cart.contents|length }}</strong> | <strong class="cartQuantity">{{ cart.total_items }}</strong></span></span></div>
+    <div id="cart-item-list-box">
+        {% for product in cart.contents %}
+            <div class="col-xs-12 col-md-12 list-group-item" id="item-remove-{{ product.rowid }}">
+                <div class="col-xs-3 col-md-3" data-match-height="item-product" style="display: flex;
+            align-items: center;
+            float: left!important;">  <a href="javascript:" id="{{ product.rowid }}"
+                                         data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_remove',{'cartid':product.rowid}) }}"  class="hunger-remove-cart" style="margin-right: 15px"> <span class="fa fa-remove"></span> </a>
+                    {% if product.productImg is not empty %}
+                        <img src="{{ image(product.productImg).scaleResize(80,80) }}" alt=""/>
+                    {% else %}
+                        <img style="height: 80px; width: 80px" src="{{ asset('assets/img/product-icon.png') }}">
+                    {% endif %}
+                </div>
+                <div class="col-xs-9 col-md-9" data-match-height="item-product">
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 list-group-product">
+                            <span class="cart-product-title">{{ product.name }}</span><br>
+                            {{ globalOption.ecommerceConfig.currency }} <span class="cart-price">{{ product.price }}</span> {% if product.productUnit is not empty %}/ <span class="cart-unit">{{ product.productUnit }}</span> {% endif %}
+                        </div>
+                        <div class="col-xs-3 col-md-3 list-group-product">
+                            <div class="input-group cart-input-group" >
+                                                                              <span class="input-group-btn input-group-btn-custom">
+                                                                                  <button type="button" class="btn btn-sm btn-transparent btn-number-cart"
+                                                                                          data-type="minus" data-field="quantity" data-id="{{ product.rowid }}"
+                                                                                          id="btn-left-{{ product.rowid }}"
+                                                                                          data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_update',{'cartid': product.rowid}) }}" data-text="{{ product.id }}" data-title="{{ product.price }}">  <span class="fa fa-minus"></span>
+                                                                                  </button>
+                                                                              </span>
+                                <input  type="text" readonly="readonly" name="quantity" id="quantity-{{ product.rowid }}"  class="btn-number-cart cart-quantity" value="{{ product.quantity }}" min="1" max="100" >
+                                <span class="input-group-btn">
+                                            <button type="button" class="btn btn-transparent btn-sm btn-number-cart"
+                                                    data-type="plus" data-field="quantity"
+                                                    data-id="{{ product.rowid }}"
+                                                    data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_update',{'cartid': product.rowid}) }}"
+                                                    data-text="{{ product.id }}" data-title="{{ product.price }}">
+                                                              <span class="fa fa-plus"></span>
+                                                      </button>
+                      </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-md-3 text-right  list-group-product">
+                            <div style="line-height: 30px">{{ globalOption.ecommerceConfig.currency }} <strong id="btn-total-{{ product.rowid }}" >{{ (product.price * product.quantity)|number_format(2) }}</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="bottom">
+        <span class="dd-span pull-left">SubTotal:</span>
+        <span class="dd-span pull-right"><strong>{{ globalOption.ecommerceConfig.currency }}
+                &nbsp;<span class="totalAmount">{{ cart.total|number_format(2) }}</span></strong></span>
+    </div>
+{% endif %}

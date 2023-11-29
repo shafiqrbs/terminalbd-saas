@@ -1,0 +1,16 @@
+hotel_reverse:
+    path:     /
+    defaults: { _controller: "HotelBundle:HotelReverse:index" }
+
+hotel_purchase_reverse:
+    path:     /{id}/reverse
+    defaults: { _controller: "HotelBundle:Purchase:reverse" }
+
+hotel_sales_reverse:
+    path:     /{id}/
+    defaults: { _controller: "HotelBundle:Sales:reverse" }
+
+hotel_reverse_show:
+    path:     /{id}/show
+    defaults: { _controller: "HotelBundle:HotelReverse:show" }
+

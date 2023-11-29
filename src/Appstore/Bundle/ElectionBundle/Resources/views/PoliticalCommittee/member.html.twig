@@ -1,0 +1,156 @@
+
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Election Committee
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Election Committee</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Election Committee Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('election_committee') }}"><i class="icon-th-list"></i>&nbsp; Committee</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span9">
+                                    <h4>About:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Committee Name:</strong>&nbsp;{{ entity.name }}</li>
+                                        <li><strong>Committee For:</strong>&nbsp;{{ entity.electionSetup.electionName }}</li>
+                                        <li><strong>Location:</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</li>
+                                        <li><strong>Location Type:</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.locationType.name }}{% endif %}</li>
+                                        <li><strong>Duration of committee:</strong>&nbsp;{{ entity.startDate|date('d-m-Y') }} To {{ entity.endDate|date('d-m-Y') }}</li>
+                                    </ul>
+                                </div>
+                                <div class="span3">
+                                    <h4>&nbsp;</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Created Date:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                                        <li><strong>Process Status:</strong>&nbsp;{{ entity.process }}</li>
+                                        <li><strong>Created By:</strong>&nbsp;{{ entity.createdBy }}</li>
+                                        <li><strong>Approved By:</strong>&nbsp;{% if entity.approvedBy is not empty %}{{ entity.approvedBy }}{% endif %}</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="portlet-body flip-scroll">
+                                <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                    <thead class="flip-content ">
+                                    <tr class="head-blue">
+                                        <td>&nbsp;&nbsp;<i class="icon-list"></i></td>
+                                        <th class="numeric">Id</th>
+                                        <th class="numeric">Name</th>
+                                        <th class="numeric">Designation</th>
+                                        <th class="numeric">Mobile</th>
+                                        <th class="numeric">Village</th>
+                                        <th class="numeric">Vote Center</th>
+                                        <th class="numeric">Ward</th>
+                                        <th class="numeric">Union/Pourasava</th>
+                                        <th class="numeric">Thana/Upazila</th>
+                                        <th class="numeric" >Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="memberCommittees">
+                                    {% for committe in entity.members %}
+                                        <tr id="remove-{{ committe.id }}">
+                                            <td class="numeric">{{ loop.index }}.</td>
+                                            <td class="numeric">{{ committe.member.memberId }}</td>
+                                            <td class="numeric">{{ committe.member.name }}</td>
+                                            <td class="numeric">{{ committe.designation.name }}</td>
+                                            <td class="numeric"><a href="tel:+88 {{ committe.member.mobile }}"> {{ committe.member.mobile }}</a></td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.name }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.voteCenter is not empty %}{{ committe.member.voteCenter.name }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.wardName }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.unionName }}{% endif %}</td>
+                                            <td class="numeric">{% if committe.member.location is not empty %}{{ committe.member.location.thanaName }}{% endif %}</td>
+                                            <td><a data-id="{{ committe.id }}" class="btn mini delete red" href="javascript:" data-url="{{ path('election_committee_member_delete', { 'id': committe.id }) }}" >&nbsp;<i class="icon-trash"></i> </a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="form-actions portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption"><i class="icon-reorder"></i>Add Committee Member</div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid">
+                                <div class="span8">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Select Member</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.member) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <label class="control-label" for="firstName">&nbsp;</label>
+                                    <div class="input-append span12" style="margin-bottom:0!important">
+                                        <div class="input-group">
+                                            {{ form_widget(form.designation) }}
+                                            <button type="submit" class="btn blue" id="addRoom" ><i class="icon-save"></i> Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <div class="clearfix"><br/></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+
+

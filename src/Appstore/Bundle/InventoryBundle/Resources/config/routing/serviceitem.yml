@@ -1,0 +1,72 @@
+inventory_serviceitem:
+    path:     /
+    defaults: { _controller: "InventoryBundle:ServiceItem:index" }
+
+inventory_serviceitem_show:
+    path:     /{id}/show
+    defaults: { _controller: "InventoryBundle:ServiceItem:show" }
+
+inventory_serviceitem_new:
+    path:     /new
+    defaults: { _controller: "InventoryBundle:ServiceItem:new" }
+
+inventory_serviceitem_create:
+    path:      /create
+    defaults: { _controller: "InventoryBundle:ServiceItem:create" }
+    methods:  POST
+    options:
+            expose: true
+
+inventory_serviceitem_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "InventoryBundle:ServiceItem:edit" }
+
+inventory_serviceitem_update:
+    path:     /{id}/update
+    defaults: { _controller: "InventoryBundle:ServiceItem:update" }
+    methods:  [POST, PUT]
+
+inventory_serviceitem_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "InventoryBundle:ServiceItem:delete" }
+
+inventory_vendoritem_status:
+    path:     /{id}/web-status
+    defaults: { _controller: "InventoryBundle:ServiceItem:webStatus" }
+
+inventory_serviceitem_copy:
+    path:     /{id}/item-copy
+    defaults: { _controller: "InventoryBundle:ServiceItem:itemCopy" }
+
+inventory_product_inline_discount_search:
+    path:     /inline-discount-search
+    defaults: { _controller: "InventoryBundle:ServiceItem:discountSelect" }
+    options:
+           expose: true
+
+inventory_product_inline_tag_search:
+    path:     /inline-tag-search
+    defaults: { _controller: "InventoryBundle:ServiceItem:tagSelect" }
+    options:
+           expose: true
+
+inventory_serviceitem_inline_update:
+    path:     /inline-goods-update
+    defaults: { _controller: "InventoryBundle:ServiceItem:inlineItemUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+inventory_vendoritem_gallery:
+    path:     /{item}/upload
+    defaults: { _controller: "InventoryBundle:ServiceItem:uploadItemImage" }
+    options:
+           expose: true
+
+inventory_serviceitem_subItem_delete:
+    path:     /{id}/sub-item-delete
+    defaults: { _controller: "InventoryBundle:ServiceItem:subItemDelete" }
+
+inventory_serviceitem_itemkeyvalue_delete:
+    path:     /{id}/item-key-value-delete
+    defaults: { _controller: "InventoryBundle:ServiceItem:keyValueDelete" }

@@ -1,0 +1,10 @@
+hotel_config_manage:
+    path:     /manage
+    defaults: { _controller: "HotelBundle:HotelConfig:manage" }
+
+
+hotel_config_update:
+    path:     /update
+    defaults: { _controller: "HotelBundle:HotelConfig:update" }
+    methods:  [POST, PUT]
+

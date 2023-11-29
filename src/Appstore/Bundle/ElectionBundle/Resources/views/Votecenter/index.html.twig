@@ -1,0 +1,157 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Manage Vote Center
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Manage Vote Center</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i> Vote Center Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('election_votecenter_new') }}"><i class="icon-plus-sign"></i>&nbsp;Create</a>
+                                {% set thana = searchForm.thana is defined ? searchForm.thana :'' %}
+                                {% set union = searchForm.union is defined ? searchForm.union :'' %}
+                                {% set voteCenter = searchForm.voteCenter is defined ? searchForm.voteCenter :'' %}
+                                {% set keyword = searchForm.keyword is defined ? searchForm.keyword :'' %}
+                                <a class="btn yellow" href="{{ path('election_votecenter_list_print',{'thana':thana,'union':union,'voteCenter':voteCenter,'keyword':keyword}) }}"><i class="icon-print"></i>&nbsp;Print</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        {% include('flash-message.html.twig')  %}
+                        <!-- BEGIN FORM-->
+
+                        <div class="clearfix"><br/></div>
+                        <div class="portlet-body flip-scroll">
+                            <form class="search-form" action="" method="get" name="itemSearch">
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        <input type="text" id="thana" name="thana"  class="span12 m-wrap select2Thana" value="{% if searchForm.thana is defined %}{{ searchForm.thana }}{% endif %}"  autocomplete="off" placeholder="Search Thana/Upazila name">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="union" name="union"  class="span12 m-wrap select2Union" value="{% if searchForm.union is defined %}{{ searchForm.union }}{% endif %}"  autocomplete="off" placeholder="Search Union/Purashava name">
+                                    </div>
+                                    <div class="span3">
+                                        <input type="text" id="voteCenter" name="voteCenter"  class="span12 m-wrap select2VoteCenter" value="{% if searchForm.voteCenter is defined %}{{ searchForm.voteCenter }}{% endif %}"  autocomplete="off" placeholder="Search Vote Center">
+                                    </div>
+                                    <div class="span3">
+                                        <div class="controls">
+                                            <div class="input-append span10">
+                                                <input type="text" id="keyword" name="keyword"  class="m-wrap span12 search-input" value="{% if searchForm.name is defined %}{{ searchForm.name }}{% endif %}"  autocomplete="off" placeholder="{% if searchForm.keyword is defined %}{{ searchForm.keyword }}{% else %}Enter any keywords{% endif %} ">
+                                                <div class="btn-group">
+                                                    <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="clearfix"><br/></div>
+                            </form>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    {%  set sort = app.request.query.get('sort') %}
+                                    {%  set direction = app.request.query.get('direction') %}
+                                    <th class="numeric" >Created</th>
+                                    <th {% if entities.isSorted('e.voteCenterName') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Vote Center', 'e.voteCenterName') }}{% if( direction == 'desc' and sort == 'e.voteCenterName') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.memberUnion') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Union/Pourasava', 'e.memberUnion') }}{% if( direction == 'desc' and sort == 'e.memberUnion') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.thana') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Thana/Upazila', 'e.thana') }}{% if( direction == 'desc' and sort == 'e.thana') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >Election</th>
+                                    <th class="numeric" >Total Voter</th>
+                                    <th class="numeric" >Representative</th>
+                                    <th class="numeric" >Mobile</th>
+                                    <th class="numeric" >Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="numeric" >{{ entity.created|date('d-m-Y') }}</td>
+                                        <td class="numeric" >{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.memberUnion }}</td>
+                                        <td class="numeric" >{{ entity.thana }}</td>
+                                        <td class="numeric" >{% if entity.electionSetup is not empty %}{{ entity.electionSetup.electionName }}{% endif %}</td>
+                                        <td class="numeric" >{{ entity.totalVoter }}</td>
+                                        <td class="numeric" >{% if entity.representative is not empty %}{{ entity.representative.name }}{% endif %}</td>
+                                        <td class="numeric" >{% if entity.representative is not empty %}{{ entity.representative.mobile }}{% endif %}</td>
+                                        <td class="numeric" >
+                                            <div class="btn-group">
+                                            {% if( entity.status == 1) %}
+                                                <a href="{{ path('election_votecenter_status', { 'id': entity.id}) }}" class="btn yellow mini"><i class="icon-ok"></i></a>
+                                            {% else %}
+                                                <a  href="{{ path('election_votecenter_status', { 'id': entity.id}) }}" class="btn yellow mini" >x</a>
+                                            {% endif %}
+                                            <a href="{{ path('election_votecenter_edit', { 'id': entity.id }) }}" class="btn green mini" ><i class="icon-edit"></i></a>
+                                            <a title="Are you sure went to delete ?" href="{{ path('election_votecenter_delete', { 'id': entity.id }) }}" class="btn red mini" ><i class="icon-trash"></i></a>
+                                            <a class="btn mini yellow" href="{{ path('election_votecenter_member_new', { 'id': entity.id }) }}" ><i class="icon-plus"></i> Member</a>
+                                            <a data-title="{{ entity.location.name }}" class="btn mini view blue" href="javascript:" data-url="{{ path('election_votecenter_show', { 'id': entity.id }) }}" >&nbsp;<i class="icon-eye-open"></i> </a>
+                                                <a data-title="{{ entity.location.name }}" id="" class="btn mini sms purple" href="javascript:" data-url="{{ path('election_votecenter_sms', { 'id': entity.id }) }}" >SMS</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/style.css'
+    '@ElectionBundle/Resources/public/css/messagebox.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@ElectionBundle/Resources/public/js/election.js'
+    '@ElectionBundle/Resources/public/js/messagebox.js'
+    '@ElectionBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+
+
+

@@ -1,0 +1,181 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                   Manage Treatment Accessories
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">View Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Manage Treatment Accessories</div>
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body flip-scroll">
+                            {% include('flash-message.html.twig')  %}
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+                            <div class="row-fluid">
+                                <!--/span-->
+                                <div class="span9">
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">Accessories<span class="required">*</span></label>
+                                        <div class="controls">
+                                            {{ form_widget(form.dmsParticular) }}
+                                            {{ form_errors(form.dmsParticular) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="control-group">
+                                        <label class="control-label" for="name">Quantity<span class="required">*</span></label>
+                                        <div class="controls">
+                                            {{ form_widget(form.quantity) }}
+                                            {{ form_errors(form.quantity) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <div class="clearfix">&nbsp;</div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    <th class="numeric">Created</th>
+                                    <th class="numeric">Code</th>
+                                    <th class="numeric">Accessories</th>
+                                    <th class="numeric">Quantity</th>
+                                    <th class="numeric">Price</th>
+                                    <th class="numeric">Sub-Total</th>
+                                    <th class="numeric">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for entity in entities %}
+                                    <tr id="accessories-{{ entity.id }}">
+                                        <td class="numeric">{{ entity.updated|date('d-m-Y') }}</td>
+                                        <td class="numeric">{{ entity.dmsParticular.particularCode }}</td>
+                                        <td class="numeric">{{ entity.dmsParticular.name }}</td>
+                                        <td class="numeric">{{ entity.quantity }}</td>
+                                        <td class="numeric">{{ entity.price }}</td>
+                                        <td class="numeric">{{ entity.subTotal }}</td>
+                                        <td class="numeric" id="approved-{{ entity.id }}">
+                                            {% if entity.status is empty %}
+                                                <a href="javascript:" data-id="{{ entity.id }}" class="btn blue mini approveAccessories" data-url="{{ path('dms_invoice_accessories_approved',{'id':entity.id}) }}">Approve</a>
+                                                <a  href="javascript:"  data-url="{{ path('dms_invoice_accessories_delete',{'id':entity.id}) }}" data-id="{{ entity.id }}" id="{{ entity.id }}"  class="btn red mini deleteAccessories"> <i class="icon-trash"></i></a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center" >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@DmsBundle/Resources/public/js/approveProcess.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+
+    $(document).on('click', '#addAccessories', function() {
+
+    var accessories = $('#accessories').val();
+    if (accessories == '') {
+    $('#accessories').focus();
+    $('#accessories').addClass('input-error');
+    alert('Please select accessories name');
+    return false;
+    }
+    var quantity = parseInt($('#quantity').val());
+    var url = $(this).attr('data-url');
+    $.ajax({
+    url: url,
+    type: 'POST',
+    data: 'accessories='+accessories+'&quantity='+quantity,
+    success: function (response) {
+    $("#accessories").select2().select2("val","");
+    $('#quantity').val('1');
+    $('#invoiceAccessories').html(response);
+    $(".editable").editable();
+
+    }
+    })
+    });
+
+    $(document).on("click", ".deleteAccessories", function() {
+
+    var id = $(this).attr("data-id");
+    var url = $(this).attr("data-url");
+    $('#confirm-content').confirmModal({
+    topOffset: 0,
+    top: '25%',
+    onOkBut: function(event, el) {
+    $.get(url, function( data ) {
+    $('#accessories-'+id).hide();
+    });
+    }
+    });
+    });
+
+    $(document).on("click", ".approveAccessories", function() {
+
+    var id = $(this).attr("data-id");
+    var url = $(this).attr("data-url");
+    $('#confirm-content').confirmModal({
+    topOffset: 0,
+    top: '25%',
+    onOkBut: function(event, el) {
+    $.get(url, function( data ) {
+    $('#approved-'+id).hide();
+    });
+    }
+    });
+    });
+
+
+{% endblock %}
+

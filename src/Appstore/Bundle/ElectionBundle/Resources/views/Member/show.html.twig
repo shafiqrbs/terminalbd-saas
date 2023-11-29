@@ -1,0 +1,196 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN purchase_order HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="purchase_order-title">
+                    Customer : {{ entity.name }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('inventory_customer') }}">Sales</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Add/Edit sales</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>c
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN purchase_order CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Sales Details</div>
+
+                        <div class="actions">
+                            <div class="btn-group">
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="portlet-body">
+                        <div class="portlet-body form">
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <h4>About:</h4>
+                                    <ul class="unstyled">
+                                        {% if entity is not empty %}<li><strong>ID:</strong>&nbsp;{{ entity.memberId }}</li>{% endif %}
+                                        {% if entity is not empty %}<li><strong>Name #:</strong>&nbsp;{{ entity.name }}</li>{% endif %}
+                                        {% if entity is not empty %}<li><strong>Mobile #:</strong>&nbsp;<a href="tel:+88 {{ entity.mobile }}"> {{ entity.mobile }}</a></li>{% endif %}
+                                        {% if entity is not empty %}<li><strong>Gender:</strong>&nbsp;{{ entity.gender }}, &nbsp; <strong>Age</strong> {{ entity.age }} yrs.</li>{% endif %}
+                                        {% if entity is not empty %}<li><strong>Father Name</strong>&nbsp;{{ entity.fatherName }}</li>{% endif %}
+                                        {% if entity is not empty %}<li><strong>Mother Name:</strong>&nbsp;{{ entity.motherName }}</li>{% endif %}
+                                    </ul>
+                                </div>
+
+                                <div class="span3 invoice-payment">
+                                    <h4>Political:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Reference Member:</strong>&nbsp;{% if entity.referenceMember is not empty %}{{ entity.referenceMember.name }}{% endif %}</li>
+                                        <li><strong>Family Political Status:</strong>&nbsp;{% if entity.politicalStatus is not empty %}{{ entity.politicalStatus.name }}{% endif %}</li>
+                                        <li><strong>Previous Political Party:</strong>&nbsp;{% if entity.oldPoliticalParty is not empty %}{{ entity.oldPoliticalParty.name }}{% endif %}</li>
+                                        <li><strong>Political Designation:</strong>&nbsp;{% if entity.politicalDesignation is not empty %}{{ entity.politicalDesignation.name }}{% endif %}</li>
+                                        <li><strong>Profession:</strong>&nbsp;{% if entity.profession is not empty %}{{ entity.profession.name }}{% endif %}</li>
+                                        <li><strong>Education:</strong>&nbsp;{% if entity.education is not empty %}{{ entity.education.name }}{% endif %}</li>
+                                    </ul>
+                                </div>
+                                <div class="span3">
+                                    <h4>Location Information:</h4>
+                                    <ul class="unstyled">
+                                        <li><strong>Parliament Seat :</strong>&nbsp;{% if entity.electionConfig.parliament is not empty %}{{ entity.electionConfig.parliament.name }}{% endif %}</li>
+                                        <li><strong>Village/Unit :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</li>
+                                        <li><strong>Vote Center :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.voteCenter.name }}{% endif %}</li>
+                                        <li><strong>Ward :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.wardName }}{% endif %}</li>
+                                        <li><strong>Union :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.unionName }}{% endif %}</li>
+                                        <li><strong>Thana/Upazila :</strong>&nbsp;{% if entity.location is not empty %}{{ entity.location.thanaName }}{% endif %}</li>
+                                        <li><strong>District :</strong>&nbsp;{% if entity.electionConfig.district is not empty %}{{ entity.electionConfig.district.name }}{% endif %}</li>
+                                    </ul>
+                                </div>
+                                <div class="span3">
+                                    {% if entity.webPath is not empty %}
+                                        <img src="{{ image(entity.webPath).resize(500,500, 'white') }}"/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% include('flash-message.html.twig')  %}
+                            {% if entity.familyMember is not empty %}
+                                <tr id="show-{{ entity.id }}" class="showing-overview">
+                                    <td colspan="7">
+                                        <table class="table table-bordered table-striped table-condensed flip-content ">
+                                            <thead class="flip-content ">
+                                            <tr class="head-green">
+                                                <td>&nbsp;&nbsp;<i class="icon-list"></i></td>
+                                                <th class="numeric" >Invoice</th>
+                                                <th class="numeric" >Date</th>
+                                                <th class="numeric" >Sub-Total</th>
+                                                <th class="numeric" >Net Total</th>
+                                                <th class="numeric" >Payment</th>
+                                                <th class="numeric" >Due</th>
+                                                <th class="numeric" >Sales By</th>
+                                                <th class="numeric" >Process & Courier</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="sales">
+                                            {% for family in entity.familyMember %}
+                                                <tr id="salesRemove-{{ entity.id }}">
+                                                    <td> {% if sales.salesItems is defined and  sales.salesItems is not empty  %}<span class="badge badge-success toggle badge-custom" id="{{ sales.id  }}" ><span>[+]</span></span>{% endif %}</td>
+                                                    <td class="numeric" >{{ sales.invoice }}</td>
+                                                    <td class="numeric" >{{ sales.updated|date('d-m-Y') }}</td>
+                                                    <td class="numeric" >{{ sales.subTotal|number_format  }}</td>
+                                                    <th class="numeric" >{{ sales.total|number_format  }}</th>
+                                                    <th class="numeric" >{{ sales.payment|number_format }}</th>
+                                                    <td class="numeric" >{{ sales.due|number_format }}</td>
+                                                    <td class="numeric" >{% if sales.salesBy %}{{ sales.salesBy.profile.name }}{% endif %}</td>
+                                                    <td class="numeric" >
+                                                        {% if sales.process == 'Paid' %}
+                                                            <a  class="btn mini blue">{% if sales.process is not empty %}{{ sales.process }}{% endif %}</a>
+                                                            <a class="btn mini green" >{{sales.courierInvoice}}</a>
+                                                        {% elseif sales.process == 'Return & Cancel' %}
+                                                            <a  class="btn mini red">{% if sales.process is not empty %}{{ sales.process }}{% endif %}</a>
+                                                            <a class="btn mini green" >{{sales.courierInvoice}}</a>
+                                                        {% else %}
+                                                            <a  data-type="select" class="btn mini green-stripe btn-action editable" id="process" data-name="process" href="#" data-source="{{ path('inventory_sales_inline_status_select') }}"  data-url="{{ path('inventory_sales_inline_process_update') }}" data-pk="{{ sales.id }}" data-value="{% if sales.process is not empty %}{{ sales.process }}{% endif %}" data-original-title="Enter invoice process">{% if sales.process is not empty %}{{ sales.process }}{% endif %}</a>
+                                                            <a class="btn mini green-stripe btn-action editable"  href="#"  data-url="{{ path('inventory_sales_inline_update') }}" data-type="text" data-pk="{{ sales.id }}" data-original-title="Enter courier invoice">{{sales.courierInvoice}}</a>
+                                                        {% endif %}
+                                                        <a target="_blank" class="btn mini purple" href="{{ path('inventory_customer_show', { 'id': sales.id }) }}">View</a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="show-{{ sales.id }}" class="showing-overview">
+                                                    <td colspan="9">
+                                                        {% if sales.salesItems is defined and  sales.salesItems is not empty  %}
+                                                            <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                                                                <thead class="flip-content ">
+                                                                <tr class="head-green">
+                                                                    <td>&nbsp;&nbsp;<i class="icon-reorder"></i></td>
+                                                                    <th class="numeric" >Item</th>
+                                                                    <th class="numeric" >Barcode</th>
+                                                                    <th class="numeric" >Qnt</th>
+                                                                    <th class="numeric" >Estimate price</th>
+                                                                    <th class="numeric" >Sales price</th>
+                                                                    <th class="numeric" >Sub-total</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {% for salesItem in sales.salesItems %}
+                                                                    <tr>
+                                                                        <td class="numeric" >{{ loop.index }}</td>
+                                                                        <td class="numeric" >{{ salesItem.item.name }}/{{ salesItem.item.sku }}</td>
+                                                                        <td class="numeric" >{{ salesItem.purchaseItem.barcode }}</td>
+                                                                        <td class="numeric" >{{ salesItem.quantity }}</td>
+                                                                        <td class="numeric" >{{ salesItem.estimatePrice|number_format() }}</td>
+                                                                        <td class="numeric" >{{ salesItem.salesPrice|number_format() }}</td>
+                                                                        <td class="numeric" >{{ salesItem.subTotal|number_format() }}</td>
+
+                                                                    </tr>
+                                                                {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            <div class="clearfix">&nbsp;</div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@InventoryBundle/Resources/public/js/editable.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    EditableInit();
+{% endblock %}

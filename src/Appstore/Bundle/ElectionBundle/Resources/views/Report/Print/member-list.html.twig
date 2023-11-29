@@ -1,0 +1,69 @@
+{% extends '::baseprint.html.twig' %}
+{% block body %}
+<div id="invoice">
+        <div class="toolbar hidden-print">
+            <div class="text-right">
+                <a href="{{ path('election_report_member_list') }}"  class="btn btn-success"><i class="fa fa-th-list"></i> Member List</a>
+                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+            </div>
+            <hr>
+        </div>
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <main>
+                    <div class="row contacts">
+                        <div class="span4"></div>
+                        <div class="span4 text-center">{{ config.cardText|raw }}<h2><strong>{{ config.candidateName }}</strong></h2></div>
+                        <div class="span4"></div>
+                    </div>
+                    <div class="span12"><h3>Vote Center Information</h3></div>
+                    <hr/>
+                    <table class="table">
+                        <thead class="flip-content ">
+                        <tr class="head-blue">
+                            <th><i class="icon-list"></i></th>
+                            <th>NID</th>
+                            <th>Name</th>
+                            <th class="numeric">Mobile</th>
+                            <th class="numeric">Village/Unit</th>
+                            <th class="numeric">Vote Center</th>
+                            <th class="numeric">Ward</th>
+                            <th class="numeric">Union/Purashava</th>
+                            <th class="numeric">Thana/Upazila</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ loop.index }}.</td>
+                                <td>{{ entity.nid }}</td>
+                                <td>{{ entity.name }}</td>
+                                <td class="numeric"><a href="tel:+88 {{ entity.mobile }}"> {{ entity.mobile }}</a></td>
+                                <td class="numeric">{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</td>
+                                <td class="numeric">{% if entity.voteCenter is not empty %}{{ entity.voteCenter.name }}{% endif %}</td>
+                                <td class="numeric">{% if entity.location is not empty %}{{ entity.location.wardName }}{% endif %}</td>
+                                <td class="numeric">{% if entity.location is not empty %}{{ entity.location.unionName }}{% endif %}</td>
+                                <td class="numeric">{% if entity.location is not empty %}{{ entity.location.thanaName }}{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </main>
+                <footer>
+                    <span class="right">Developed by: {{ portal_design_development }}</span>
+                </footer>
+            </div>
+            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+            <div></div>
+        </div>
+    </div>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@ElectionBundle/Resources/public/css/print.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+

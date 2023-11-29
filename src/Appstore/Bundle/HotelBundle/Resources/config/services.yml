@@ -1,0 +1,21 @@
+services:
+#    appstore_dms.example:
+#        class: Appstore\Bundle\DmsBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    
+
+    appstore.hotel.particular.event.listener:
+        class: Appstore\Bundle\HotelBundle\EventListener\HotelParticularListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.hotel.invoice.event.listener:
+        class: Appstore\Bundle\HotelBundle\EventListener\HotelInvoiceListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    appstore.hotel.purchase.event.listener:
+        class: Appstore\Bundle\HotelBundle\EventListener\HotelPurchaseListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+

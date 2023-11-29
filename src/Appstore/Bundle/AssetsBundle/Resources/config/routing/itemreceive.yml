@@ -1,0 +1,68 @@
+assets_itemreceive:
+    path:     /
+    defaults: { _controller: "AssetsBundle:ReceiveItem:index" }
+
+assets_itemreceive_item:
+    path:     /item-receive-new
+    defaults: { _controller: "AssetsBundle:ReceiveItem:itemReceive" }
+
+assets_itemreceive_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:ReceiveItem:new" }
+
+assets_itemreceive_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:ReceiveItem:create" }
+    methods:  POST
+
+assets_itemreceive_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:ReceiveItem:edit" }
+
+assets_itemreceive_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:ReceiveItem:show" }
+
+
+assets_itemreceive_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:ReceiveItem:delete" }
+
+assets_itemreceive_item_delete:
+    path:     /{id}/item-delete
+    defaults: { _controller: "AssetsBundle:ReceiveItem:itemDelete" }
+
+
+assets_itemreceive_approved:
+    path:     /{id}/approved
+    defaults: { _controller: "AssetsBundle:ReceiveItem:approved" }
+
+assets_itemreceive_vat_update:
+    path:     /vat-update
+    defaults: { _controller: "AssetsBundle:ReceiveItem:invoiceVatUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+assets_itemreceive_inline_update:
+    path:     /{id}/inline-update
+    defaults: { _controller: "AssetsBundle:ReceiveItem:inlineUpdate" }
+    methods:  POST
+    options:
+            expose: true
+
+assets_itemreceive_attribute:
+    path:     /{id}/add-attrubute
+    defaults: { _controller: "AssetsBundle:ReceiveItem:attribute" }
+
+
+assets_itemreceive_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:ReceiveItem:update" }
+    methods:  [POST, PUT]
+
+assets_itemreceive_attribute_update:
+    path:     /{id}/attribute-update
+    defaults: { _controller: "AssetsBundle:ReceiveItem:updateAttribute" }
+    methods:  [POST, PUT]
+

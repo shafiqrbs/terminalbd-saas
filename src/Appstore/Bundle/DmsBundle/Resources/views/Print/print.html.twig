@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link media="all" rel="stylesheet" href="{{ asset('assets/template/desktop/css/bootstrap.min.css') }}"/>
+    {% if print == 'print' %}
+        <script type="text/javascript">
+            window.print();
+            setTimeout(function () {
+                window.open('', '_self', '');
+                window.close();
+            }, 2000);
+        </script>
+    {% endif %}
+</head>
+<div class="container" style="width:1000px; position:relative;margin-top:{{ entity.dmsConfig.printTopMargin }}px;{% if entity.dmsConfig.printLeftMargin > 0 %}margin-left:{{ entity.dmsConfig.printLeftMargin }}px;{% endif %}">
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>
+                {%  if entity.dmsConfig.isPrintHeader == 1 %}
+                    <table class="table">
+                        <tr>
+                            <td  class="col-md-8" style="width:{{ entity.dmsConfig.headerLeftWidth }}!important;">
+                                <div class="row">
+                                    <div class="col-md-12" >
+                                        {%  if entity.dmsConfig.invoicePrintLogo == 1 %}
+                                            {% if entity.dmsConfig.globalOption.templateCustomize.webPath('logo') is not empty %}   <img id="logo" src="/{{ entity.dmsConfig.globalOption.templateCustomize.webPath('logo') }}">{% endif %}
+                                        {%  endif %}
+                                        <ul class="dr-list">
+                                            {% if  entity.dmsConfig.globalOption.email is not empty %}<li>{{ entity.dmsConfig.globalOption.email }}</li>{% endif %}
+                                            {% if  entity.dmsConfig.globalOption.contactPage.address1 %}<li>{{ entity.dmsConfig.globalOption.contactPage.address1 }}</li>{% endif %}
+                                            {% if entity.dmsConfig.globalOption.contactPage.location is not empty %}<li>{{ entity.dmsConfig.globalOption.contactPage.location.name }},{{ entity.dmsConfig.globalOption.contactPage.location.parent.name }}{% if entity.dmsConfig.globalOption.contactPage.postalCode is not empty %}-{{ entity.dmsConfig.globalOption.contactPage.postalCode }}{% endif %}</li>{% endif %}
+                                            <li>For Serial : +088 {{ entity.dmsConfig.globalOption.mobile }}</li>
+                                            <li>Consulting Hours: ({{ entity.dmsConfig.globalOption.contactPage.startHour }} - {{ entity.dmsConfig.globalOption.contactPage.endHour }})</li>
+                                            <li>Off Day: {% for day in entity.dmsConfig.globalOption.contactPage.weeklyOffDay %}{{ day }} {% if not loop.last %},{% endif %}{% endfor %}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                            <td  class="col-md-4" style="width:{{ entity.dmsConfig.headerRightWidth }}!important;">
+                                <div class="row">
+                                    <div class="col-md-12" >
+                                        {{ entity.assignDoctor.doctorPrescription|raw }}
+                                    </div>
+                                </div>
+                            </td>
+
+
+                        </tr>
+                    </table>
+                {% endif %}
+                <table class="table">
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="row patient-label" >
+                                <div class="col-md-12">Patient ID: {{ entity.invoice }}</div>
+                            </div>
+                        </td>
+                        <td class="col-md-4">
+                            <div class="row patient-label" >
+                                <div class="col-md-12">Name: {% if entity.customer is not empty %}{{ entity.customer.name }}{% endif %}</div>
+                            </div>
+                        </td>
+                        <td class="col-md-2 ">
+                            <div class="row patient-label" >
+                                <div class="col-md-12">Gender:{% if entity.customer is not empty %}{{ entity.customer.gender }}{% endif %}</div>
+                            </div>
+                        </td>
+                        <td class="col-md-2 ">
+                            <div class="row patient-label" >
+                                <div class="col-md-12">Age: {% if entity.customer is not empty %}{{ entity.customer.age }} {{ entity.customer.ageType }}{% endif %} </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table" style="margin-top: 15px">
+                    <tbody>
+                    <tr>
+                        <td class="col-md-4" >
+                            <div class=""  data-match-height="div-body">
+                                <div style="margin-top: {{  entity.dmsConfig.leftTopMargin }}px;width:{{  entity.dmsConfig.sidebarWidth }}!important;">
+                                    <table class="table" >
+                                        {% for service in services %}
+                                            {% if service.serviceFormat == 'teeth-format' and service.servicePosition == 1 %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ul class="check-styled">
+
+                                                            {% for invoiceParticular in entity.invoiceParticulars %}
+                                                                {% if invoiceParticular.dmsService is not empty and invoiceParticular.dmsService.slug == service.slug %}
+                                                                    <li>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td class="td-label"  {% if invoiceParticular.teethNo[0] is empty %} colspan="2" {% endif %} ><i class="fa fa-check" aria-hidden="true"></i> {{ invoiceParticular.metaValue }}</td>
+                                                                                {% if invoiceParticular.teethNo is not empty and  invoiceParticular.teethNo[0] is not empty %}
+                                                                                    <td>
+                                                                                        <table class="dms-table">
+                                                                                            {% set upperLeftTeeths = {8:8,7:7,6:6,5:5,4:4,3:3,2:2,1:1,37:'E',36:'D',35:'C',34:'B',33:'A'} %}
+                                                                                            {% set upperRightTeeths = {9:1,10:2,11:3,12:4,13:5,14:6,15:7,16:8,38:'A',39:'B',40:'C',41:'D',42:'E'} %}
+                                                                                            {% set lowerLeftTeeths = {24:8,23:7,22:6,21:5,20:4,19:3,18:2,17:1,47:'E',46:'D',45:'C',44:'B',43:'A'} %}
+                                                                                            {% set lowerRightTeeths = {25:1,26:2,27:3,28:4,29:5,30:6,31:7,32:8,48:'A',49:'B',50:'C',51:'D',52:'E'} %}
+
+                                                                                            <tr>
+                                                                                                <td class="dms-td dms-td-border-none dms-td-border-bottom">
+                                                                                                    {% for key,value in upperLeftTeeths %}
+                                                                                                        {% if key in invoiceParticular.teethNo  %}
+                                                                                                            <span>{{ value }}</span>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                </td>
+                                                                                                <td class="dms-td dms-td-border-bottom dms-td-right">
+                                                                                                    {% for key,value in upperRightTeeths %}
+                                                                                                        {% if key in invoiceParticular.teethNo  %}
+                                                                                                            <span>{{ value }}</span>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="dms-td dms-td-border-none">
+                                                                                                    {% for key,value in lowerLeftTeeths %}
+                                                                                                        {% if key in invoiceParticular.teethNo  %}
+                                                                                                            <span>{{ value }}</span>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                </td>
+                                                                                                <td class="dms-td dms-td-right">
+                                                                                                    {% for key,value in lowerRightTeeths %}
+                                                                                                        {% if key in invoiceParticular.teethNo %}
+                                                                                                            <span>{{ value }}</span>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                {% endif %}
+                                                                            </tr>
+                                                                        </table>
+                                                                    </li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'checkbox'  and service.servicePosition == 1)  %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ul class="styled">
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaCheck == particular.id  %}
+                                                                        <li>{{ particular.name }}</li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'checkbox-text-field' and service.servicePosition == 1) %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ul class="styled">
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if (invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaValue  is not empty ) or (invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaCheck == particular.id) %}
+                                                                        <li>{{ particular.name }}: {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id] is not empty %}{{ invoiceParticularArr[particular.id].metaValue|raw }}{% endif %} </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'text-field'  and service.servicePosition == 1)  %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ul class="styled">
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaValue  is not empty %}
+                                                                        <li>{{ particular.name }}: {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id] is not empty %}{{ invoiceParticularArr[particular.id].metaValue|raw }}{% endif %} </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'textarea' and service.servicePosition == 1) %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+
+                                                        <ul class="styled">
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaValue  is not empty %}
+                                                                        <li>{{ particular.name }}</li>
+                                                                        <li>{% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id] is not empty %}{{ invoiceParticularArr[particular.id].metaValue|raw }}{% endif %} </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-md-8" >
+                            <div data-match-height="div-body" >
+                                <img src="{{ asset('assets/img/customer/rx.png') }}" style="margin-top: 30px;width:44px">
+                                <div style="margin-top:{{  entity.dmsConfig.bodyTopMargin }}px; width:{{  entity.dmsConfig.bodyWidth }}!important; margin-left: 35px">
+                                    <table class="table">
+                                        {% for service in services %}
+                                            {% if service.serviceFormat == 'medicine' and service.servicePosition == 2 %}
+                                                <tr>
+                                                    <td>
+                                                        <ul class="unstyled">
+                                                            {% set date ='' %}
+                                                            {% for medicine in entity.medicineDoctorPrescribes %}
+                                                                {% if medicine.created|date('d-m-Y') != date %}
+                                                                {% set date = medicine.created|date('d-m-Y') %}
+                                                                <li class="date">Date: {{ medicine.created|date('d-m-Y') }}</li>
+                                                                {% endif %}
+                                                                <li> {{ loop.index }}. {% if medicine.medicine is not empty %}{{ medicine.medicine.medicineForm }}. {{ medicine.medicine.name }} {{ medicine.medicine.strength }}{% else %} {{ medicine.medicineName }}{% endif %} <br/>
+                                                                    {{ medicine.medicineQuantity }}  {{ medicine.medicineDose }} {% if medicine.medicineDoseTime is not empty %}-{% endif %} {{ medicine.medicineDoseTime }} {% if medicine.medicineDuration is not empty %}-{% endif %} {{ medicine.medicineDuration }} {{ medicine.medicineDurationType }}
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'checkbox'  and service.servicePosition == 2)  %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ol class="number-list">
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaCheck == particular.id  %}
+                                                                        <li>{{ particular.name }}</li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ol>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'checkbox-text-field' and service.servicePosition == 2) %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ol>
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if (invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaValue  is not empty ) or (invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaCheck == particular.id) %}
+                                                                        <li>{{ particular.name }}: {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id] is not empty %}{{ invoiceParticularArr[particular.id].metaValue|raw }}{% endif %} </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ol>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'text-field'  and service.servicePosition == 2)  %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ul class="styled">
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaValue  is not empty %}
+                                                                        <li>{{ particular.name }}: {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id] is not empty %}{{ invoiceParticularArr[particular.id].metaValue|raw }}{% endif %} </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if (service.serviceFormat == 'textarea' and service.servicePosition == 2) %}
+                                                <tr>
+                                                    <td>
+                                                        {% if service.serviceHeaderShow == 1 %}
+                                                            <h4>{{ service.name }}:</h4>
+                                                        {% endif %}
+                                                        <ul class="styled">
+                                                            {% if service.dmsParticulars is not empty %}
+                                                                {% for particular in service.dmsParticulars  %}
+                                                                    {% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id].metaValue  is not empty %}
+                                                                        <li>{{ particular.name }}</li>
+                                                                        <li>{% if invoiceParticularArr is not empty and invoiceParticularArr[particular.id] is defined and invoiceParticularArr[particular.id] is not empty %}{{ invoiceParticularArr[particular.id].metaValue|raw }}{% endif %} </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+    {% if print == 'print' %}
+    <div class="footer-label">{{ portal_power }}</div>
+    {% endif %}
+</div>
+<style>
+
+    .h1, h1{
+        font-size: 24px!important;
+    }
+    .h2, h2{
+        font-size: 22px!important;
+    }
+    .h3, h3{
+        font-size: 20px!important;
+    }
+    .h4, h4{
+        font-size: 18px!important;
+    }
+    .h5, h5{
+        font-size: 16px!important;
+    }
+
+    .h6, h6{
+        font-size: 14px!important;
+    }
+
+    .h1,.h2,.h3,.h4, .h5, .h6, h1, h2, h3 , h4, h5, h6 {
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    #logo{
+        margin-top:15px;
+        width:250px;
+        margin-bottom: 15px;
+    }
+
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        border: none!important;
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        padding: 0!important;
+    }
+    .table th, .table td{
+        border: none!important;
+    }
+    ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    ul li{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    ol.number-list{
+        margin-left: -24px!important;
+        font-size: 15px;
+        font-weight: bold;
+    }
+    .styled li{
+        list-style: square!important;
+        margin-left: 0!important;
+        padding-bottom: 5px!important;
+        width: 100%;
+        display: inline-block;
+    }
+    .check-styled{
+        margin-left: -15px!important;
+        margin-bottom: 30px;
+    }
+
+    .check-styled li{
+        padding-bottom:0!important;
+        line-height:35px;
+        height: 35px;
+    }
+
+    .unstyled li{
+        padding-bottom: 5px!important;
+
+        font-weight: bold;
+        {% if entity.dmsConfig.bodyFontSize is not empty %}
+            font-size: {{ entity.dmsConfig.bodyFontSize }}!important;
+        {% else %}
+            font-size: 15px;
+        {% endif %}
+    }
+    .unstyled li.date{
+        border-bottom: 1px solid #000000!important;
+        margin-bottom: 10px!important;
+        text-align: right;
+    }
+
+
+    .dr-list li{
+        padding-bottom: 5px!important;
+        font-size: 13px;
+    }
+
+    .print-header .title-center{
+        float: none!important;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    .print-header .barcode-left{
+        float: left;
+        padding-left: 10px;
+    }
+    .print-header .barcode-right{
+        float: right;
+        padding-right: 10px;
+    }
+    .print-footer .left{
+        margin-left: 30px;
+    }
+    .print-footer .center{
+        text-align: center;
+    }
+    .print-footer .right{
+        float: right;
+        padding-right:30px;
+    }
+
+    .left{
+        float: left;
+    }
+    .center{
+        text-align: center;
+    }
+    .right{
+        float: right;
+    }
+
+
+    .table thead tr th.text-right , .table-bordered tr td.text-right{
+        text-align:right!important;
+    }
+    .text-center{
+        text-align:center!important;
+    }
+
+    .span4 {
+        width: 31.623931623931625%;
+    }
+
+    .table thead tr th{
+    {% if entity.dmsConfig.invoiceFontSize is not empty %}
+        font-size: {{ entity.dmsConfig.invoiceFontSize }}!important;
+    {% else %}
+        font-size: 15px;
+    {% endif %}
+    }
+
+    .table td{
+    {% if entity.dmsConfig.invoiceFontSize is not empty %}
+        font-size: {{ entity.dmsConfig.invoiceFontSize }}!important;
+    {% else %}
+        font-size: 15px;
+    {% endif %}
+
+    }
+    .service-group{
+        background-color: #ddddff!important;
+    }
+    table.table{
+        margin-bottom: 0!important;
+    }
+    .table td {
+        line-height: 18px;
+        padding-left: 15px;
+    }
+    .table-striped tbody>tr:nth-child(odd)>td, .table-striped tbody>tr:nth-child(odd)>th {
+        background-color:#fff!important;
+    }
+    table.table-border{
+        border: 1px solid #fff!important;
+    }
+    .print-header{
+        border: 1px solid #c0c5c9!important;
+    }
+    .head-black{
+        border: 1px solid #c0c5c9!important;
+    }
+    .table-bordered tr td{
+        border: 1px solid #ddd!important;
+    }
+
+    .dms-table {
+
+    }
+    .dms-table tr{
+        height:10px!important;
+        line-height: 10px!important;
+    }
+    .dms-table .dms-td{
+        height: 14px!important;
+        line-height: 6px;
+        padding: 0!important;
+        font-size: 12px;
+
+    }
+    .dms-table .dms-td-border-none{
+        border: none!important;
+        text-align:right!important;
+        border-right:1px solid #000!important;
+        padding-right: 2px!important;
+    }
+    .dms-table .dms-td-border-bottom{
+        border-bottom:1px solid #000!important;
+    }
+
+    .dms-td-right{
+        margin-top: -1px;
+        display: inline-block;
+    }
+
+    .table td.td-label{
+        vertical-align: middle;
+        height: 32px;
+        display: inline-block;
+        line-height: 32px;
+    {% if entity.dmsConfig.sidebarFontSize is not empty %}
+        font-size: {{ entity.dmsConfig.sidebarFontSize }}!important;
+    {% else %}
+        font-size: 14px;
+    {% endif %}
+    }
+
+
+    .dms-table .dms-td ul.rightTeeth , .dms-table .dms-td ul.leftTeeth{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .dms-table span{
+        display: inline-block;
+        padding: 2px;
+    }
+
+    .dms-table .dms-td ul.rightTeeth{
+        float:right;
+    }
+    .dms-table .dms-td ul.leftTeeth{
+
+    }
+    .hr{
+        border-bottom: 1px solid #000000;
+        padding-bottom: 5px;
+    }
+    h3{
+        text-transform: uppercase;
+        font-size: 22px;
+    }
+    .patient-label{
+        height: 40px;
+        line-height: 40px;
+        background-color: #f1f4f8;
+        border-bottom:2px solid #000000;
+        border-top:2px solid #000000;
+        font-size: 16px;
+        font-weight:bold;
+        margin-top: 15px;
+    }
+    .footer-label{
+        height: 40px;
+        line-height: 40px;
+        background-color: #f1f4f8;
+        border-top:1px solid #000000;
+        font-size: 12px;
+        text-align: center;
+        position: fixed;
+        bottom: 10px;
+        width: 1000px;
+    }
+</style>
+</html>

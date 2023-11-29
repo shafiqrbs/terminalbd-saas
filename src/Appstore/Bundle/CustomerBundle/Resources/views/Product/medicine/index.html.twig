@@ -1,0 +1,218 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="page-title">
+                    Wel Come {{ globalOption.name }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Product Lists</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Product Lists</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn blue" href="{{ path('shoppingbag_to_order',{'shop':globalOption.slug}) }}">
+                                    <i class="icon-shopping-cart"></i>&nbsp;Shopping Bag
+                                    <i class="icon-tasks"></i>
+                                </a>
+
+                                <a class="dropdown-toggle btn purple cart" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" href="{{ path('order_cart',{'shop':globalOption.slug}) }}">
+                                    BDT. (<span>{{ cart.total|number_format }}</span>)
+                                </a>
+                                <ul class="dropdown-menu extended inbox">
+                                    <li>
+                                        <p>You have BDT: {{ cart.total|number_format }}({{ cart.total_items }}) </p>
+                                    </li>
+                                    <li>
+                                        <ul class="dropdown-menu-list scroller" style="height:250px">
+                                            {% for product in cart.contents %}
+
+                                            <li>
+                                                <span class="span10">
+                                                    <a class="subject" href="{{ path('order_product', { 'shop': globalOption.slug}) }}?webName={{ product.name }}">
+                                                        <span class="from">{{ product.name }}</span>
+                                                    </a>
+                                                    <span class="description">{{ product.quantity }} x {{ product.price }} =  {{ (product.quantity * product.price)|number_format(2) }}</span>
+                                                </span>
+                                                <span class="span2" ><a class="itemRemove" href="javascript:" data-id="{{ product.rowid }}" data-url="{{ path('order_cart_to_remove_item', { 'shop': globalOption.slug,'id':product.rowid}) }}"><i class="fa fa-remove"></i></a> </span>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li>
+                                       <p class="pull-right">
+                                           <span class="span6">
+                                               <a class="green"  href="{{ path('shoppingbag_to_order',{'shop':globalOption.slug}) }}">Order Place&nbsp;<i class="m-icon-swapright"></i></a>
+                                           </span>
+                                           <span class="span6 text-center">
+                                               <a class="red cartRemove" href="javascript:"  data-url="{{ path('order_cart_to_remove',{'shop':globalOption.slug}) }}">Remove Cart</a>
+                                           </span>
+                                       </p>
+                                    </li>
+                                </ul>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .search-input{
+                            height: 34px!important;
+                        }
+                    </style>
+                    <div class="portlet-body">
+                        <div class="portlet-body">
+                            {% include('flash-message.html.twig')  %}
+                            <div class="row-fluid" >
+
+                                <form class="search-form" action="" method="get" name="itemSearch">
+                                    <div class="row-fluid">
+                                        <div class="span3">
+                                            <input type="text" id="brandName" name="brandName"  class="span12 m-wrap select2Brand" value="{% if searchForm.item is defined %}{{ searchForm.brandName }}{% endif %}"  autocomplete="off" placeholder="Enter brand name ">
+                                        </div>
+                                        <div class="span3">
+                                            <input type="text" id="category" name="category"  class="leftMargin span12 select2Category m-wrap" value="{% if searchForm.category is defined %}{{ searchForm.category }}{% endif %}"  autocomplete="off" placeholder="Product category">
+                                        </div>
+                                        <div class="span6">
+                                            <div class="controls">
+                                                <div class="input-append span11">
+                                                    <input type="text" id="webName" name="webName"  class="m-wrap span12" value="{% if searchForm.webName is defined %}{{ searchForm.webName }}{% endif %}"  autocomplete="off" placeholder="Enter Medicine/Product name">
+                                                    <div class="btn-group">
+                                                        <button class="btn blue" type="submit"><i class="icon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-striped table-condensed flip-content ">
+                                <thead class="flip-content ">
+                                <tr class="head-blue">
+                                    {%  set sort = app.request.query.get('sort') %}
+                                    {%  set direction = app.request.query.get('direction') %}
+                                    <th class="numeric" >Category</th>
+                                    <th {% if entities.isSorted('e.name') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Name', 'e.name') }}{% if( direction == 'desc' and sort == 'e.name') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th {% if entities.isSorted('e.brand') %} class="sorted" {% endif %} >{{ knp_pagination_sortable(entities, 'Brand Name', 'e.brand') }}{% if( direction == 'desc' and sort == 'e.brand') %}<i class="icon-sort-by-alphabet-alt"></i> {% else %}<i class="icon-sort-by-alphabet"></i> {% endif %}</th>
+                                    <th class="numeric" >MRP</th>
+                                    <th class="numeric" >Sales Qnt</th>
+                                    <th class="numeric" >Unit</th>
+                                    <th class="numeric" >SubTotal</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for entity in entities %}
+                                        <tr>
+                                            <td class="numeric" >
+                                                {% if globalOption.ecommerceConfig.showCategory == 1 and entity.category is not empty %}
+                                                <a href="{{ path('order_product', {'shop': globalOption.slug,'category':entity.category.name}) }}" class="category-name pull-right"> {{ entity.category.name }}</a>
+                                            {% endif %}
+                                            </td>
+                                            <td>{{ entity.webName }}</td>
+                                            <td class="numeric" >
+                                                {% if globalOption.ecommerceConfig.showBrand == 1 and entity.brand is not empty %}
+                                                <a href="{{ path('order_product', { 'shop': globalOption.slug,'brandName':entity.brand.name}) }}" class="brand-name"> {{ entity.brand.name }}</a>
+                                            {% endif %}
+                                            </td>
+
+                                            <td class="numeric">{{ entity.salesPrice|number_format(2) }}</td>
+                                            <td class="numeric" >
+                                                <div class="btn-group">
+                                                <input type="text" name="quantity[]" id="quantity-{{ entity.id }}" class="td-inline-input" value="{% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %} {{ cartProducts[entity.id].quantity }} {% endif %}">
+                                                    {% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %}           <a class="btn yellow mini cartSubmit" href="javascript:" data-url="{{ path('order_cart_to_update',{'shop':globalOption.slug,'id':cartProducts[entity.id].rowid}) }}" data-id="{{ entity.id }}" data-price="{{ entity.salesPrice }}" >Update</a> {% else %}
+                                                    <a class="btn blue mini cartSubmit" href="javascript:" data-url="{{ path('order_cart_to_medicine',{'shop':globalOption.slug,'id':entity.id}) }}" data-id="{{ entity.id }}" data-price="{{ entity.salesPrice }}" >Add</a>
+                                                    {% endif %}
+
+                                                </div>
+                                            </td>
+                                            <td class="numeric" >{% if entity.productUnit is not empty %}{{ entity.productUnit.name }}{% endif %}</td>
+                                            <td class="numeric" id="subTotal-{{ entity.id }}" >
+                                            {% if cartProducts[entity.id] is defined and cartProducts[entity.id] is not empty  %} {{ (cartProducts[entity.id].quantity * cartProducts[entity.id].price)|number_format(2) }} {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="pagination pull-center"  >
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        input[type="text"].td-inline-input {
+            height: 25px!important;
+            line-height: 13px!important;
+            font-size: 13px!important;
+            border: 2px solid #4d90fe!important;
+            width: 70px;
+            margin-bottom: 0!important;
+            padding:0!important;
+            padding-left:5px !important;
+        }
+        .dropdown-menu.extended li p {
+            padding: 10px;
+            background-color: #debd91;
+            margin: 0px;
+            font-size: 14px;
+            font-weight: 300;
+            color: #000;
+            width: 380px;
+        }
+
+        .dropdown-menu.extended li .description{
+            color: #000;
+            font-size: 12px;
+            margin-left: 13px;
+            line-height: 20px;
+        }
+        .dropdown-menu.extended {
+            min-width: 223px !important;
+            max-width: 400px !important;
+            width: 400px !important;
+            background-color: #ffffff !important;
+            left: -177px!important;
+            top: 32px;
+        }
+
+    </style>
+{% endblock %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@CustomerBundle/Resources/public/js/medicine.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+{% endblock %}
+

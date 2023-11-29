@@ -1,0 +1,64 @@
+dms_expense:
+    resource: "@DmsBundle/Resources/config/routing/expenditure.yml"
+    prefix:   /dms-expense
+
+dms_expensecategory:
+    resource: "@DmsBundle/Resources/config/routing/expensecategory.yml"
+    prefix:   /dms-expense-category
+
+dms_report:
+    resource: "@DmsBundle/Resources/config/routing/report.yml"
+    prefix:   /report
+
+dms_purchase:
+    resource: "@DmsBundle/Resources/config/routing/purchase.yml"
+    prefix:   /purchase
+
+
+dms_treatment_accessories:
+    resource: "@DmsBundle/Resources/config/routing/treatmentaccessories.yml"
+    prefix:   /treatment-accessories
+
+dms_vendor:
+    resource: "@DmsBundle/Resources/config/routing/vendor.yml"
+    prefix:   /vendor
+
+dms_invoice:
+    resource: "@DmsBundle/Resources/config/routing/invoice.yml"
+    prefix:   /invoice
+
+dms_doctor_invoice:
+    resource: "@DmsBundle/Resources/config/routing/doctorinvoice.yml"
+    prefix:   /doctor-invoice
+
+
+dms_particular:
+    resource: "@DmsBundle/Resources/config/routing/particular.yml"
+    prefix:   /particular
+
+dms_service:
+    resource: "@DmsBundle/Resources/config/routing/service.yml"
+    prefix:   /service
+
+dms_treatment:
+    resource: "@DmsBundle/Resources/config/routing/treatment.yml"
+    prefix:   /treatment-plan
+
+
+dms_doctor:
+    resource: "@DmsBundle/Resources/config/routing/doctor.yml"
+    prefix:   /doctor
+
+
+dms_medicine:
+    resource: "@DmsBundle/Resources/config/routing/medicine.yml"
+    prefix:   /accessories
+
+
+dms_config:
+    resource: "@DmsBundle/Resources/config/routing/config.yml"
+    prefix:   /config
+
+dms_homepage:
+    path:     /dashoard
+    defaults: { _controller: DmsBundle:Default:index }

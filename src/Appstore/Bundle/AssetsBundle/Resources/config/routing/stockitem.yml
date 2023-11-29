@@ -1,0 +1,19 @@
+assets_barcode_stock:
+    path:     /barcode-wise-stock
+    defaults: { _controller: "AssetsBundle:StockItem:barcodeStock" }
+
+assets_stockitem:
+    path:     /{type}
+    defaults: { _controller: "AssetsBundle:StockItem:index" }
+
+assets_stockitem_show:
+    path:     /{item}/show
+    defaults: { _controller: "AssetsBundle:StockItem:show" }
+
+
+assets_barcode_wise_branch_stock:
+    path:     /{barcode}/single-barcode-wise-branch-stock
+    defaults: { _controller: "AssetsBundle:StockItem:singleBarcodeBranchStock" }
+    methods:  GET
+    options:
+            expose: true

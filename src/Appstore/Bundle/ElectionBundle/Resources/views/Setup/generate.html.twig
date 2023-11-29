@@ -1,0 +1,88 @@
+<div class="portlet box green">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>Campaign Analysis Information</div>
+    </div>
+    <div class="portlet-body form">
+        <div class="loader loader-double" ></div>
+        <div id="memberLoad">
+        <div class="clearfix">&nbsp;</div>
+            <div class="row-fluid">
+                <div class="span3">
+                    <h4>About:</h4>
+                    <ul class="unstyled">
+                        {% if entity is not empty %}<li><strong>Created: </strong>&nbsp;{{ entity.created|date('d-m-y') }}</li>{% endif %}
+                        {% if entity is not empty %}<li><strong>Election Date: </strong>&nbsp;{{ entity.electionDate|date('d-m-y') }}</li>{% endif %}
+                        {% if entity is not empty %}<li><strong>Election Type: </strong>&nbsp;{% if  entity.electionType is not empty %}{{ entity.electionType.name }}{% endif %}</li>{% endif %}
+                        {% if entity is not empty %}<li><strong>Election : </strong>&nbsp;{% if  entity.currentElection == 1 %}Active{% endif %}</li>{% endif %}
+                        {% if entity.location is not empty  %}<li><strong>Location: </strong>&nbsp;{{ entity.location.name }}</li>{% endif %}
+                    </ul>
+                </div>
+                <div class="span3">
+                    <h4>Vote Information:</h4>
+                    <ul class="unstyled">
+                        <li><strong>Total Voter: </strong>&nbsp;{{ entity.totalVoter|number_format }}</li>
+                        <li><strong>Vote Center: </strong>&nbsp;{{ entity.voteCenter|number_format }}</li>
+                        <li><strong>Male Voter: </strong>&nbsp;{{ entity.maleVoter|number_format }}</li>
+                        <li><strong>Female Voter: </strong>&nbsp;{{ entity.femaleVoter|number_format }}</li>
+                        <li><strong>Other Voter: </strong>&nbsp;{{ entity.otherVoter|number_format }}</li>
+                    </ul>
+                </div>
+                <div class="span3">
+                    <h4>Result Information:</h4>
+                    <ul class="unstyled">
+                        <li><strong>Total Cast Vote: </strong>&nbsp;{{ entity.resultTotalVote|number_format }}</li>
+                        <li><strong>Male Vote: </strong>&nbsp;{{ entity.resultMaleVote|number_format }}</li>
+                        <li><strong>Female Vote: </strong>&nbsp;{{ entity.resultFemaleVote|number_format }}</li>
+                        <li><strong>Other Vote: </strong>&nbsp;{{ entity.resultOtherVote|number_format }}</li>
+                    </ul>
+                </div>
+                <div class="span3">
+                    <h4>&nbsp;</h4>
+                    <ul class="unstyled">
+                        <li><strong>Vote Center: </strong>&nbsp;{{ entity.resultVoteCenter|number_format }}</li>
+                        <li><strong>Cast Center: </strong>&nbsp;{{ (entity.resultVoteCenter - entity.holdVoteCenter)|number_format }}</li>
+                        <li><strong>Hold Center: </strong>&nbsp;{{ entity.holdVoteCenter|number_format }}</li>
+                        <li><strong>Invalid Vote: </strong>&nbsp;{{ entity.resultInvalidVote|number_format }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <table class="table table-bordered table-striped table-condensed flip-content ">
+
+                    <thead class="flip-content ">
+                    <tr class="head-blue">
+                        <th class="numeric" >Name</th>
+                        <th class="numeric" >Political Party</th>
+                        <th class="numeric" >Marka</th>
+                        <th class="numeric" >Mobile</th>
+                        <th class="numeric" >Location</th>
+                        <th class="numeric" >Male Vote</th>
+                        <th class="numeric" >Female Vote</th>
+                        <th class="numeric" >Other Vote</th>
+                        <th class="numeric" >Total Vote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for candidate in entity.candidates %}
+                        <tr>
+                            <td class="numeric" >{{ candidate.name }}</td>
+                            <td class="numeric" >{% if candidate.politicalParty is not empty %}{{ candidate.politicalParty.name }}{% endif %}</td>
+                            <td class="numeric" >{% if candidate.marka is not empty %}{{ candidate.marka.name }}{% endif %}</td>
+                            <td class="numeric" >{{ candidate.mobile }}</td>
+                            <td class="numeric" >{% if entity.location is not empty %}{{ entity.location.name }}{% endif %}</td>
+                            <td class="numeric" >{{ candidate.maleVote }}</td>
+                            <td class="numeric" >{{ candidate.femaleVote }}</td>
+                            <td class="numeric" >{{ candidate.otherVote }}</td>
+                            <td class="numeric" >{{ candidate.totalVote }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+

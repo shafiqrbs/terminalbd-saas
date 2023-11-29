@@ -1,0 +1,403 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN purchase_order HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="purchase_order-title">
+                    Invoice No # {{ entity.invoice }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('hotel_restaurantinvoice') }}"> Invoice</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="javascript:">Manage Invoice Details</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>c
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END purchase_order HEADER-->
+        <!-- BEGIN purchase_order CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Invoice Details</div>
+
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('hotel_restaurantinvoice_new') }}"><i class="icon-plus-sign"></i> New Invoice</a>
+                                <a class="btn black" href="{{ path('hotel_restaurantinvoice') }}"><i class="icon-th-list"></i> Invoice</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body form">
+                        <div class="row-fluid">
+
+                            <div class="span4">
+                                <h4>About:</h4>
+                                <ul class="unstyled">
+                                    {% if entity.customer is not empty %}<li><strong>Customer #:</strong>&nbsp;{{ entity.customer.name }}</li>{% endif %}
+                                    {% if entity.customer is not empty %}<li><strong>Mobile #:</strong>&nbsp;{{ entity.customer.mobile }}</li>{% endif %}
+                                    {% if entity.customer is not empty %}<li><strong>Address #:</strong>&nbsp;{{ entity.customer.address }}</li>{% endif %}
+                                    {% if entity.customer is not empty and entity.customer.location is not empty   %}<li><strong>Location #:</strong>&nbsp;{{ entity.customer.location.name }}, {{ entity.customer.location.parent.name }}</li>{% endif %}
+                                    <li><strong>Created:</strong>&nbsp;{{ entity.created|date('d-m-Y') }}</li>
+                                </ul>
+                            </div>
+
+                            <div class="span4 invoice-payment">
+                                <h4>Payment Details:</h4>
+                                <ul class="unstyled">
+                                    <li><strong>Total BDT:</strong>&nbsp;{{ entity.total|number_format() }}</li>
+                                    <li><strong>Received BDT:</strong>&nbsp;{{ entity.received|number_format() }}</li>
+                                    {% if entity.discount %}<li><strong>Discount BDT:</strong>&nbsp;{{ entity.discount|number_format() }}</li>{% endif %}
+                                    {% if entity.due %}<li><strong>Due BDT:</strong>&nbsp;{{ entity.due|number_format() }}</li>{% endif %}
+                                    <li><strong>Payment status</strong>&nbsp;{{  entity.paymentStatus|capitalize }}</li>
+                                </ul>
+                            </div>
+                            <div class="span4">
+                                <h4>Payment Method:</h4>
+                                <ul class="unstyled">
+                                    <li><strong>Payment Method:</strong>&nbsp;{{ entity.transactionMethod.name }}</li>
+                                    <li><strong>Sales By:</strong>&nbsp;{% if entity.salesBy is defined and entity.salesBy is not empty %}{{ entity.salesBy }}{% endif %}</li>
+                                    <li><strong>Received By:</strong>&nbsp;{% if entity.createdBy is defined and entity.createdBy is not empty %}{{ entity.createdBy }}{% endif %}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="row-fluid box green">
+                            <div class="span12" id="particular-table">
+                                <table class="table table-bordered table-striped table-condensed table-fixed">
+                                    <thead>
+                                    <tr>
+                                        <th class="">Si/No</th>
+                                        <th class="">Particular</th>
+                                        <th class="">Booking Date</th>
+                                        <th class="">Guest</th>
+                                        <th class="">Adult</th>
+                                        <th class="">Child</th>
+                                        <th class="">Unit</th>
+                                        <th class="">Days</th>
+                                        <th class="">Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="invoiceParticulars">
+                                    {% for item in entity.hotelInvoiceParticulars %}
+                                        <tr id="remove-{{ item.id }}">
+                                            <td  class="">{{ loop.index }}.</td>
+                                            <td class="">{{ item.particular }}</td>
+                                            <td class="">{{ item.startDate|date('d-m-Y') }} To {{ item.endDate|date('d-m-Y') }}</td>
+                                            <td class="">{{ item.guestName }}/{{ item.guestMobile }}</td>
+                                            <td class="">{{ item.adult }}</td>
+                                            <td class="">{{ item.child }}</td>
+                                            <td class="">{{ item.price }}</td>
+                                            <td class="">{{ item.quantity }}</td>
+                                            <td class="">{{ item.subTotal|number_format }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="9" class="span12" style="border: 1px double #000"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" class="span9"><span class="pull-right"><strong>Total Amount TK.</strong> =</span></td>
+                                        <td class="span1"><strong class="subTotal">{{ entity.subTotal|number_format }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" class="span9"><span class="pull-right"><strong>Vat/Tax TK.</strong> =</span></td>
+                                        <td class="span1"><strong class="vat">{{ entity.vat|number_format }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" class="span9"><span class="pull-right"><strong>Discount TK.</strong> =</span></td>
+                                        <td class="span1"><strong class="discount">{{ entity.discount|number_format }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" class="span9"><span class="pull-right"><strong>Received TK.</strong> =</span></td>
+                                        <td class="span1"><strong class="netTotal">{{ entity.total|number_format }}</strong></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="clearfix">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="form-actions portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="icon-reorder"></i> Payment information</div>
+                            </div>
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <table class="table table-bordered table-striped table-condensed table-fixed">
+                                    <thead>
+                                    <tr class="head-blue">
+                                        <th class="numeric">&nbsp;&nbsp;<i class="icon-list"></i></th>
+                                        <th class="numeric">Created</th>
+                                        <th class="numeric">Created By</th>
+                                        <th class="numeric">Process</th>
+                                        <th class="numeric">Payment Method</th>
+                                        <th class="numeric">Payment</th>
+                                        <th class="numeric"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="invoiceTransaction">
+                                    {% for transaction in entity.hotelInvoiceTransactions %}
+                                        <tr id="delete-{{ transaction.id }}" >
+                                            <td  class="numeric">{{ transaction.transactionCode }}</td>
+                                            <td  class="numeric">{{ transaction.updated|date('d-m-Y') }}</td>
+                                            <td class="numeric">{{ transaction.createdBy }}</td>
+                                            <td class="numeric">{{ transaction.process }}</td>
+                                            <td class="numeric">{% if transaction.transactionMethod is not empty %}{{ transaction.transactionMethod.name }}{% endif %}</td>
+                                            <td class="numeric">{{ transaction.payment }}</td>
+                                            <td class="numeric">
+                                                <span id="approved-{{ transaction.id }}">
+                                                    {% set processArr = ['Created','Pending','In-progress'] %}
+                                                    {% if transaction.process in  processArr %}
+                                                        <a href="javascript:" data-id="{{ transaction.id }}" data-url="{{ path('hotel_restaurantinvoice_payment_delete',{'invoice':entity.invoice,'id':transaction.id}) }}" class="btn delete red mini"><i class="fa fa-trash"></i></a>
+                                                        <a href="javascript:"  data-id="{{ transaction.id }}" data-url="{{ path('hotel_restaurantinvoice_payment_approve',{'id':transaction.id}) }}" class="btn approve blue mini"><i class="fa fa-ok"></i> Approve</a>
+                                                    {% else %}
+                                                        <a target="_blank" href="{{ path('hotel_restaurantinvoice_payment_print',{'invoice':entity.invoice,'id':transaction.id}) }}" data-id="{{ transaction.id }}"  class="btn purple mini"><i class="fa fa-print"></i> Print</a>
+                                                    {% endif %}
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td class="numeric" colspan="5"><span class="pull-right"><strong>Total Received</strong></span></td>
+                                        <td class="numeric"><strong class="payment">{{ entity.received|number_format }}</strong></td>
+                                        <td class="numeric"></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+
+                        <div class="form-actions portlet box grey">
+                            <div class="pull-right">
+                                <a class="btn yellow" target="_blank" href="{{ path('hotel_restaurantinvoice_print',{'id':entity.id}) }}"><i class="icon-print"></i> Print Invoice</a>
+                                <span  class="btn purple"><i class=" icon-ok"></i>&nbsp;{{ entity.process }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .border{border: 3px solid #fff;     border-radius: 5px;}
+
+        .tooltip-inner{
+            background-color: #d12610;
+        }
+        .tooltip.top .tooltip-arrow{
+            color: #d12610 !important;
+        }
+        .close{
+            background-image: none!important;
+        }
+        .dialogModal .dialogModal_top .dialogModal_header{
+            width: 100%!important;
+        }
+        .dialogModal .dialogModal_body{
+            width: 100%!important;
+        }
+        .dialogModal .dialogModal_content{
+
+        }
+        .dialogModal_content .mini{
+            height: 20px!important;
+        }
+
+        .check-list label{
+            width: 97%;
+        }
+        .feeds .col1 .cont .cont-col2 .desc{
+            margin-left: 10px;
+        }
+        .portlet.box .form .form-actions, .portlet.solid .form .form-actions {
+            margin-top: -9px !important;
+        }
+        .tab-height{
+            min-height: 525px;
+        }
+
+        .row-fluid label{
+            line-height: 30px!important;
+        }
+
+        input[class*="span"].wrap-custom{
+            height: 30px!important;
+
+        }
+
+        li.active > a {
+            color: #d12610 !important;
+        }
+        .tabs-right.tabbable-custom .nav-tabs > li a, .tabs-left.tabbable-custom .nav-tabs > li a {
+            padding: 8px 10px;
+            font-weight: bold;
+        }
+
+        .select2-container-multi .select2-choices {
+            min-height: 26px;
+            height: 32px!important;
+        }
+        .select2-container-multi .select2-choices .select2-search-choice div {
+            width: 20px!important;
+            background: #d12610;
+            color: #fff!important;
+            text-align: center;
+        }
+        #project-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 1em;
+        }
+        #project-icon {
+            float: left;
+            height: 32px;
+            width: 32px;
+        }
+        #project-description {
+            margin: 0;
+            padding: 0;
+        }
+        .dms-table {
+
+        }
+        .dms-table tr{
+            height:15px!important;
+            line-height: 15px!important;
+        }
+        .dms-table .dms-td{
+            height: 15px!important;
+            line-height: 15px;
+            padding: 1px!important;
+            width: 180px;
+
+        }
+        .dms-table .dms-td-border-none{
+            border: none!important;
+            text-align:right!important;
+        }
+        .dms-table .dms-td-border-bottom{
+            border-bottom:2px solid #4b8df8!important;
+        }
+
+        .dms-table .dms-td ul.rightTeeth , .dms-table .dms-td ul.leftTeeth{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dms-table .dms-td ul.rightTeeth{
+            float:right;
+        }
+        .dms-table .dms-td ul.leftTeeth{
+
+        }
+        .dms-table .dms-td ul.leftTeeth li, .dms-table .dms-td ul.rightTeeth li {
+            float: left;
+            border: 1px solid #000;
+            margin: 1px;
+            height: 15px;
+            line-height: 15px;
+            padding: 5px;
+            padding-bottom: 1px;
+            padding-top: 1px;
+        }
+        .dms-table .dms-td ul.leftTeeth li.active , .dms-table .dms-td ul.rightTeeth li.active{
+            color: #d12610 !important;
+            border: 1px solid #d12610!important;
+        }
+        .dms-teeth-plan{
+            margin-top: -18px;
+        }
+
+        .dms-teeth-plan .dms-plan-td{
+            padding: 1px!important;
+            width: 275px;
+
+        }
+        .dms-teeth-plan .dms-plan-td-border-none{
+            border: none!important;
+            text-align:right!important;
+        }
+        .dms-teeth-plan .dms-plan-td-border-bottom{
+            border-bottom:red 1px solid !important;
+        }
+        .dms-teeth-plan ul.leftFormatTeeth ,.dms-teeth-plan ul.rightFormatTeeth{
+            list-style:none;
+        }
+        .dms-teeth-plan .leftFormatTeeth li, .dms-teeth-plan .rightFormatTeeth li {
+            float: left;
+            padding: 3px;
+        }
+        .dms-teeth-plan .dms-td ul.rightFormatTeeth{
+            float:right;
+        }
+        .checkbox-custom{
+            color:red;
+            border:1px solid #FFF;
+            background-image:url("{{ asset('assets/img/tooth.png') }}");
+            background-size: 24px 24px;
+            background-repeat: no-repeat;
+        }
+        .checkbox-custom.focus{
+            border:red 1px solid ;
+        }
+    </style>
+{% endblock %}
+{% block cssBlock %}
+    {% stylesheets filter='cssrewrite'
+    '@HospitalBundle/Resources/public/css/invoice.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock  %}
+{% block javascriptBlock %}
+    {{ parent() }}
+    {% javascripts
+    '@HospitalBundle/Resources/public/js/invoice.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock  %}
+{% block documentready %}
+    {{ parent() }}
+    $.ajax({
+    url :"{{ path('dms_restaurantinvoice_patient_load',{'id':entity.id}) }}",
+    beforeSend: function(){
+        $('.loader-double').fadeIn(1000).addClass('is-active');
+    },
+    complete: function(){
+        $('.loader-double').fadeIn(1000).removeClass('is-active');
+    },
+    success:  function (data) {
+        $("#patientLoad").html(data);
+    }
+    });
+
+{% endblock %}

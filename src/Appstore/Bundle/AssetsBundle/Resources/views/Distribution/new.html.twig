@@ -1,0 +1,141 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- BEGIN itembrand HEADER-->
+        <div class="row-fluid">
+            <div class="span12">
+                <h3 class="itembrand-title">
+                    Asset Distributions
+                </h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home"></i>
+                        <a href="{{ path('homepage') }}">Home</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li>
+                        <a href="{{ path('assets_distribution') }}">Asset Distributions</a>
+                        <span class="icon-angle-right"></span>
+                    </li>
+                    <li><a href="#">Distribution Model Form</a></li>
+                    <li class="pull-right btn blue disabled mini">
+                        <i class="fa fa-calendar"></i>
+                        {{ "now"|date("d-F-Y") }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- END itembrand HEADER-->
+        <!-- BEGIN itembrand CONTENT-->
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="portlet box green tabbable">
+
+                    <div class="portlet-title">
+                        <div class="caption"><i class="icon-reorder"></i>Asset Distributions Information</div>
+                        <div class="actions">
+                            <div class="btn-group">
+                                <a class="btn red" href="{{ path('assets_distribution') }}"><i class="icon-th-list"></i>&nbsp;Asset Distribution</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="portlet-body">
+
+                        <div class="portlet-body form">
+                            {% include('flash-message.html.twig')  %}
+                            <!-- BEGIN FORM-->
+                            {{ form_start(form) }}
+                            {{ form_row(form._token) }}
+
+                            <div class="row-fluid">
+
+                                <div class="span3">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Assign Employee</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.employee) }}
+                                            {{ form_errors(form.employee) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span3">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Department</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.department) }}
+                                            {{ form_errors(form.department) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <label class="control-label" for="firstName">Product</label>
+                                        <div class="controls">
+                                            {{ form_widget(form.product) }}
+                                            {{ form_errors(form.product) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <div class="row-fluid">
+                                <div class="span9">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label class="control-label" for="firstName">Narration</label>
+                                                <div class="controls">
+                                                    {{ form_widget(form.narration) }}
+                                                    {{ form_errors(form.narration) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="span3">
+                                     <div class="row-fluid">
+                                         <div class="span12">
+                                             <div class="control-group">
+                                                 <label class="control-label" for="firstName">Requisition no</label>
+                                                 <div class="controls">
+                                                     {{ form_widget(form.requisition) }}
+                                                     {{ form_errors(form.requisition) }}
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="row-fluid">
+                                         <div class="span12">
+                                             <div class="control-group">
+                                                 <label class="control-label" for="firstName">Assign Date</label>
+                                                 <div class="controls">
+                                                     {{ form_widget(form.assignDate) }}
+                                                     {{ form_errors(form.assignDate) }}
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><br/></div>
+                            <!--/span-->
+                            <div class="form-actions portlet box grey">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn green"><i class="icon-save"></i> Save</button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                            <!-- END FORM-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

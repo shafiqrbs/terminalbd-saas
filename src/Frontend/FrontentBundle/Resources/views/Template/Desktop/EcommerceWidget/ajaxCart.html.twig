@@ -1,0 +1,188 @@
+<div id="cart-item-list">
+    {% if  cart.contents is not empty %}
+        <div class="top">Recent Buy Item's <span class=" btn btn-sm btn-warning pull-right" style="margin-right:10px; margin-top:5px" ><strong class="totalItem">{{ cart.total_items }}</strong></span></div>
+        <div id="cart-item-list-box" class="scrollbar">
+            {% for product in cart.contents %}
+                <dl class="entity-list" id="item-remove-{{ product.rowid }}">
+                    <dt>{% if product.productImg is not empty %}
+                            <img src="{{ image(product.productImg).scaleResize(80,80) }}" alt=""/>
+                        {% else %}
+                            <img style="height: 80px; width: 80px" src="{{ asset('assets/img/product-icon.png') }}">
+                        {% endif %}
+                        <span class="dd-span-name" style="width:60%; height: 75px; font-size: 12px">
+                                        {{ product.name }}
+                            {% if product.color is not empty %}
+                                <br/>Color: {{ product.color }}
+                            {% endif %}
+                            {% if product.size != 0 %}
+                                <br/>
+                                <strong>{{ product.size }}{% if product.sizeUnit is not empty %} {{ product.sizeUnit }}{% endif %}
+                                    / {{ globalOption.ecommerceConfig.currency }} {{ product.price }}</strong>
+                                        {% elseif product.productUnit is not empty %}
+                                <br/> <strong>1 {{ product.productUnit }}
+                                    / {{ globalOption.ecommerceConfig.currency }} {{ product.price }}</strong>
+                            {% endif %}
+                                    </span>
+                    </dt>
+                    <dd>
+                        <div class="input-group">
+                                        <span class="input-group-btn">
+                                           <button type="button" class="btn btn-sm btn-danger btn-number-cart"
+                                                   data-type="minus" data-field="quantity" data-id="{{ product.rowid }}"
+                                                   data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_update',{'cartid': product.rowid}) }}"
+                                                   data-text="{{ product.id }}" data-title="{{ product.price }}">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                           </button>
+                                        </span>
+                            <input type="text" name="quantity" id="quantity-{{ product.rowid }}"
+                                   class="form-control btn-number-cart" value="{{ product.quantity }}"
+                                   min="1" max="{{ product.maxQuantity }}">
+
+                            <span class="input-group-btn">
+                                              <button type="button" class="btn btn-sm btn-success btn-number-cart"
+                                                      data-type="plus" data-field="quantity"
+                                                      data-id="{{ product.rowid }}"
+                                                      data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_update',{'cartid': product.rowid}) }}"
+                                                      data-text="{{ product.id }}" data-title="{{ product.price }}">
+                                                      <span class="glyphicon glyphicon-plus"></span>
+                                              </button>
+                                        </span>
+                            {% if product.productUnit is not empty %}
+                                <span class="input-group-btn">
+                                              <button type="button" class="btn btn-sm btn-warning">
+                                                 {{ product.productUnit }}
+                                              </button>
+                                        </span>
+                            {% endif %}
+                                        <span class="input-group-btn">
+                                              <button type="button" class="btn btn-sm btn-info btn-total">
+                                                  = <strong id="btn-total-{{ product.rowid }}">{{ product.price * product.quantity }}</strong>
+                                              </button>
+                                        </span>
+                                        <span class="input-group-btn">
+                                            <button id="{{ product.rowid }}"
+                                                    data-url="{{ path(globalOption.subDomain ~ '_webservice_product_cart_remove',{'cartid':product.rowid}) }}"
+                                                    class="btn btn-danger btn-sm hunger-remove-cart">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+
+                        </div>
+                    </dd>
+                </dl>
+            {% endfor %}
+        </div>
+        <div class="bottom">
+            <span class="dd-span pull-left">SubTotal:</span>
+                            <span class="dd-span pull-right"><strong>{{ globalOption.ecommerceConfig.currency }}
+                                    &nbsp;<span class="totalAmount">{{ cart.total }}</span></strong></span>
+        </div>
+        <div class="bottom">
+                            <span class="dd-span pull-left"><a
+                                        href="{{ path(globalOption.subDomain ~ '_webservice_product_cart_details') }}"
+                                        class="btn btn-success"><span class="glyphicon glyphicon-shopping-cart"></span> View Buy</a></span>
+                        <span class="dd-span pull-right">
+                        {% if app.user %}
+                            <a href="{{ path('order_checkout',{'shop':globalOption.uniqueCode}) }}" type="button"
+                               class="btn btn-success">Take Order <span class="glyphicon glyphicon-play"></span></a>
+                        {% endif %}
+                        </span>
+        </div>
+    {% else %}
+        <p>You have no products in your shopping Bag.</p>
+    {% endif %}
+</div>
+<style>
+    .popModal{
+        max-width:450px!important;
+    }
+    #cart-item-list {
+        border: 1px solid #f5f5f5;
+        margin: 10px auto;
+    }
+
+    #cart-item-list #cart-item-list-box {
+        overflow-y: auto;
+    }
+
+    #cart-item-list dl {
+        border-bottom: 1px solid #f5f5f5;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    #cart-item-list dt {
+        font-weight: normal;
+    }
+
+    #cart-item-list dt img {
+        border: 1px solid #fafafa;
+        float: left;
+        margin: 0 15px 0 0;
+    }
+
+    #cart-item-list dd {
+        margin-top: 10px;
+        overflow: auto;
+    }
+
+    #cart-item-list .bottom {
+        background-color: #f5f5f5;
+        color: #000;
+        height: 40px;
+        line-height: 40px;
+        margin-top: 10px;
+        overflow: auto;
+        text-align: center;
+    }
+
+    #cart-item-list .top {
+        background-color: #f5f5f5;
+        height: 40px;
+        line-height: 40px;
+        overflow: auto;
+        padding-left: 11px;
+        text-align: left;
+    }
+
+    #cart-item-list .dd-span {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #cart-item-list .dd-span-name {
+        display: inline-block;
+        width: 70%;
+        text-align: left;
+        height: 43px;
+        overflow: hidden;
+    }
+
+    #cart-item-list .dd-span-action {
+        display: inline-block;
+        width: 13%;
+        text-align: left;
+    }
+
+    #cart-item-list .dd-span-price {
+        display: inline-block;
+        width: 85%;
+        text-align: right;
+    }
+
+    #cart-item-list p {
+        padding-top: 5px;
+        text-align: center;
+        color: red;
+        font-size: 12px;
+    }
+
+    .btn-number-cart {
+        height: 30px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+</style>
+

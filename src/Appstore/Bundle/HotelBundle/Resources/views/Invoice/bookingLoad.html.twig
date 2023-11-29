@@ -1,0 +1,88 @@
+{% if entities is not empty  %}
+    {% if searchForm.process is defined and searchForm.process == 'available' %}
+        {% for entity in entities %}
+            <tr>
+                {#<td><span data-trigger="hover" class="btn blue mini toggle badge-custom" data-id="{{ entity.id }}" data-url="{{ path('hotel_booking_room_details',{'id':entity.id}) }}" ><span>[+]</span></span></td>#}
+                <td class="numeric" >{{ loop.index }}</td>
+                <td class="numeric" >{% if entity.roomCategory is not empty %}{{ entity.roomCategory.name }}{% endif %}</td>
+                <td class="numeric" >{{ entity.name }}</td>
+                <td class="numeric" >{{ entity.hotelParticularType.name }}</td>
+                <td class="numeric" >{% if entity.roomType is not empty %}{{ entity.roomType.name }}{% endif %}</td>
+                <td class="numeric" >{% if entity.viewPosition is not empty %}{{ entity.viewPosition.name }}{% endif %}</td>
+                <td class="numeric" >{% if entity.roomFloor is not empty %}{{ entity.roomFloor.name }}{% endif %}</td>
+                <td class="numeric" >{{ entity.salesPrice }}</td>
+                <td class="numeric" ></td>
+                <td class="numeric" ></td>
+            </tr>
+            {#<tr id="show-{{ entity.id }}" class="showing-overview">
+                <td colspan="9">
+                    <div id="room-{{ entity.id }}"></div>
+                    <div id="form-{{ entity.id }}"></div>
+                </td>
+            </tr>#}
+        {% endfor %}
+    {% else %}
+        {% for entity in entities %}
+            <tr>
+                {#<td><span data-trigger="hover" class="btn blue mini toggle badge-custom" data-id="{{ entity.id }}" data-url="{{ path('hotel_booking_room_details',{'id':entity.id}) }}" ><span>[+]</span></span></td>#}
+                <td class="numeric" >{{ loop.index }}</td>
+                <td class="numeric" >{% if entity.hotelParticular.roomCategory is not empty %}{{ entity.hotelParticular.roomCategory.name }}{% endif %}</td>
+                <td class="numeric" >{{ entity.particular }}</td>
+                <td class="numeric" >{{ entity.hotelParticular.hotelParticularType.name }}</td>
+                <td class="numeric" >{% if entity.hotelParticular.roomType is not empty %}{{ entity.hotelParticular.roomType.name }}{% endif %}</td>
+                <td class="numeric" >{% if entity.hotelParticular.viewPosition is not empty %}{{ entity.hotelParticular.viewPosition.name }}{% endif %}</td>
+                <td class="numeric" >{% if entity.hotelParticular.roomFloor is not empty %}{{ entity.hotelParticular.roomFloor.name }}{% endif %}</td>
+                <td class="numeric" >{{ entity.hotelParticular.salesPrice }}</td>
+                <td class="numeric" >{% for date in entity.bookingDate %}{{ date }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+                <td class="numeric"><button class="btn red mini {{ entity.process }}">{{ entity.process }}</button></td>
+            </tr>
+            {#<tr id="show-{{ entity.id }}" class="showing-overview">
+                <td colspan="9">
+                    <div id="room-{{ entity.id }}"></div>
+                    <div id="form-{{ entity.id }}"></div>
+                </td>
+            </tr>#}
+        {% endfor %}
+    {% endif %}
+{% endif %}
+ {# <div class="row-fluid room-box">
+            <div class="span4">{{ entity.particularCode }} - {{ entity.name }}</div>
+            <div class="span2 text-right">{% if entity.category is not empty %}{{ entity.category.name }}{% endif %}</div>
+            <div class="span2">BDT {{ entity.salesPrice }}</div>
+            <div class="span1">{% if entity.id in bookings %} <button class="btn red mini">Booked</button> {% else %}<button class="btn blue mini">Available</button>{% endif %}</div>
+            <div class="span3">
+                <a data-id="{{ entity.id }}" class="btn green booking-room" data-url="{{ path('hotel_booking_room_details',{'id':entity.id}) }}" href="javascript:"><i class="icon-plus-sign"></i> View & Process</a>
+            </div>
+        </div>
+        <div id="room-{{ entity.id }}"></div>
+        <div id="form-{{ entity.id }}"></div>#}
+<style>
+    .room-box:nth-of-type(odd) {
+        background-color: #eeeeee;
+    }
+
+    .room-box:nth-of-type(even) {
+        background-color: #cecece;
+    }
+
+    .room-box{
+        border: 1px solid #868181;
+        padding: 15px;
+        line-height: 32px;
+        margin-bottom: 5px;
+    }
+
+    #bookingDate{
+        padding-bottom: 0!important;
+        margin-bottom: 0!important;
+        width: 150px;
+        height: 28px!important;
+        background: #fff;
+        line-height: 37px;
+        padding-top: 1px!important;
+        border: 1px solid #c49f47!important;
+        margin-top: -1px;
+    }
+
+</style>
+

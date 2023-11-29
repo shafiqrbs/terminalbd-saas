@@ -1,0 +1,39 @@
+assetscategory:
+    path:     /
+    defaults: { _controller: "AssetsBundle:Category:index" }
+
+assetscategory_show:
+    path:     /{id}/show
+    defaults: { _controller: "AssetsBundle:Category:show" }
+
+assetscategory_new:
+    path:     /new
+    defaults: { _controller: "AssetsBundle:Category:new" }
+
+assetscategory_create:
+    path:     /create
+    defaults: { _controller: "AssetsBundle:Category:create" }
+    methods:  POST
+
+assetscategory_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AssetsBundle:Category:edit" }
+
+
+assetscategory_update:
+    path:     /{id}/update
+    defaults: { _controller: "AssetsBundle:Category:update" }
+    methods:  [POST, PUT]
+
+
+assetscategory_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Category:delete" }
+
+assetscategory_status:
+    path:     /{id}/delete
+    defaults: { _controller: "AssetsBundle:Category:status" }
+
+assetscategory_meta_delete:
+    path:     /{id}/meta-category-delete
+    defaults: { _controller: "AssetsBundle:Category:deleteMeta" }

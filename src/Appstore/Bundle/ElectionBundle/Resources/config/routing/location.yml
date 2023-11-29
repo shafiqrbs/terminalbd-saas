@@ -1,0 +1,50 @@
+election_location:
+    path:     /
+    defaults: { _controller: "ElectionBundle:Location:index" }
+
+election_location_type_wise_search:
+    path:     /type-wise-search
+    defaults: { _controller: "ElectionBundle:Location:typeSearch" }
+    methods:  POST
+    options:
+            expose: true
+
+election_location_all_search:
+    path:     /all-search
+    defaults: { _controller: "ElectionBundle:Location:allLocationSearch" }
+    options:
+            expose: true
+
+election_location_search:
+    path:     /{type}/search
+    defaults: { _controller: "ElectionBundle:Location:autoSearch" }
+    options:
+            expose: true
+
+election_location_name:
+    path:      /{name}/location-name
+    defaults: { _controller: "ElectionBundle:Location:searchLocationName" }
+    options:
+            expose: true
+
+election_location_create:
+    path:     /create
+    defaults: { _controller: "ElectionBundle:Location:create" }
+    methods:  POST
+
+election_location_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectionBundle:Location:edit" }
+
+election_location_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectionBundle:Location:update" }
+    methods:  [POST, PUT]
+
+election_location_status:
+    path:     /{id}/status
+    defaults: { _controller: "ElectionBundle:Location:status" }
+
+election_location_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectionBundle:Location:delete" }

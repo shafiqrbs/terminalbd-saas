@@ -1,0 +1,33 @@
+dms_doctor:
+    path:     /
+    defaults: { _controller: "DmsBundle:Doctor:index" }
+
+dms_doctor_show:
+    path:     /{id}/show
+    defaults: { _controller: "DmsBundle:Doctor:show" }
+
+dms_doctor_new:
+    path:     /new
+    defaults: { _controller: "DmsBundle:Doctor:new" }
+
+dms_doctor_create:
+    path:     /create
+    defaults: { _controller: "DmsBundle:Doctor:create" }
+    methods:  POST
+
+dms_doctor_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "DmsBundle:Doctor:edit" }
+
+dms_doctor_update:
+    path:     /{id}/update
+    defaults: { _controller: "DmsBundle:Doctor:update" }
+    methods:  [POST, PUT]
+
+dms_doctor_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "DmsBundle:Doctor:delete" }
+
+dms_doctor_status:
+    path:     /{id}/status
+    defaults: { _controller: "DmsBundle:Doctor:status" }
