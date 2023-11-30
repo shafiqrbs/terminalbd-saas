@@ -34,18 +34,18 @@ twig:
     date:
         timezone: Asia/Dhaka
     globals:
-            #myGlobaService: "@SettingContentBundle.content_footer_service"  'footer-content'
-            portal_domain: 'http://www.poskeeper.com'
-            portal_name: 'poskeeper.com'
-            portal_design_development: 'poskeeper.com'
-            portal_power: 'Powered By: www.poskeeper.com'
-            portal_copyright: 'Copy right poskeeper.com'
+        #myGlobaService: "@SettingContentBundle.content_footer_service"  'footer-content'
+        portal_domain: 'http://www.terminalbd.com'
+        portal_name: 'terminalbd.com'
+        portal_design_development: 'TERMINALBD.COM'
+        portal_power: 'Powered By: www.terminalbd.com'
+        portal_copyright: 'Copy Right TERMINALBD.COM'
 
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [UserBundle,FOSCommentBundle,HospitalBundle,AccountingBundle, DomainUserBundle, BinduBundle ,SettingToolBundle,HumanResourceBundle,MedicineBundle,DoctorPrescriptionBundle,MedicineBundle,ReportBundle]
+    bundles:        [UserBundle,FOSCommentBundle,InventoryBundle,HospitalBundle,AssetsBundle, AccountingBundle, DomainUserBundle, BinduBundle , XiideaDomainBundle, SettingToolBundle, EcommerceBundle,FrontendBundle,SettingContentBundle,CustomerBundle,HumanResourceBundle,DmsBundle,BusinessBundle,MedicineBundle,RestaurantBundle,EducationBundle,HotelBundle,DoctorPrescriptionBundle,MedicineBundle,ElectionBundle,PosBundle,ProcurementBundle,ReportBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
