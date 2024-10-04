@@ -49,6 +49,14 @@ setting_tool:
     resource: "@SettingToolBundle/Resources/config/routing.yml"
     prefix:   /
 
+setting_content:
+    resource: "@SettingContentBundle/Resources/config/routing.yml"
+    prefix:   /
+
+setting_megamenu:
+    resource: "@SettingAppearanceBundle/Resources/config/routing.yml"
+    prefix:   /
+
 domain_user:
     resource: "@DomainUserBundle/Resources/config/routing.yml"
     prefix:   /domain-user

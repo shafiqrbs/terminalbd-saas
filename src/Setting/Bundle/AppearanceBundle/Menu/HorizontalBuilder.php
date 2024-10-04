@@ -298,7 +298,7 @@ class HorizontalBuilder extends ContainerAware
                 ->setAttribute('icon', 'fa fa-picture-o')
                 ->setAttribute('dropdown', true);
 
-            $menu['Manage Content']->addChild('Contact', array('route' => 'contactpage_modify'));
+            $menu['Manage Content']->addChild('Contact', array('route' => ''));
             $menu['Media']->addChild('Galleries', array('route' => 'gallery'));
         }
         if ($securityContext->isGranted('ROLE_DOMAIN_WEBSITE_SETTING')) {

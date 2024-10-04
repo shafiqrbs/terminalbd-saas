@@ -464,7 +464,7 @@ class Builder extends ContainerAware
                 ->setAttribute('icon', 'fa fa-picture-o')
                 ->setAttribute('dropdown', true);
 
-            $menu['Manage Website']->addChild('Contact', array('route' => 'contactpage_modify'));
+            $menu['Manage Website']->addChild('Contact', array('route' => ''));
             $menu['Media']->addChild('Galleries', array('route' => 'gallery'));
         }
 
@@ -1863,8 +1863,6 @@ class Builder extends ContainerAware
         $menu['Manage Frontend']->addChild('Testimonial', array('route' => 'sitetestimonial'));
         $menu['Manage Frontend']->addChild('Team', array('route' => 'siteteam'));
         $menu['Manage Frontend']->addChild('Manage Mega Menu', array('route' => 'megamenu'));
-        $menu['Manage Frontend']->addChild('Feature Category', array('route' => 'category_sorting'));
-        $menu['Manage Frontend']->addChild('Collection', array('route' => 'collection'));
         return $menu;
 
     }
@@ -1885,7 +1883,7 @@ class Builder extends ContainerAware
 	    $menu['Tools']['Software']->addChild('Application Testimonial', array('route' => 'applicationtestimonial'));
 	    //$menu['Tools']->addChild('Syndicate Module', array('route' => 'syndicatemodule'));
 	    $menu['Tools']->addChild('Master Data')->setAttribute('dropdown', true);
-	    $menu['Tools']['Master Data']->addChild('Location', array('route' => 'location'));
+	    $menu['Tools']['Master Data']->addChild('Location', array('route' => ''));
 	    $menu['Tools']['Master Data']->addChild('Business Sector', array('route' => 'syndicate'));
 	    $menu['Tools']['Master Data']->addChild('Designation', array('route' => 'designation'));
 	    $menu['Tools']['Master Data']->addChild('Medicine Import', array('route' => 'medicine_import'));
@@ -1893,7 +1891,7 @@ class Builder extends ContainerAware
 		$menu['Tools']->addChild('Appearance')->setAttribute('dropdown', true);
 	    $menu['Tools']['Appearance']->addChild('Module', array('route' => 'module'));
         $menu['Tools']['Appearance']->addChild('Theme', array('route' => 'theme'));
-        $menu['Tools']['Appearance']->addChild('Menu Custom', array('route' => 'menucustom'));
+        $menu['Tools']['Appearance']->addChild('Menu Custom', array('route' => ''));
        // $menu['Tools']->addChild('Menu Group', array('route' => 'menugroup'));
        // $menu['Tools']->addChild('Manage Brand', array('route' => 'branding'));
         /*    $menu['Tools']->addChild('Inventory&Accounting')
