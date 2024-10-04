@@ -9,8 +9,8 @@ mkdir -p web/uploads/files
 mkdir -p web/uploads/user
 
 echo "Removing old cache if any"
-rm -Rf app/cache/*
-rm -Rf app/logs/*
+rm -rf app/cache/*
+rm -rf app/logs/*
 
 
 echo "(Re)Creating assets symlink"
