@@ -35,21 +35,22 @@
     </style>
 
     <div id="tm-header-top">
-        <div class="tm-wrap tm-table">
+        <div class="tm-wrap tm-table" style="position: relative">
             <div class="one-half">
                 <div class="tm-logo" style="height: 90px">
                     <a href="/" class="tm-logo-simple" style="align-items:center; float: left">
-                        <img alt="Logo" height="75"  src="{{ asset('assets/frontend/img/logo.png') }}">
+                        <img alt="Logo" width="160"  src="{{ asset('assets/frontend/img/logo.png') }}">
                     </a>
                     <a href="/" class="tm-logo-retina" style="align-items:center; float: left">
-                        <img alt="Logo" height="75"  src="{{ asset('assets/frontend/img/logo.png') }}">
+                        <img alt="Logo" width="160"  src="{{ asset('assets/frontend/img/logo.png') }}">
                     </a>
                 </div>
             </div>
-            <div  style="text-align: right; height: 100px;">
-                <div style="line-height:80px;font-weight: bold;font-size: 16px;"> <i class="fa  fa-mobile"></i> <a href="tel:+088 01828148148"> +088 01828148148</a> <i class="fa  fa-envelope-o"></i> <a href="mailto:info@terminalbd.com"> sales@poskeeper.com</a> </div>
-              {#  {% render controller("BinduBundle:Widget:login") %}#}
-                <div class="clearfix"></div>
+            <div  style="text-align: right;position: relative;">
+                <div style="line-height:16px;font-weight: bold;font-size: 16px; position: absolute; right: 0;top: 8px;">
+                    <i class="fa  fa-mobile"></i> <a href="tel:+088 01828148148"> +088 01828148148</a> <i class="fa  fa-envelope-o"></i> <a href="mailto:info@terminalbd.com"> sales@poskeeper.com</a>
+                </div>
+                {% render controller("BinduBundle:Widget:login") %}
             </div>
         </div>
         <!--tm-wrap-->

@@ -578,7 +578,7 @@ img {
 }
 .tm-list-style1 ul li:after {
   border-bottom: 4px solid transparent;
-  border-left: 4px solid rgba(0, 0, 0, 0.7);
+  border-left: 4px solid #00994f;
   border-top: 4px solid transparent;
   border-right: 4px solid transparent;
   content: "";
@@ -618,7 +618,7 @@ form .tm-button {
   padding: 10px;
 }
 form .tm-button {
-  background: #0d8bb3;
+  background: #00994f;
   color: #ffffff;
   font-weight: bold;
   border: none;
@@ -1045,7 +1045,7 @@ header .tm-social-icons a:hover {
 }
 /** page-title **/
 #tm-page-title {
-  background:#0d8bb3;
+  background:#00994f;
   color: #ffffff;
   padding: 15px;
 }

@@ -95,19 +95,10 @@ class SecurityController extends Controller
         $detect = new MobileDetect();
         $currentDomain = $_SERVER['SERVER_NAME'];
 	    if( $detect->isMobile() OR  $detect->isTablet() ) {
-            if($currentDomain == 'www.poskeeper.com') {
-                return $this->render('BinduBundle:Frontend/Mobile:index.html.twig', $data);
-            }else{
-                return $this->render('UserBundle:Security/Mobile:login.html.twig', $data);
-            }
+            return $this->render('BinduBundle:Frontend/Mobile:index.html.twig', $data);
 	    }else{
-	        if($currentDomain == 'www.poskeeper.com'){
-                return $this->render('BinduBundle:Frontend/Desktop:index.html.twig', $data);
-            }else{
-                return $this->render('UserBundle:Security:login.html.twig', $data);
-            }
+            return $this->render('BinduBundle:Frontend/Desktop:index.html.twig', $data);
         }
-
     }
 
     public function domainLoginAction($subdomain,Request $request)
