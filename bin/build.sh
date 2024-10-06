@@ -25,3 +25,4 @@ app/console  assets:install --symlink --relative
 app/console  assetic:dump --env=prod --no-debug
 
 echo "Make directory writtable"
+chmod -R 777 app/cache app/logs web/cache web/uploads web/images
