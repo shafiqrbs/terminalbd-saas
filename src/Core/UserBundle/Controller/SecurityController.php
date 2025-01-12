@@ -66,7 +66,7 @@ class SecurityController extends Controller
         if ($error) {
             $error = $error->getMessage();
         }
-	    $slides = $this->getDoctrine()->getRepository('SettingContentBundle:SiteSlider')->findBy(array(),array('id'=>'DESC'));
+	    $slides = $this->getDoctrine()->getRepository('SettingContentBundle:SiteSlider')->findBy(array('status'=>1),array('id'=>'DESC'));
 	    $apps =$this->getDoctrine()->getRepository('SettingToolBundle:AppModule')->findBy(array('status'=>1));
 	    $clients =$this->getDoctrine()->getRepository('SettingToolBundle:GlobalOption')->findBySubdomain();
 	    $testimonials =$this->getDoctrine()->getRepository('SettingContentBundle:Testimonial')->findBy(array('status'=>1));
